@@ -1,0 +1,52 @@
+
+
+
+
+
+
+#ipsec router 1
+crypto isakmp policy 10
+    encryption 3des
+    authentication pre-share
+    hash md5
+    group 2
+    exit
+
+
+crypto isakmp key Buma address 10.0.3.2
+crypto ipsec transform-set Buma123 esp-sha-hmac esp-3des
+    mode transport
+    exit
+
+crypto ipsec profile SEC_GRE_1
+    set transform-set Buma123
+    exit
+
+interface Tunnel0
+    tunnel protection ipsec profile SEC_GRE_1
+    exit
+
+
+#ipsec router 2
+
+crypto isakmp policy 10
+    encryption 3des
+    authentication pre-share
+    hash md5
+    group 2
+    exit
+
+
+crypto isakmp key Buma address 10.0.1.1
+crypto ipsec transform-set Buma123 esp-sha-hmac esp-3des
+    mode transport
+    exit
+
+crypto ipsec profile SEC_GRE_1
+    set transform-set Buma123
+    exit
+
+interface Tunnel0
+    tunnel protection ipsec profile SEC_GRE_1
+    exit
+
