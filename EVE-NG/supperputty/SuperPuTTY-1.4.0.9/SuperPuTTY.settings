@@ -12,7 +12,7 @@
   <MinttyExe>
   </MinttyExe>
   <PuttyPanelShowNewSessionMenu>True</PuttyPanelShowNewSessionMenu>
-  <Action_PrevTab_Shortcut>None</Action_PrevTab_Shortcut>
+  <Action_PrevTab_Shortcut>Alt+Z</Action_PrevTab_Shortcut>
   <SingleInstanceMode>True</SingleInstanceMode>
   <EnableControlTabSwitching>True</EnableControlTabSwitching>
   <ApplicationVersion>
@@ -21,7 +21,7 @@
   <AlwaysOnTop>False</AlwaysOnTop>
   <ExitConfirmation>True</ExitConfirmation>
   <Action_FullScreen_Shortcut>F11</Action_FullScreen_Shortcut>
-  <WindowActivator>SuperPutty.Utils.KeyEventWindowActivator</WindowActivator>
+  <WindowActivator>SuperPutty.Utils.RestoreWindowActivator</WindowActivator>
   <SettingsFolder>C:\Users\bumab\OneDrive - Mongolian University of Science and Technology\Documents\SuperPuTTY</SettingsFolder>
   <RestoreWindowLocation>True</RestoreWindowLocation>
   <TabSwitcher>SuperPutty.Utils.VisualOrderTabSwitchStrategy</TabSwitcher>
@@ -34,12 +34,12 @@
   <TabTextBehavior>Dynamic</TabTextBehavior>
   <Action_SwitchSession_Shortcut>None</Action_SwitchSession_Shortcut>
   <Action_CloseTab_Shortcut>None</Action_CloseTab_Shortcut>
-  <Opacity>1</Opacity>
+  <Opacity>0.9</Opacity>
   <SendCommandsToVisibleOnly>False</SendCommandsToVisibleOnly>
-  <SessionsTreeFont>Segoe UI, 8.25pt</SessionsTreeFont>
+  <SessionsTreeFont>Consolas, 9.75pt</SessionsTreeFont>
   <ExpandSessionsTreeOnStartup>False</ExpandSessionsTreeOnStartup>
-  <WindowPosition>255, 57, 1024, 749</WindowPosition>
-  <Action_NextTab_Shortcut>None</Action_NextTab_Shortcut>
+  <WindowPosition>-9, 10, 873, 859</WindowPosition>
+  <Action_NextTab_Shortcut>Alt+X</Action_NextTab_Shortcut>
   <Action_FocusActiveSession_Shortcut>None</Action_FocusActiveSession_Shortcut>
   <MinimizeToTray>False</MinimizeToTray>
   <DockingRestrictFloatingWindows>False</DockingRestrictFloatingWindows>
@@ -51,5 +51,5 @@
   <SessionsShowSearch>True</SessionsShowSearch>
   <Action_GotoConnectionBar_Shortcut>None</Action_GotoConnectionBar_Shortcut>
   <ShowMenuBar>True</ShowMenuBar>
-  <Action_GotoCommandBar_Shortcut>None</Action_GotoCommandBar_Shortcut>
+  <Action_GotoCommandBar_Shortcut>Alt+C</Action_GotoCommandBar_Shortcut>
 </Settings>
