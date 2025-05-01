@@ -1,5 +1,23 @@
+#GRE router 1
+
+interface Tunnel0
+ ip address 11.0.0.1 255.255.255.252
+ tunnel source 10.0.1.1
+ tunnel destination 10.0.3.2
 
 
+! tunnel protection ipsec profile SEC_GRE_1
+
+
+#GRE router 2
+
+interface Tunnel0
+ ip address 11.0.0.2 255.255.255.252
+ tunnel source 10.0.3.2
+ tunnel destination 10.0.1.1
+
+
+! tunnel protection ipsec profile SEC_GRE_1
 
 
 
