@@ -1,0 +1,4 @@
+router ospf 1
+router-id 3.3.3.3
+pasive
+R8,R7,SW1,SW4 CONFIGURED

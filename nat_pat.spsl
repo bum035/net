@@ -1,0 +1,35 @@
+#static nat
+
+ip nat inside source static 192.168.10.254 209.165.201.5
+interface serial0/1/0
+ip nat inside
+interface serial0/1/1
+ip nat outside
+
+
+#dynamic nat
+
+ip nat pool NAT-POOL1 209.165.200.226 209.165.200.240 netmask 255.255.255.224
+access-list 1 permit 192.168.0.0 0.0.255.255
+ip nat inside source list 1 pool NAT-POOL1
+interface serial0/1/0
+ip nat inside
+interface serial0/1/1
+ip nat outside
+
+
+#PAT
+
+access-list 1 permit 192.168.0.0 0.0.255.255
+ip nat inside source list 1 interface serial0/1/1 overload
+interface serial0/1/0
+ip nat inside
+interface serial0/1/1
+ip nat outside
+
+
+
+#show nat translations
+show ip nat translations       
+show ip nat statistics          
+clear ip nat translation *     
