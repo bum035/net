@@ -13,10 +13,41 @@ Repo-г clone хийсний дараа:
 | Платформ | Нэг команд |
 |---|---|
 | **Linux** | `bash ~/net/scripts/setup-linux.sh` |
-| **Windows** | `pwsh $env:USERPROFILE\net\scripts\setup-windows.ps1` |
-| **USB fallback bundle** (интернет байхгүй бол) | `bash ~/net/scripts/make-usb-bundle.sh ~/Desktop` → `net-usb-<date>.zip`-ийг USB-р зөөнө |
+| **Windows (интернеттэй)** | `pwsh $env:USERPROFILE\net\scripts\setup-windows.ps1` |
+| **Windows (бүрэн offline, цэвэр шинэ машин)** | `pwsh D:\net\usb-offline\setup-windows-offline.ps1` — Python 3.12 + netmiko + Graphviz-ийг USB-аас суулгана |
+| **USB fallback bundle (репог зөөх)** | `bash ~/net/scripts/make-usb-bundle.sh ~/Desktop` → `net-usb-<date>.zip` |
 
 Эдгээр скрипт нь idempotent — олон удаа ажилласан ч өмнөх state-ыг эвдэхгүй. Алхам алхмаар `[ OK ] / [SKIP] / [FAIL]` гэж report хийнэ. Доорх manual setup-ыг **зөвхөн алхам бүрийг нарийвчлан ойлгоход эсвэл скрипт алдаа өгсөн үед** хэрэглэнэ.
+
+### 🔌 Offline Windows bootstrap (`usb-offline/`)
+
+Цэвэр шинэ Windows машин **интернетгүйгээр** ашиглах бол `usb-offline/` folder-д бүх артефакт байна (~58 MB). EVE-NG нь LAN-д л байх ёстой, internet шаардлагагүй.
+
+**Юу багтсан:**
+- `python-full/python-3.12.7-amd64.exe` — admin-гүй ч `InstallAllUsers=0`-аар суудаг full installer (26 MB)
+- `python-embed/python-3.12.7-embed-amd64.zip` — no-admin fallback (11 MB)
+- `graphviz/...Graphviz-12.2.1-win64.zip` — `dot.exe` portable (9 MB)
+- `wheels/` — netmiko + 18 transitive dep + pip/setuptools/wheel + `get-pip.py` (Python 3.12, win_amd64 — 13 MB)
+- `setup-windows-offline.ps1` — auto admin/no-admin, `_pth` засна, `pip install --no-index`, PATH persist
+- `OFFLINE_README.md` — алхам алхмаар runbook + EVE-NG curl/python снippet + алдаа шийдэх хүснэгт
+
+**Ажиллах logic:**
+1. Python шалгана. Байгаа бол алгасна. Үгүй бол full installer → `%USERPROFILE%\PyOlymp\Python312\` (UAC амжилтгүй бол embed unzip дээр шилжинэ)
+2. `python -m pip install --no-index --find-links wheels netmiko pyyaml`
+3. Graphviz unzip → `%USERPROFILE%\PyOlymp\graphviz\bin\dot.exe`
+4. Session + User PATH-руу нэмнэ
+5. Smoke test: `import netmiko`, `dot -V`, `curl --version`, `tar --version`
+
+**.gitignore:** `*.exe` blanket-ignore байгаа учир `!usb-offline/python-full/*.exe`, `!usb-offline/.../*.zip`, `!usb-offline/wheels/*.whl` overrride-уудыг тусгайлан нэмсэн. Эдгээр binary артефактууд **GitHub-руу commit хийгдсэн** — олимпиадын машин нь зөвхөн репог clone (эсвэл `Code → Download ZIP`) хийгээд `setup-windows-offline.ps1` ажиллуулахад бэлэн.
+
+**Шинэчлэх (хэрэв Python/netmiko хувилбар шинэчлэх бол):**
+```bash
+# wheels-ийг pre-fetch (Linux)
+pip3 download --platform win_amd64 --python-version 312 --implementation cp \
+  --only-binary=:all: -d usb-offline/wheels netmiko pyyaml pip setuptools wheel
+# Python full installer:  https://www.python.org/ftp/python/<ver>/python-<ver>-amd64.exe
+# Graphviz:  https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/<ver>/windows_10_cmake_Release_Graphviz-<ver>-win64.zip
+```
 
 ## Setup workflow — Linux VM (Ubuntu — primary)
 
@@ -94,24 +125,31 @@ VS Code terminal-аас шууд EVE-NG node-руу холбогдоно. Secure
 ```bash
 pip3 install --user netmiko pyyaml          # netmiko 4.6+ already суугаа
 
+# 0) EVE-NG-ийн төлөв шалгах + inventory.yml auto-emit
+~/net/scripts/diagnose-eve.py --host 10.X.Y.Z --check-nodes
+~/net/scripts/diagnose-eve.py --host 10.X.Y.Z --emit-inventory > ~/pod1.yml
+
 # Хурдан telnet helper
 ~/net/scripts/eve_telnet.sh 32769            # localhost:32769
 echo "R1 32769" >> ~/.eve_pods.conf
 echo "R2 32770" >> ~/.eve_pods.conf
 ~/net/scripts/eve_telnet.sh R1               # нэрээр харна
 
-# Batch backup бүх pod
-cp ~/net/scripts/inventory.example.yml ~/pod1.yml
-$EDITOR ~/pod1.yml                           # port-уудыг pod-тойгоо тааруулна
+# Batch backup бүх pod (auth auto-fallback: empty/cisco/admin)
 ~/net/scripts/netmiko_backup.py ~/pod1.yml
+~/net/scripts/netmiko_backup.py ~/pod1.yml --slow            # banner sluggish бол
+~/net/scripts/netmiko_backup.py ~/pod1.yml --raw-on-fail     # transcript on fail
+~/net/scripts/netmiko_backup.py ~/pod1.yml --ssh             # SSH force
 
-# Single push
+# Single push (auth fallback дээр slow mode-той)
 ~/net/scripts/netmiko_push.py ~/OlympBackup/R1_2026-05-09_10-30.cfg \
-    --host 127.0.0.1 --port 32769
+    --host 10.X.Y.Z --port 32769 --slow --delay-per-line 0.3
 
-# Single ad-hoc backup (inventory-гүйгээр)
-~/net/scripts/netmiko_backup.py --host 127.0.0.1 --port 32769 --name R1
+# Single ad-hoc backup
+~/net/scripts/netmiko_backup.py --host 10.X.Y.Z --port 32769 --name R1
 ```
+
+> **Алдаа гарвал:** `usb-offline/TROUBLESHOOTING.md`-аас шинж тэмдэг бүрд тохирох шийдэл + manual fallback (SecureCRT/PuTTY/cmd-telnet/browser HTML5 console).
 
 ### Алхам 7 — Browser-in-VS Code (claude.ai холбоо)
 
@@ -250,7 +288,7 @@ EVE-NG WebUI → SecureCRT (console)
 |---|---|
 | `secureCRT/VanDyke/Config/` | **SecureCRT config payload** — Sessions, Commands, Keywords, Scripts, ButtonBar, Global.ini. **Linux:** `~/.vandyke/SecureCRT/Config/`-руу subdir symlink. **Windows:** `%APPDATA%\VanDyke\Config\`-руу junction |
 | `secureCRT/VanDyke/Config/Scripts/*.py` | **Linux SecureCRT Python хувилбар** (VBS-ийн оронд) — `backup_configs.py`, `push_config.py` |
-| `scripts/` | **Terminal-side helper-ууд + bootstrap** — `setup-linux.sh` / `setup-windows.ps1` (one-shot машины тохиргоо), `make-usb-bundle.sh` (offline .zip), `eve_telnet.sh` (EVE-NG telnet wrapper), `netmiko_backup.py` (batch backup), `netmiko_push.py` (config push), `scrt-telnet-handler.sh` (telnet:// URL parse → SecureCRT), `start-olymp-session.sh` (tmux), `inventory.example.yml` |
+| `scripts/` | **Terminal-side helper-ууд + bootstrap** — `setup-linux.sh` / `setup-windows.ps1` (one-shot машины тохиргоо), `make-usb-bundle.sh` (offline .zip), `eve_telnet.sh` (EVE-NG telnet wrapper), `netmiko_backup.py` (multi-cred + retry batch backup), `netmiko_push.py` (config push w/ auth fallback + slow mode), `diagnose-eve.py` (EVE pre-flight: auth, lab list, per-node probe, inventory.yml auto-emit), `scrt-telnet-handler.sh` (telnet:// URL parse → SecureCRT), `start-olymp-session.sh` (tmux), `inventory.example.yml` |
 | `secureCRT/securecrt-telnet.desktop` | Linux desktop entry — telnet:// URL handler-ыг SecureCRT-руу заана (EVE-NG Connect товч) |
 | `EVE-NG/` | EVE-NG protocol handlers — `.reg` (telnet/vnc/wireshark URL handler) + `.bat` wrappers. Зөвхөн Windows-ийн EVE-NG web UI "Connect" workflow-д хэрэгтэй |
 | `OlympBackup/` | `backup_configs.{vbs,py}` болон `netmiko_backup.py`-ийн өмнөх run-ийн жишээ (test data) — олимпиадын дараа цэвэрлэж болно |
@@ -259,6 +297,7 @@ EVE-NG WebUI → SecureCRT (console)
 | `*.spsl` | SecureCRT chat-paste snippet (`pc_ip`, `show`, `nat_pat`, `ipsec_gre`) |
 | `button bar.sh` | Button bar товчны жагсаалтын текст reference |
 | `reference/` | Offline cheat sheet, lab PDF, өмнөх жилийн config-ууд, AI prompt template (`prompts.md` бэлэн; PDF + 2024/2025 round2 placeholder, олимпиадын өмнөх өдөр Windows local-аас хуулна) |
+| `usb-offline/` | **Цэвэр шинэ Windows машинд интернетгүйгээр Python + netmiko + Graphviz суулгах бундл** (~95 MB). `setup-windows-offline.ps1` (auto-detect 3.10/3.11/3.12/3.13 + admin/no-admin paths + `-Diagnose` flag), `OFFLINE_README.md`, `TROUBLESHOOTING.md` (бүх алдааны шинж тэмдэг → шийдэл + manual fallback), `python-full/`, `python-embed/`, `graphviz/`, `wheels/` (3.12), `wheels-py310/`, `wheels-py311/`, `wheels-py313/`. `.gitignore`-ын `*.exe` блокыг `!usb-offline/...` rule-аар override хийсэн |
 | `vm-setup/` | **Linux cloud VM provisioning scripts** (Caddy + code-server + KasmVNC + Claude CLI). Олимпиадын станцыг remote dev workstation болгох routes — `code.egulcloud.com` / `vnc.egulcloud.com`. Энэ folder нь Windows toolkit-д хэрэгтэй биш, цөөн scripts ба `REPORT.md` (gitignore) |
 | `olymp-day/` | **Олимпиадын өдрийн ажлын workspace** — `lab-01-ospf` ... `lab-05-libre` хоосон folder, `scratch/`, `CLAUDE.md` (Claude-д өгөх exam-day context). Tmux script энд cd хийнэ. Олимпиадын task-ийн config-уудыг энд бичнэ |
 | `scripts/start-olymp-session.sh` | tmux bootstrap (`bash ~/net/scripts/start-olymp-session.sh` → claude/shell/monitor windows, `~/net/olymp-day`-руу cd) |

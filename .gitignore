@@ -1,6 +1,12 @@
 # Installers / binaries — олимпиадын машин дээр аль хэдийн суусан
 *.exe
 *.msi
+# Override: usb-offline/ дотрох бундлэгдсэн installer-уудыг хадгал
+!usb-offline/python-full/*.exe
+!usb-offline/python-embed/*.zip
+!usb-offline/graphviz/*.zip
+!usb-offline/wheels/*.whl
+!usb-offline/wheels/*.tar.gz
 
 # License artifacts — public repo, leak risk
 sonfig extracted.*
