@@ -709,9 +709,13 @@ def main():
 
     cfg_path = os.path.expanduser(args.config)
 
+    # ---- 1) load/create config -------------------------------------------
     if args.reconfigure or not os.path.exists(cfg_path):
         cfg = interactive_setup(cfg_path)
         save_config(cfg, cfg_path)
+        if args.mode == "setup":
+            OK("setup complete")
+            return
     else:
         cfg = load_config(cfg_path)
         OK(f"loaded config: {cfg_path}")
@@ -720,12 +724,21 @@ def main():
         FAIL("config malformed; rerun with --reconfigure")
         sys.exit(2)
 
+    if args.mode == "setup":
+        INFO("config exists; nothing to do (use --reconfigure to re-prompt)")
+        return
+
     eve_cfg = cfg["eve"]
     output_root = os.path.expanduser(cfg.get("output_root", "~/net/olymp-day"))
 
+    # ---- 2) DIAGNOSE mode (no full login required) -----------------------
+    if args.mode == "diagnose":
+        rc = run_diagnose(eve_cfg, lab_path=args.lab)
+        sys.exit(rc)
+
+    # ---- 3) Login (all other modes need it) ------------------------------
     print(file=sys.stderr)
     STEP(f"Connecting to EVE-NG  {eve_cfg['host']}:{eve_cfg['port']}  user={eve_cfg['user']}")
-
     try:
         eve = Eve(
             host=eve_cfg["host"],
@@ -740,12 +753,52 @@ def main():
         INFO("Edit config: " + cfg_path)
         INFO("Or rerun with --reconfigure to re-enter credentials.")
         sys.exit(1)
-
     OK("EVE-NG login")
 
-    lab_path = pick_lab(eve, args.lab)
-    OK(f"target lab: {lab_path}")
+    # ---- 4) list-labs mode ----------------------------------------------
+    if args.mode == "list-labs":
+        folders = eve.list_labs("/") or {}
+        labs = folders.get("labs", []) or []
+        if not labs:
+            INFO("(no labs at root)")
+        for L in labs:
+            print(f"  {L['path']}    (mtime: {L.get('mtime','?')})")
+        return
 
+    # ---- 5) determine target lab ----------------------------------------
+    lab_path   = pick_lab(eve, args.lab)
+    lab_name   = sanitize_lab_name(lab_path)
+    lab_dir    = os.path.join(output_root, lab_name)
+    OK(f"target lab: {lab_path}")
+    OK(f"workspace: {lab_dir}")
+
+    # ---- 6) PUSH single ---------------------------------------------------
+    if args.mode == "push":
+        if not args.push_cfg:
+            FAIL("--mode push requires --push-cfg <file>")
+            sys.exit(2)
+        if not os.path.exists(args.push_cfg):
+            FAIL(f"file not found: {args.push_cfg}")
+            sys.exit(2)
+        inv_path = os.path.join(lab_dir, "inventory.yml")
+        if not os.path.exists(inv_path):
+            FAIL(f"inventory.yml missing at {inv_path}; run --mode backup first")
+            sys.exit(2)
+        devices = load_inventory_devices(inv_path)
+        name = args.push_name or device_from_filename(args.push_cfg)
+        d = devices.get(name)
+        if not d:
+            FAIL(f"device '{name}' not in inventory; available: {sorted(devices.keys())}")
+            sys.exit(2)
+        rc = run_push_one(args.push_cfg, d, slow=args.slow, yes=args.yes)
+        sys.exit(rc)
+
+    # ---- 7) PUSH-ALL ------------------------------------------------------
+    if args.mode == "push-all":
+        rc = run_push_all(lab_dir, args.push_dir, slow=args.slow, yes=args.yes)
+        sys.exit(rc)
+
+    # ---- 8) Pull nodes/topology (needed by backup/topology/scrt/full) ----
     nodes = eve.lab_nodes(lab_path) or {}
     links = eve.lab_topology(lab_path) or []
     if not nodes:
@@ -759,15 +812,36 @@ def main():
               f"{n.get('url','?')}  status={n.get('status','?')}",
               file=sys.stderr)
 
-    lab_name   = sanitize_lab_name(lab_path)
-    lab_dir    = os.path.join(output_root, lab_name)
+    # ---- 9) inventory (always written for backup/full/scrt) --------------
     backup_dir = os.path.join(lab_dir, time.strftime("backup-%Y-%m-%d_%H-%M"))
-    os.makedirs(backup_dir, exist_ok=True)
-    OK(f"workspace: {lab_dir}")
-
+    if args.mode in ("backup", "full"):
+        os.makedirs(backup_dir, exist_ok=True)
+    else:
+        os.makedirs(lab_dir, exist_ok=True)
     inv_path = os.path.join(lab_dir, "inventory.yml")
     inv = write_inventory(inv_path, cfg, eve_cfg["host"], nodes, backup_dir)
 
+    # ---- 10) SCRT mode ----------------------------------------------------
+    if args.mode == "scrt":
+        rc = run_scrt(lab_dir, lab_name, deploy=args.deploy)
+        sys.exit(rc)
+
+    # ---- 11) TOPOLOGY mode ------------------------------------------------
+    if args.mode == "topology":
+        STEP("Topology")
+        dot = os.path.join(lab_dir, "topology.dot")
+        write_topology_dot(dot, lab_name, nodes, links)
+        OK(f"dot: {dot}")
+        render_topology(dot, lab_dir)
+        return
+
+    # ---- 12) ARCHIVE mode -------------------------------------------------
+    if args.mode == "archive":
+        STEP("Archive")
+        make_archive(lab_dir, output_root, lab_name)
+        return
+
+    # ---- 13) BACKUP / FULL ------------------------------------------------
     if not args.no_confirm and not args.dry_run:
         print(file=sys.stderr)
         try:
@@ -793,7 +867,14 @@ def main():
             INFO("Re-run with --raw-on-fail to capture transcripts:")
             INFO(f"  python {sys.argv[0]} --raw-on-fail")
 
-    # Topology
+    if args.mode == "backup":
+        # backup-only -> stop here (no topology/archive)
+        print(file=sys.stderr)
+        STEP("DONE")
+        OK(f"backup: {backup_dir}")
+        return
+
+    # ---- 14) FULL (continues) -- topology + archive ---------------------
     if cfg.get("generate_topology", True):
         print(file=sys.stderr)
         STEP("Topology")
@@ -803,7 +884,6 @@ def main():
         if not args.dry_run:
             render_topology(dot, lab_dir)
 
-    # Archive
     if cfg.get("create_archive", True) and not args.dry_run:
         print(file=sys.stderr)
         STEP("Archive")
@@ -814,7 +894,7 @@ def main():
     OK(f"workspace: {lab_dir}")
     OK(f"backup: {backup_dir}")
     OK(f"inventory: {inv_path}")
-    if not args.dry_run:
+    if not args.dry_run and os.path.isdir(backup_dir):
         cnt = len([f for f in os.listdir(backup_dir) if f.endswith(".cfg")])
         INFO(f"  {cnt} .cfg file(s) in backup dir")
 

@@ -118,7 +118,7 @@ npx @anthropic-ai/claude-code   # browser auth
 
 Эсвэл VS Code Claude Code panel → Sign in. Backup нэвтрэлтүүд: claude.ai (Browser Preview tab), chat.openai.com.
 
-### Алхам 6a — Олимпиадын өдөр — `olymp-run.py` (нэг команд бүгдийг хийнэ)
+### Алхам 6a — Олимпиадын өдөр — `olymp-run.py` (бүх workflow-г нэг командаар)
 
 ```bash
 # Эхний удаа: interactive setup (host/port/user/pass/per-node creds)
@@ -129,12 +129,61 @@ python3 ~/net/scripts/olymp-run.py
 # Лабын нэрийг auto-detect → ~/net/olymp-day/<lab-name>/ үүсгэнэ
 # inventory.yml + backup + topology.svg/png + tar.gz бүгдийг үүсгэнэ
 python3 ~/net/scripts/olymp-run.py
-
-# Зарим тохиолдол:
-python3 ~/net/scripts/olymp-run.py --reconfigure       # conf-ыг дахин асуух
-python3 ~/net/scripts/olymp-run.py --lab "/path.unl"   # active биш лаб
-python3 ~/net/scripts/olymp-run.py --dry-run           # backup алгасах
 ```
+
+#### Нэмэлт mode-ууд (--mode flag)
+
+| Mode | Үүрэг |
+|---|---|
+| `full` (default) | login → lab detect → inventory → backup → topology → archive |
+| `setup` | Зөвхөн interactive prompt → conf хадгал |
+| `diagnose` | EVE pre-flight: TCP, login, lab list, per-node telnet probe |
+| `backup` | Inventory + backup (topology болон archive алгасах) |
+| `push` | Нэг `.cfg`-ийг харгалзах device-руу буцаах (`--push-cfg <file>`) |
+| `push-all` | Сүүлчийн backup folder-ийг бүхэлд нь буцаах (auto-match by filename) |
+| `scrt` | SecureCRT session `.ini` бүх device-д үүсгэх (`--deploy` нэмбэл live config-руу) |
+| `topology` | Зөвхөн graphviz dot/svg/png |
+| `archive` | Зөвхөн tar.gz |
+| `list-labs` | EVE-NG root-д буй бүх лабыг харуулах |
+
+#### Жишээ
+
+```bash
+# Conf-ыг дахин асуух (IP/user/password солигдсон бол)
+python3 ~/net/scripts/olymp-run.py --reconfigure
+
+# Active биш лабтай ажиллах
+python3 ~/net/scripts/olymp-run.py --lab "/path.unl"
+
+# Зөвхөн backup татах (5 минут тутамд автомат-д тохиромжтой)
+python3 ~/net/scripts/olymp-run.py --mode backup --no-confirm
+
+# SecureCRT session generate + live config-руу хуулах
+python3 ~/net/scripts/olymp-run.py --mode scrt --deploy
+
+# Сүүлчийн backup-ийг бүхэлд нь буцаах (rollback)
+python3 ~/net/scripts/olymp-run.py --mode push-all --yes
+
+# Тодорхой config-ыг тодорхой device-руу
+python3 ~/net/scripts/olymp-run.py --mode push \
+    --push-cfg backup-2026-05-09_10-00/R1_2026-05-09_10-00.cfg
+
+# Зөвхөн төлөв шалгах
+python3 ~/net/scripts/olymp-run.py --mode diagnose
+
+# Лаб жагсаалт
+python3 ~/net/scripts/olymp-run.py --mode list-labs
+```
+
+#### SecureCRT integration
+
+`olymp-scrt.py` (эсвэл `olymp-run.py --mode scrt`):
+- Inventory-аас (эсвэл EVE API-аас) device бүрд `<name>.ini` SecureCRT session генерацлана
+- Output: `olymp-day/<lab>/secureCRT/`
+- `--deploy` flag нэмбэл live SecureCRT folder-руу хуулна:
+  - Linux:   `~/.vandyke/SecureCRT/Config/Sessions/<lab>/`
+  - Windows: `%APPDATA%\VanDyke\Config\Sessions\<lab>\`
+- SecureCRT-ийн Connection Manager-ыг refresh (F4) эсвэл restart хийгээд session-ууд гарч ирнэ
 
 `olymp.conf` (auto-saved):
 ```yaml
