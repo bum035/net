@@ -1,0 +1,14 @@
+# Installers / binaries — олимпиадын машин дээр аль хэдийн суусан
+*.exe
+*.msi
+
+# License artifacts — public repo, leak risk
+sonfig extracted.*
+untitled.key
+
+# Pre-installed app folders (EVE-NG-Win-Client-Pack-аас)
+VanDyke Software/
+supperputty/
+
+# Ephemeral
+tmp

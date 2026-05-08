@@ -1,0 +1,1503 @@
+﻿101914.740: error: Can't get controller info..
+101914.740: error: Can't get controller info.Booted IOSv. Boot args: [101914.741: /vios-adventerprisek9-m]
+101914.741: 
+101914.741: Smart Init is enabled
+101914.741: 
+101914.741:               Restricted Rights Legend
+101914.741: 
+101914.741: Use, duplication, or disclosure by the Government is
+101914.741: subject to restrictions as set forth in subparagraph
+101914.742: (c) of the Commercial Computer Software - Restricted
+101914.742: Rights clause at FAR sec. 52.227-19 and subparagraph
+101914.742: (c) (1) (ii) of the Rights in Technical Data and Computer
+101914.742: Software clause at DFARS sec. 252.227-7013.
+101914.742: 
+101914.743:            cisco Systems, Inc.
+101914.743:            170 West Tasman Drive
+101914.743:            San Jose, California 95134-1706
+101914.743: 
+101914.743: 
+101914.743: 
+101914.744: Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M)101914.744: , Version 15.9(3)M6, RELEASE SOFTWARE (fc1)
+101914.744: Technical Support: http://www.cisco.com/techsupport
+101914.745: Copyright (c) 1986-2022 by Cisco Systems, Inc.
+101914.745: Compiled Mon 08-Aug-22 15:22 by mcpre
+101914.745: 
+101914.745: 
+101914.745: 
+101939.368: 
+101939.369: This product contains cryptographic features and is subjec101939.370: t to United
+101939.371: States and local country laws governing import, export, tr101939.372: ansfer and
+101939.373: use. Delivery of Cisco cryptographic products does not imp101939.374: ly
+101939.434: third-party authority to import, export, distribute or use101939.434:  encryption.
+101939.435: Importers, exporters, distributors and users are responsib101939.437: le for
+101939.437: compliance with U.S. and local country laws. By using this101939.439:  product you
+101939.440: agree to comply with applicable laws and regulations. If y101939.441: ou are unable
+101939.499: to comply with U.S. and local laws, return this product im101939.504: mediately.
+101939.504: 
+101939.504: A summary of U.S. laws governing Cisco cryptographic produ101939.504: cts may be found at:
+101939.505: http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+101939.505: 
+101939.505: If you require further assistance please contact us by sen101939.506: ding email to
+101939.507: export@cisco.com.
+101939.507: 
+101945.227: Cisco IOSv (revision 1.0) with  with 984313K/62464K bytes 101945.336: of memory.Installed image archive
+101945.633: 
+101945.634: Processor board ID 9V70CXN9FY0HEFYZ3I5ZV
+101945.634: 4 Gigabit Ethernet interfaces
+101945.635: DRAM configuration is 72 bits wide with parity disabled.
+101945.636: 256K bytes of non-volatile configuration memory.
+101945.687: 2097152K bytes of ATA System CompactFlash 0 (Read/Write)
+101945.688: 0K bytes of ATA CompactFlash 1 (Read/Write)
+101945.689: 0K bytes of ATA CompactFlash 2 (Read/Write)
+101945.689: 0K bytes of ATA CompactFlash 3 (Read/Write)
+102031.168: 
+102031.168: 
+102031.169:          --- System Configuration Dialog ---
+102031.169: 
+102031.170: Would you like to enter the initial configuration dialog? 102031.170: [yes/no]: 
+102031.171: % Please answer 'yes' or 'no'.
+102031.215: Would you like to enter the initial configuration dialog? 102109.547: [yes/no]: no
+102109.547: 
+102109.547: 
+102109.547: Press RETURN to get started!
+102109.547: 
+102109.547: 
+102109.547: *Mar  1 00:00:01.138: %ATA-6-DEV_FOUND: device 0x1F0
+102109.589: *Mar  1 00:00:10.992: %NVRAM-5-CONFIG_NVRAM_NOT_FOUND: NVR102109.685: AM configuration 'flash:/nvram' could not be found on disk102109.687: .
+102109.730: *May  8 02:19:30.587: %C3600-3-NOMAC: Can't allocate MAC a102109.785: ddress for interface 0/0
+102110.254: *May  8 02:19:30.710: %C3600-3-NOMAC: Can't allocate MAC a102110.501: ddress for interface 0/0
+102110.980: *May  8 02:19:32.043: %C3600-3-NOMAC: Can't allocate MAC a102111.400: ddress for interface 0/0
+102111.650: *May  8 02:19:37.324: %PA-3-PA_INIT_FAILED: Performance Ag102112.169: ent failed to initialize (Missing Data License)
+102112.850: *May  8 02:19:42.973: %PNP-6-PNP_DISCOVERY_STARTED: PnP Di102112.851: scovery started
+102113.552: *May  8 02:19:42.979: %PNP-6-PNP_GOOD_UDI_UPDATE: Good UDI102114.022:  [PID:IOSv,VID:,SN:9V70CXN9FY0HEFYZ3I5ZV] identified via (102114.023: platform-registry)
+102114.519: *May  8 02:19:42.979: %PNP-6-PNP_CDP_UPDATE: Device UDI [P102116.010: ID:IOSv,VID:,SN:9V70CXN9FY0HEFYZ3I5ZV] identified for CDP
+102116.628: *May  8 02:19:43.074: %LINK-3-UPDOWN: Interface GigabitEth102117.039: ernet0/0, changed state to up
+102117.886: *May  8 02:19:43.082: %LINK-3-UPDOWN: Interface GigabitEth102118.294: ernet0/1, changed state to up
+102119.116: *May  8 02:19:43.084: %LINK-3-UPDOWN: Interface GigabitEth102119.321: ernet0/2, changed state to up
+102120.164: *May  8 02:19:43.086: %LINK-3-UPDOWN: Interface GigabitEth102120.599: ernet0/3, changed state to up
+102121.418: *May  8 02:19:44.540: %LINEPROTO-5-UPDOWN: Line protocol o102122.059: n Interface GigabitEthernet0/0, changed state to up
+102122.870: *May  8 02:19:44.541: %LINEPROTO-5-UPDOWN: Line protocol o102123.694: n Interface GigabitEthernet0/1, changed state to up
+102126.129: *May  8 02:19:44.542: %LINEPROTO-5-UPDOWN
+102126.130: -Traceback= 13148Bz 16079Ez 1604DBz 1602B8z 15A275z 15AE3F102126.131: z 41AB247z 41955BEz 4199033z 572EFCFz 51E4064z 51A5CF6z 51102126.133: 9DF4Ez 519A415z 519A3C7z 5197D56z - Process "Crypto CA", C102126.134: PU hog, PC 0x00155F54
+102126.275: : Line protocol on Interface GigabitEthernet0/2, changed s102126.320: tate to up
+102126.758: *May  8 02:19:44.543: %LINEPROTO-5-UPDOWN: Line protocol o102127.445: n Interface GigabitEthernet0/3, changed state to up
+102128.067: *May  8 02:20:54.666: %PNP-6-PNP_SAVING_TECH_SUMMARY: Savi102128.740: ng PnP tech summary (/pnp-tech/pnp-tech-discovery-summary)102129.147: ... Please wait. Do not interrupt.
+102129.994: *May  8 02:20:54.669: %IP-5-WEBINST_KILL: Terminating DNS 102129.994: process
+102130.808: *May  8 02:20:55.664: %LINK-5-CHANGED: Interface GigabitEt102131.167: hernet0/0, changed st
+102131.842: ******************************ate to administratively down
+102132.665: *May  8 02:20:55.694: %LINK-5-CHANGED: Interface GigabitEt102133.277: hernet0/1, changed state to administratively down
+102133.915: *May  8 02:20:55.720: %LINK-5-CHANGED: Interface GigabitEt102134.551: hernet0/2, changed state to administratively down
+102135.421: *May  8 02:20:55.748: %LINK-5-CHANGED: Interface GigabitEt102136.069: hernet0/3, changed state to administratively down
+102136.660: *May  8 02:20:56.664: %LINEPROTO-5-UPDOWN: Line protocol o102137.405: n Interface GigabitEthernet0/0, changed state to down
+102137.461: *May  8 02:20:56.694: %LINEPROTO-5-UPDOWN: Line protocol o102137.544: n Interface GigabitEthernet0/1, changed state to down
+102137.588: *May  8 02:20:56.720: %LINEPROTO-5-UPDOWN: Line protocol o102137.698: n Interface GigabitEthernet0/2, changed state to down
+102137.750: *May  8 02:20:56.748: %LINEPROTO-5-UPDOWN: Line protocol o102137.808: n Interface GigabitEthernet0/3, changed state to down
+102137.903: *May  8 02:21:01.398: %SYS-5-RESTART: System restarted --
+102137.951: Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M)102138.047: , Version 15.9(3)M6, RELEASE SOFTWARE (fc1)
+102138.094: Technical Support: http://www.cisco.com/techsupport
+102138.141: Copyright (c) 1986-2022 by Cisco Systems, Inc.
+102138.235: Compiled Mon 08-Aug-22 15:22 by mcpre
+102138.319: *May  8 02:21:01.547: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is O102138.320: FF
+102138.383: *May  8 02:21:01.547: %CRYPTO-6-GDOI_ON_OFF: GDOI is OFF
+102138.476: *May  8 02:21:17.267: %PNP-6-PNP_BEST_UDI_UPDATE: Best UDI102138.568:  [PID:IOSv,VID:1.0,SN:9V70CXN9FY0HEFYZ3I5ZV] identified vi102138.570: a (entity-mibs)
+102138.614: *May  8 02:21:23.640: %SYS-3-CPUHOG: Task is running for (102138.713: 2000)msecs, more than (2000)msecs (0/0),process = Crypto C102138.716: A.
+102138.819: *May  8 02:21:24.733: %PNP-6-PNP_TECH_SUMMARY_SAVED_OK: Pn102138.866: P tech summary (/pnp-tech/pnp-tech-discovery-summary) save102138.916: d successfully (elapsed time: 30 seconds).
+102139.010: *May  8 02:21:24.734: %PNP-6-PNP_DISCOVERY_STOPPED: PnP Di102139.054: scovery stopped (Config Wizard)
+102139.151: *May  8 02:21:34.890: %PLATFORM-5-SIGNATURE_VERIFIED: Imag102139.196: e 'flash0:/vios-adventerprisek9-m' passed code signing ver102139.343: ification********************************************
+102139.398: * IOSv is strictly limited to use for evaluation, demonstr102139.399: ation and IOS  *
+102139.492: * education. IOSv is provided as-is and is not supported b102139.540: y Cisco's      *
+102139.594: * Technical Advisory Center. Any use or disclosure, in who102139.648: le or in part, *
+102139.697: * of the IOSv Software or Documentation to any third party102139.699:  for any       *
+102139.793: * purposes is expressly prohibited except as otherwise aut102139.793: horized by     *
+102139.887: * Cisco in writing.                                       102139.947:                *
+102139.999: **********************************************************102140.059: ****************
+102140.060: Router>
+102140.060: Router>
+102140.060: Router>
+102140.060: Router>
+102140.060: Router>
+102140.104: Router>
+102140.104: Router>
+102140.105: Router>
+102140.150: Router>
+102140.826: Router>
+102142.978: Router>en
+102143.057: Router#terminal length 0
+102143.152: Router#terminal monitor
+102143.152: % Console already monitors
+102149.416: Router#conf ter
+102149.476: Enter configuration commands, one per line.  End with CNTL102149.477: /Z.
+102158.164: Router(config)#conf t
+102158.205:                    ^
+102158.347: % Invalid input detected at '^' marker.
+102158.347: 
+102158.451: Router(config)#no banner exec
+102158.495: Router(config)#no banner login
+102158.559: Router(config)#no banner incoming
+102158.605: Router(config)#no banner motd
+102158.710: Router(config)#no mmi polling-interval
+102158.765: Router(config)#no mmi auto-configure
+102158.834: Router(config)#no mmi pvc
+102158.884: Router(config)#no mmi snmp-timeout
+102158.977: Router(config)#no multilink bundle-name authenticated
+102159.025: Router(config)#no ipv6 ioam timestamp
+102159.100: Router(config)#no scheduler allocate
+102159.187: Router(config)#no ip http server
+102159.254: Router(config)#no ip http secure-server
+102159.307: Router(config)#no ip domain lookup
+102159.363: Router(config)#end
+102159.363: Router#wr
+102159.473: Building configuration...
+102200.719: 
+102200.767: *May  8 02:21:56.095: %SYS-5-CONFIG_I: Configured from con102202.133: sole by console[OK]
+102202.758: Router#
+102202.810: *May  8 02:21:58.826: %GRUB-5-CONFIG_WRITING: GRUB configu102202.863: ration is being updated on disk. Please wait...
+102202.957: *May  8 02:21:59.626: %GRUB-5-CONFIG_WRITTEN: GRUB configu102243.936: ration was written to disk successfully.
+102244.106: Router#
+102244.292: Router#
+102244.442: Router#
+102244.589: Router#
+102244.759: Router#
+102244.917: Router#
+102245.073: Router#
+102245.232: Router#
+102245.406: Router#
+102245.578: Router#
+102252.806: Router#conf ter
+102252.871: Enter configuration commands, one per line.  End with CNTL102252.872: /Z.
+102259.135: Router(config)#hostname R
+102310.809: R(config)#hostname R5
+102434.802: R5(config)#int g0/0
+102441.724: R5(config-if)#ip add 10
+102441.724: % Incomplete command.
+102441.724: 
+102809.206: R5(config-if)#int g0.1
+102809.206:                     ^
+102809.253: % Invalid input detected at '^' marker.
+102809.253: 
+102812.782: R5(config)#int g0/1
+102817.098: R5(config-if)#no shut
+102820.739: R5(config-if)#
+102820.788: *May  8 02:28:16.473: %LINK-3-UPDOWN: Interface GigabitEth102820.846: ernet0/1, changed state to up
+102820.896: *May  8 02:28:17.473: %LINEPROTO-5-UPDOWN: Line protocol o102825.277: n Interface GigabitEthernet0/1, changed state to upint g0/102825.280: 1
+103109.130: R5(config-if)#
+103109.442: R5(config-if)#
+103109.664: R5(config-if)#
+103113.199: R5(config-if)#int g0/1
+103331.984: R5(config-if)#ip addre 198.51.100.2 255.255.255.252
+103400.770: R5(config-if)#
+103400.913: R5(config-if)#
+103402.686: R5(config-if)#no shut
+103417.741: R5(config-if)#
+103417.886: R5(config-if)#
+103418.039: R5(config-if)#
+103419.823: R5(config-if)#
+103419.963: R5(config-if)#
+103614.353: R5(config-if)#
+103614.457: R5(config-if)#
+103614.611: R5(config-if)#
+103616.097: R5(config-if)#do wr
+103616.097: Building configuration...
+103619.107: [OK]
+103619.709: R5(config-if)#
+103619.766: *May  8 02:36:15.919: %GRUB-5-CONFIG_WRITING: GRUB configu103619.816: ration is being updated on disk. Please wait...
+103619.915: *May  8 02:36:16.721: %GRUB-5-CONFIG_WRITTEN: GRUB configu103720.386: ration was written to disk successfully.int lo0
+103722.709: R5(config-if)#
+103722.758: *May  8 02:37:19.010: %LINEPROTO-5-UPDOWN: Line protocol o103722.902: n Interface Loopback0, changed state to upip add
+103722.904: % Incomplete command.
+103722.904: 
+103800.206: R5(config-if)#ip add 5.5.5.5 255.255.255.255
+103936.959: R5(config-if)#router ospf 1
+103946.832: R5(config-router)#router-id  
+103946.833: % Incomplete command.
+103946.833: 
+104037.149: R5(config-router)#router-id  network 
+104037.149:                              ^
+104037.202: % Invalid input detected at '^' marker.
+104037.202: 
+104755.785: R5(config-router)#show ip ospf neighbor
+104755.786:                     ^
+104755.837: % Invalid input detected at '^' marker.
+104755.837: 
+104929.820: R5(config-router)#show run
+104929.820:                     ^
+104929.920: % Invalid input detected at '^' marker.
+104929.920: 
+104929.963: R5(config-router)# 
+104930.012: R5(config-router)# 
+104930.012: R5(config-router)# 
+104930.056: R5(config-router)# 
+104930.102: R5(config-router)# 
+104930.157: R5(config-router)# 
+104930.157: R5(config-router)# 
+104930.211: R5(config-router)#do show run
+104930.256: Building configuration...
+104931.632: 
+104931.632: Current configuration : 1164 bytes
+104931.632: !
+104931.731: ! Last configuration change at 02:21:56 UTC Fri May 8 2026
+104931.731: !
+104931.732: version 15.9
+104931.788: service timestamps debug datetime msec
+104931.844: service timestamps log datetime msec
+104931.897: no service password-encryption
+104931.897: !
+104931.897: hostname R5
+104931.897: !
+104931.942: boot-start-marker
+104931.942: boot-end-marker
+104931.943: !
+104931.993: !
+104931.993: !
+104931.995: no aaa new-model
+104931.995: !
+104931.995: !
+104931.995: !
+104932.041: mmi polling-interval 60
+104932.042: no mmi auto-configure
+104932.087: no mmi pvc
+104932.130: mmi snmp-timeout 180
+104932.130: !
+104932.130: !
+104932.130: !
+104932.131: !
+104932.131: !
+104932.131: !
+104932.131: !
+104932.131: !
+104932.131: !
+104932.131: !
+104932.178: !
+104932.178: no ip domain lookup
+104932.178: ip cef
+104932.230: no ipv6 cef
+104932.230: !
+104932.292: multilink bundle-name authenticated
+104932.292: !
+104932.292: !
+104932.292: !
+104932.293: !
+104932.294: !
+104932.294: redundancy
+104932.294: !
+104932.294: !
+104932.294: ! 
+104932.294: !
+104932.294: !
+104932.336: !
+104932.336: !
+104932.337: !
+104932.337: !
+104932.337: !
+104932.337: !
+104932.337: !
+104932.337: !
+104932.337: !
+104932.338: !
+104932.383: interface Loopback0
+104932.434:  ip address 5.5.5.5 255.255.255.255
+104932.434: !
+104932.492: interface GigabitEthernet0/0
+104932.494:  no ip address
+104932.544:  shutdown
+104932.545:  duplex auto
+104932.545:  speed auto
+104932.545:  media-type rj45
+104932.611: !
+104932.666: interface GigabitEthernet0/1
+104932.666:  ip address 198.51.100.2 255.255.255.252
+104932.666:  duplex auto
+104932.723:  speed auto
+104932.725:  media-type rj45
+104932.725: !
+104932.788: interface GigabitEthernet0/2
+104932.788:  no ip address
+104932.841:  shutdown
+104932.841:  duplex auto
+104932.841:  speed auto
+104932.931:  media-type rj45
+104932.932: !
+104932.932: interface GigabitEthernet0/3
+104932.932:  no ip address
+104932.933:  shutdown
+104932.995:  duplex auto
+104932.995:  speed auto
+104932.995:  media-type rj45
+104932.995: !
+104933.047: router ospf 1
+104933.047: !
+104933.047: ip forward-protocol nd
+104933.047: !
+104933.047: !
+104933.095: no ip http server
+104933.173: no ip http secure-server
+104933.174: !
+104933.174: !
+104933.174: !
+104933.174: !
+104933.174: control-plane
+104933.174: !
+104933.175: !
+104933.175: line con 0
+104933.230: line aux 0
+104933.230: line vty 0 4
+104933.231:  login
+104933.279:  transport input none
+104933.279: !
+104933.279: no scheduler allocate
+104933.279: !
+104933.325: end
+104933.325: 
+104933.325: R5(config-router)# 
+104933.374: R5(config-router)# 
+104933.426: R5(config-router)# 
+105011.755: R5(config-router)#show ip ospf neighbor
+105011.756:                     ^
+105011.846: % Invalid input detected at '^' marker.
+105011.847: 
+105025.007: R5(config-router)#show ip ospf neighbor
+105025.007:                     ^
+105025.096: % Invalid input detected at '^' marker.
+105025.096: 
+105035.862: R5(config-router)#show ip ospf neighbor
+105035.862:                     ^
+105035.970: % Invalid input detected at '^' marker.
+105035.970: 
+105221.400: R5(config-router)#show run | sec router
+105221.400:                     ^
+105221.458: % Invalid input detected at '^' marker.
+105221.458: 
+105245.187: R5(config-router)#ping 1.1.1.1
+105245.188:                    ^
+105245.247: % Invalid input detected at '^' marker.
+105245.247: 
+105251.370: R5(config-router)#ping 2.2.2.2
+105251.370:                    ^
+105251.418: % Invalid input detected at '^' marker.
+105251.418: 
+105253.169: R5(config-router)#ping 2.2.2.2
+105253.169:                    ^
+105253.223: % Invalid input detected at '^' marker.
+105253.224: 
+105259.918: R5(config-router)#ping 3.3.3.3
+105259.918:                    ^
+105259.960: % Invalid input detected at '^' marker.
+105259.960: 
+105346.244: R5(config-router)#do show ip int bri
+105346.299: Interface                  IP-Address      OK? Method Stat105346.350: us                Protocol
+105346.411: GigabitEthernet0/0         unassigned      YES unset  admi105346.413: nistratively down down    
+105346.505: GigabitEthernet0/1         198.51.100.2    YES manual up  105346.552:                   up      
+105346.655: GigabitEthernet0/2         unassigned      YES unset  admi105346.657: nistratively down down    
+105346.772: GigabitEthernet0/3         unassigned      YES unset  admi105346.773: nistratively down down    
+105346.886: Loopback0                  5.5.5.5         YES manual up  105346.886:                   up      
+105352.167: R5(config-router)#show ip int bri
+105352.167:                     ^
+105352.279: % Invalid input detected at '^' marker.
+105352.279: 
+105438.233: R5(config-router)#
+105442.889: R5(config-router)#ping 3.3.3.3
+105442.889:                    ^
+105442.955: % Invalid input detected at '^' marker.
+105442.955: 
+105444.544: R5(config-router)#ping 3.3.3.3
+105444.545:                    ^
+105444.605: % Invalid input detected at '^' marker.
+105444.605: 
+105556.893: R5(config-router)#show running-config
+105556.893:                     ^
+105556.996: % Invalid input detected at '^' marker.
+105556.996: 
+105644.391: R5(config-router)#
+105644.534: R5(config-router)#
+105644.682: R5(config-router)#
+105644.873: R5(config-router)#
+105645.094: R5(config-router)#
+105645.442: R5(config-router)#
+105645.641: R5(config-router)#
+105647.286: R5(config-router)#R2# ping 1.1.1.1 source 2.2.2.2
+105647.344:                    ^
+105647.344: % Invalid input detected at '^' marker.
+105647.397: 
+105647.460: R5(config-router)#R2# ping 3.3.3.3 source 2.2.2.2
+105647.460:                    ^
+105647.524: % Invalid input detected at '^' marker.
+105647.524: 
+105658.816: R5(config-router)#ping 1.1.1.1 source 2.2.2.2
+105658.908:                    ^
+105658.909: % Invalid input detected at '^' marker.
+105658.909: 
+105658.990: R5(config-router)#ping 3.3.3.3 source 2.2.2.2
+105658.990:                    ^
+105659.052: % Invalid input detected at '^' marker.
+105659.052: 
+105714.948: R5(config-router)#ping 3.3.3.3 source 2.2.2.2
+105714.991:                    ^
+105715.045: % Invalid input detected at '^' marker.
+105715.045: 
+105730.210: R5(config-router)#ping 2.2.2.2 source 3.3.3.3
+105730.210:                    ^
+105730.256: % Invalid input detected at '^' marker.
+105730.256: 
+112036.988: R5(config-router)#do show ip inter bri
+112037.034: Interface                  IP-Address      OK? Method Stat112037.080: us                Protocol
+112037.130: GigabitEthernet0/0         unassigned      YES unset  admi112037.191: nistratively down down    
+112037.257: GigabitEthernet0/1         198.51.100.2    YES manual up  112037.314:                   up      
+112037.362: GigabitEthernet0/2         unassigned      YES unset  admi112037.413: nistratively down down    
+112037.471: GigabitEthernet0/3         unassigned      YES unset  admi112037.518: nistratively down down    
+112037.629: Loopback0                  5.5.5.5         YES manual up  112037.630:                   up      
+112059.300: R5(config-router)#router bgp 300
+112102.592: R5(config-router)#neigh
+112121.171: R5(config-router)#neighbor 198.51.100.1 remote 200
+112139.560: R5(config-router)#
+112139.620: *May  8 03:21:36.275: %BGP-5-ADJCHANGE: neighbor 198.51.10112154.025: 0.1 Up 
+112154.197: R5(config-router)#
+112237.751: R5(config-router)#router 
+112245.419: R5(config-router)#bgp router 
+112302.659: R5(config-router)#bgp router-id 30.30.30.5 255.255.255.255
+112302.659:                                            ^
+112302.767: % Invalid input detected at '^' marker.
+112302.767: 
+112307.418: R5(config-router)#bgp router-id 30.30.30.5               5
+112308.540: R5(config-router)#bgp router-id 30.30.30.5 255.255.255.255
+112308.631: *May  8 03:23:05.423: %BGP-5-ADJCHANGE: neighbor 198.51.10112308.683: 0.1 Down Router ID changed
+112308.780: *May  8 03:23:05.424: %BGP_SESSION-5-ADJCHANGE: neighbor 1112308.841: 98.51.100.1 IPv4 Unicast topology base removed from sessio112308.900: n  Router ID changed
+112308.951: *May  8 03:23:06.385: %BGP-5-ADJCHANGE: neighbor 198.51.10112311.989: *May  8 03:23:06.385: %BGP-5-ADJCHANGE: neighbor 198.51.10112314.718: R5(config-router)#bgp router-id 30.30.30.5 255.255.255.255
+112316.592: R5#
+112316.648: *May  8 03:23:12.725: %SYS-5-CONFIG_I: Configured from con112318.033: sole by console
+112322.611: R5#conf ter
+112322.659: Enter configuration commands, one per line.  End with CNTL112322.661: /Z.
+112328.814: R5(config)#router bgp 300
+112354.237: R5(config-router)#network 30.30.30.5 255.255.255.255?
+112354.239: % Unrecognized command
+112356.451: R5(config-router)#network 30.30.30.5 255.255.255.25?
+112356.451: % Unrecognized command
+112401.181: R5(config-router)#network 30.30.30.5?              
+112401.181: A.B.C.D  
+112401.181: 
+112403.050: R5(config-router)#network 30.30.30.5 ?
+112403.050:   backdoor   Specify a BGP backdoor route
+112403.098:   mask       Network mask
+112403.151:   route-map  Route-map to modify the attributes
+112403.207:   <cr>       <cr>
+112403.207: 
+112418.446: R5(config-router)#network 30.30.30.5 mas
+112424.054: R5(config-router)#network 30.30.30.5 mask 255.255.255.255?
+112424.055: A.B.C.D  
+112424.055: 
+112425.139: R5(config-router)#network 30.30.30.5 mask 255.255.255.255 112425.209: ?
+112425.209:   backdoor   Specify a BGP backdoor route
+112425.260:   route-map  Route-map to modify the attributes
+112425.315:   <cr>       <cr>
+112425.315: 
+112430.357: R5(config-router)#network 30.30.30.5 mask 255.255.255.255 
+112450.595: R5(config-router)#do show run | sec bgp
+112452.327: router bgp 300
+112452.328:  bgp router-id 30.30.30.5
+112452.377:  bgp log-neighbor-changes
+112452.436:  network 30.30.30.5 mask 255.255.255.255
+112452.483:  neighbor 198.51.100.1 remote-as 200
+112957.390: R5(config-router)#
+112957.569: R5(config-router)#
+112957.721: R5(config-router)#
+112957.862: R5(config-router)#
+113003.194: R5(config-router)#do wr
+113003.233: Building configuration...
+113006.327: [OK]
+113006.327: R5(config-router)#end
+113006.715: R5#
+113006.772: *May  8 03:30:03.599: %GRUB-5-CONFIG_WRITING: GRUB configu113006.829: ration is being updated on disk. Please wait...
+113006.879: *May  8 03:30:04.397: %GRUB-5-CONFIG_WRITTEN: GRUB configu113006.998: ration was written to disk successfully.
+113007.048: *May  8 03:30:04.410: %SYS-5-CONFIG_I: Configured from con113009.960: sole by consolewr
+113009.960: Building configuration...
+113013.016: [OK]
+113013.333: R5#
+113013.471: R5#
+113013.654: R5#
+113013.769: R5#
+113013.815: *May  8 03:30:10.300: %GRUB-5-CONFIG_WRITING: GRUB configu113013.875: ration is being updated on disk. Please wait...
+113013.954: *May  8 03:30:11.093: %GRUB-5-CONFIG_WRITTEN: GRUB configu113014.059: ration was written to disk successfully.
+113014.059: R5#
+113014.220: R5#
+113014.415: R5#
+113014.604: R5#
+113014.850: R5#
+113015.038: R5#
+113020.497: R5#show ip bgp
+113020.543: BGP table version is 5, local router ID is 30.30.30.5
+113020.636: Status codes: s suppressed, d damped, h history, * valid, 113020.685: > best, i - internal, 
+113020.736:               r RIB-failure, S Stale, m multipath, b backu113020.779: p-path, f RT-Filter, 
+113020.875:               x best-external, a additional-path, c RIB-co113020.875: mpressed, 
+113020.918:               t secondary path, 
+113020.976: Origin codes: i - IGP, e - EGP, ? - incomplete
+113021.036: RPKI validation codes: V valid, I invalid, N Not found
+113021.036: 
+113021.142:      Network          Next Hop            Metric LocPrf We113021.142: ight Path
+113021.241:  *>   0.0.0.0          198.51.100.1             0         113021.241:     0 200 i
+113021.285:  *>   2.2.2.2/32       198.51.100.1                       113021.347:     0 200 100 i
+113021.406:  *>   3.3.3.3/32       198.51.100.1                       113021.407:     0 200 100 i
+113021.500:  *>   4.4.4.4/32       198.51.100.1             0         113021.551:     0 200 i
+113150.056: R5#show run
+113150.056: Building configuration...
+113151.826: 
+113151.828: Current configuration : 1311 bytes
+113151.828: !
+113151.921: ! Last configuration change at 03:30:04 UTC Fri May 8 2026
+113151.921: !
+113151.921: version 15.9
+113151.970: service timestamps debug datetime msec
+113152.037: service timestamps log datetime msec
+113152.103: no service password-encryption
+113152.104: !
+113152.104: hostname R5
+113152.105: !
+113152.105: boot-start-marker
+113152.162: boot-end-marker
+113152.162: !
+113152.162: !
+113152.162: !
+113152.218: no aaa new-model
+113152.218: !
+113152.218: !
+113152.219: !
+113152.219: mmi polling-interval 60
+113152.267: no mmi auto-configure
+113152.268: no mmi pvc
+113152.331: mmi snmp-timeout 180
+113152.331: !
+113152.331: !
+113152.331: !
+113152.332: !
+113152.332: !
+113152.332: !
+113152.332: !
+113152.333: !
+113152.333: !
+113152.333: !
+113152.395: !
+113152.395: no ip domain lookup
+113152.396: ip cef
+113152.396: no ipv6 cef
+113152.396: !
+113152.468: multilink bundle-name authenticated
+113152.468: !
+113152.468: !
+113152.468: !
+113152.469: !
+113152.469: !
+113152.469: redundancy
+113152.516: !
+113152.517: !
+113152.517: ! 
+113152.517: !
+113152.517: !
+113152.518: !
+113152.518: !
+113152.519: !
+113152.519: !
+113152.519: !
+113152.580: !
+113152.580: !
+113152.580: !
+113152.580: !
+113152.581: !
+113152.581: interface Loopback0
+113152.643:  ip address 5.5.5.5 255.255.255.255
+113152.643: !
+113152.701: interface GigabitEthernet0/0
+113152.701:  no ip address
+113152.701:  shutdown
+113152.746:  duplex auto
+113152.747:  speed auto
+113152.747:  media-type rj45
+113152.796: !
+113152.859: interface GigabitEthernet0/1
+113152.859:  ip address 198.51.100.2 255.255.255.252
+113152.925:  duplex auto
+113152.925:  speed auto
+113152.927:  media-type rj45
+113152.928: !
+113152.986: interface GigabitEthernet0/2
+113152.986:  no ip address
+113153.029:  shutdown
+113153.030:  duplex auto
+113153.030:  speed auto
+113153.078:  media-type rj45
+113153.078: !
+113153.145: interface GigabitEthernet0/3
+113153.146:  no ip address
+113153.146:  shutdown
+113153.146:  duplex auto
+113153.202:  speed auto
+113153.202:  media-type rj45
+113153.202: !
+113153.202: router ospf 1
+113153.202: !
+113153.250: router bgp 300
+113153.313:  bgp router-id 30.30.30.5
+113153.313:  bgp log-neighbor-changes
+113153.372:  network 30.30.30.5 mask 255.255.255.255
+113153.419:  neighbor 198.51.100.1 remote-as 200
+113153.419: !
+113153.466: ip forward-protocol nd
+113153.466: !
+113153.466: !
+113153.513: no ip http server
+113153.515: no ip http secure-server
+113153.515: !
+113153.515: !
+113153.515: !
+113153.515: !
+113153.565: control-plane
+113153.565: !
+113153.565: !
+113153.565: line con 0
+113153.645: line aux 0
+113153.645: line vty 0 4
+113153.646:  login
+113153.700:  transport input none
+113153.700: !
+113153.701: no scheduler allocate
+113153.701: !
+113153.701: end
+113153.701: 
+113239.931: R5#
+113240.073: R5#
+113240.232: R5#
+113241.571: R5#conf ter
+113241.573: Enter configuration commands, one per line.  End with CNTL113241.627: /Z.
+113253.581: R5(config)#int lo 0
+113255.164: R5(config-if)#no ip
+113255.164: % Incomplete command.
+113255.164: 
+113259.068: R5(config-if)#no ip add
+113314.647: R5(config-if)#ip add 30.30.30.5 255.255.255.255
+113317.350: R5(config-if)#do wr
+113317.350: Building configuration...
+113320.406: [OK]
+113320.863: R5(config-if)#
+113320.918: *May  8 03:33:17.709: %GRUB-5-CONFIG_WRITING: GRUB configu113320.977: ration is being updated on disk. Please wait...
+113321.028: *May  8 03:33:18.504: %GRUB-5-CONFIG_WRITTEN: GRUB configu113321.649: ration was written to disk successfully.
+113321.841: R5(config-if)#
+113321.984: R5(config-if)#
+113322.138: R5(config-if)#
+113322.275: R5(config-if)#
+113322.437: R5(config-if)#
+113325.140: R5(config-if)#show ip bgp
+113325.141:                 ^
+113325.195: % Invalid input detected at '^' marker.
+113325.195: 
+113327.880: R5(config-if)#
+113328.053: R5(config-if)#
+113328.227: R5(config-if)#
+113329.502: R5(config-if)#end
+113330.891: R5#
+113330.894: *May  8 03:33:27.592: %SYS-5-CONFIG_I: Configured from con113332.288: sole by consoleshow ip bgp
+113332.349: BGP table version is 6, local router ID is 30.30.30.5
+113332.399: Status codes: s suppressed, d damped, h history, * valid, 113332.456: > best, i - internal, 
+113332.504:               r RIB-failure, S Stale, m multipath, b backu113332.550: p-path, f RT-Filter, 
+113332.670:               x best-external, a additional-path, c RIB-co113332.671: mpressed, 
+113332.671:               t secondary path, 
+113332.761: Origin codes: i - IGP, e - EGP, ? - incomplete
+113332.830: RPKI validation codes: V valid, I invalid, N Not found
+113332.830: 
+113333.005:      Network          Next Hop            Metric LocPrf We113333.006: ight Path
+113333.007:  *>   0.0.0.0          198.51.100.1             0         113333.080:     0 200 i
+113333.132:  *>   2.2.2.2/32       198.51.100.1                       113333.134:     0 200 100 i
+113333.195:  *>   3.3.3.3/32       198.51.100.1                       113333.196:     0 200 100 i
+113333.316:  *>   4.4.4.4/32       198.51.100.1             0         113333.317:     0 200 i
+113333.361:  *>   30.30.30.5/32    0.0.0.0                  0         113333.417: 32768 i
+113414.839: R5#
+113415.241: R5#
+113415.241: R5#
+113415.241: R5#
+113415.302: R5#
+113415.371: R5#
+113415.371: R5#
+113415.391: R5#
+113415.436: R5#
+113415.436: R5#
+113415.486: R5#
+113415.521: R5#
+113415.521: R5#
+113415.552: R5#
+113415.603: R5#
+113415.636: R5#
+113415.693: R5#
+113415.693: R5#
+113415.764: R5#
+113415.764: R5#
+113415.823: R5#
+113415.824: R5#
+113415.886: R5#
+113415.886: R5#
+113415.933: R5#
+113416.402: R5#show ip bgp
+113416.458: BGP table version is 6, local router ID is 30.30.30.5
+113416.558: Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+113416.680:               r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+113416.738:               x best-external, a additional-path, c RIB-compressed, 
+113416.786:               t secondary path, 
+113416.836: Origin codes: i - IGP, e - EGP, ? - incomplete
+113416.941: RPKI validation codes: V valid, I invalid, N Not found
+113416.941: 
+113417.006:      Network          Next Hop            Metric LocPrf Weight Path
+113417.128:  *>   0.0.0.0          198.51.100.1             0             0 200 i
+113417.192:  *>   2.2.2.2/32       198.51.100.1                           0 200 100 i
+113417.297:  *>   3.3.3.3/32       198.51.100.1                           0 200 100 i
+113417.410:  *>   4.4.4.4/32       198.51.100.1             0             0 200 i
+113417.521:  *>   30.30.30.5/32    0.0.0.0                  0         32768 i
+113418.912: R5#
+113419.226: R5#
+113710.499: R5#
+113710.602: R5#
+113710.760: R5#
+113710.927: R5#
+113711.060: R5#
+113711.260: R5#
+113711.436: R5#
+113711.614: R5#
+113711.748: R5#
+113711.923: R5#
+113712.097: R5#
+113712.294: R5#
+113712.481: R5#
+114853.841: R5#
+114854.288: R5#
+114854.413: R5#
+114854.413: R5#
+114854.413: R5#
+114854.473: R5#
+114854.473: R5#
+114854.588: R5#
+114854.588: R5#
+114854.588: R5#
+114854.588: R5#
+114854.619: R5#
+114854.681: R5#
+114854.745: R5#
+114854.745: R5#
+114854.771: R5#
+114854.771: R5#
+114854.831: R5#
+114854.831: R5#
+114854.882: R5#
+114854.942: R5#
+114855.007: R5#
+114855.007: R5#
+114855.069: R5#
+114855.070: R5#
+114855.104: R5#
+114855.104: R5#
+114855.133: R5#
+114855.185: R5#
+114855.242: R5#
+114855.242: R5#
+114855.304: R5#
+114855.304: R5#
+114855.344: R5#
+114855.429: R5#
+114855.429: R5#
+114855.460: R5#
+114855.460: R5#
+114855.507: R5#
+114855.570: R5#
+114855.601: R5#
+114855.601: R5#
+114855.664: R5#
+114855.664: R5#
+114855.724: R5#
+114855.724: R5#
+114855.812: R5#
+114855.812: R5#
+114855.863: R5#
+114855.863: R5#
+114855.929: R5#
+114855.929: R5#
+114855.993: R5#
+114855.993: R5#
+114856.056: R5#
+114856.132: R5#
+114856.132: R5#
+114856.132: R5#
+114856.197: R5#
+114856.262: R5#
+114856.263: R5#
+114856.328: R5#
+114856.328: R5#
+114856.356: R5#
+114856.356: R5#
+114856.422: R5#
+114856.422: R5#
+114856.503: R5#
+114856.503: R5#
+114856.564: R5#
+114856.564: R5#
+114856.624: R5#
+114856.625: R5#
+114856.685: R5#
+114856.685: R5#
+114856.749: R5#
+114856.830: R5#
+114856.830: R5#
+114856.830: R5#
+114856.883: R5#
+114901.820: R5#show running-config
+114901.820: Building configuration...
+114903.702: 
+114903.702: Current configuration : 1314 bytes
+114903.702: !
+114903.816: ! Last configuration change at 03:33:27 UTC Fri May 8 2026
+114903.816: !
+114903.816: version 15.9
+114903.817: service timestamps debug datetime msec
+114903.913: service timestamps log datetime msec
+114903.914: no service password-encryption
+114903.915: !
+114903.971: hostname R5
+114903.975: !
+114903.975: boot-start-marker
+114903.975: boot-end-marker
+114903.975: !
+114904.021: !
+114904.021: !
+114904.022: no aaa new-model
+114904.022: !
+114904.022: !
+114904.022: !
+114904.071: mmi polling-interval 60
+114904.071: no mmi auto-configure
+114904.129: no mmi pvc
+114904.129: mmi snmp-timeout 180
+114904.130: !
+114904.130: !
+114904.130: !
+114904.130: !
+114904.130: !
+114904.186: !
+114904.186: !
+114904.187: !
+114904.187: !
+114904.187: !
+114904.187: !
+114904.252: no ip domain lookup
+114904.254: ip cef
+114904.254: no ipv6 cef
+114904.254: !
+114904.314: multilink bundle-name authenticated
+114904.314: !
+114904.314: !
+114904.314: !
+114904.314: !
+114904.314: !
+114904.314: redundancy
+114904.362: !
+114904.362: !
+114904.364: ! 
+114904.365: !
+114904.365: !
+114904.366: !
+114904.366: !
+114904.366: !
+114904.366: !
+114904.366: !
+114904.366: !
+114904.366: !
+114904.367: !
+114904.367: !
+114904.367: !
+114904.413: interface Loopback0
+114904.459:  ip address 30.30.30.5 255.255.255.255
+114904.459: !
+114904.508: interface GigabitEthernet0/0
+114904.508:  no ip address
+114904.554:  shutdown
+114904.558:  duplex auto
+114904.600:  speed auto
+114904.601:  media-type rj45
+114904.601: !
+114904.650: interface GigabitEthernet0/1
+114904.712:  ip address 198.51.100.2 255.255.255.252
+114904.712:  duplex auto
+114904.760:  speed auto
+114904.760:  media-type rj45
+114904.760: !
+114904.822: interface GigabitEthernet0/2
+114904.823:  no ip address
+114904.887:  shutdown
+114904.887:  duplex auto
+114904.887:  speed auto
+114904.940:  media-type rj45
+114904.940: !
+114904.940: interface GigabitEthernet0/3
+114905.002:  no ip address
+114905.002:  shutdown
+114905.002:  duplex auto
+114905.002:  speed auto
+114905.065:  media-type rj45
+114905.065: !
+114905.065: router ospf 1
+114905.065: !
+114905.116: router bgp 300
+114905.116:  bgp router-id 30.30.30.5
+114905.163:  bgp log-neighbor-changes
+114905.211:  network 30.30.30.5 mask 255.255.255.255
+114905.261:  neighbor 198.51.100.1 remote-as 200
+114905.261: !
+114905.321: ip forward-protocol nd
+114905.321: !
+114905.321: !
+114905.322: no ip http server
+114905.367: no ip http secure-server
+114905.367: !
+114905.367: !
+114905.368: !
+114905.416: !
+114905.417: control-plane
+114905.417: !
+114905.417: !
+114905.482: line con 0
+114905.482: line aux 0
+114905.482: line vty 0 4
+114905.482:  login
+114905.482:  transport input none
+114905.482: !
+114905.538: no scheduler allocate
+114905.538: !
+114905.538: end
+114905.538: 
+114924.429: R5#end
+114924.429: Translating "end"
+114924.429: 
+114924.478: Translating "end"
+114924.478: 
+114924.479: % Bad IP address or host name
+114924.632: % Unknown command or computer name, or unable to find computer address
+114924.632: R5#write
+114924.679: Building configuration...
+114927.530: [OK]
+114927.998: R5#
+114927.998: *May  8 03:49:24.986: %GRUB-5-CONFIG_WRITING: GRUB configuration is being updated on114927.998:  disk. Please wait...
+114928.148: *May  8 03:49:25.781: %GRUB-5-CONFIG_WRITTEN: GRUB configuration was written to disk114934.408:  successfully. 
+114934.508: R5# 
+114934.626: R5#
+114934.783: R5#
+114934.938: R5#
+114935.083: R5#
+114939.705: R5#show running-config
+114939.705: Building configuration...
+114941.467: 
+114941.468: Current configuration : 1314 bytes
+114941.468: !
+114941.587: ! Last configuration change at 03:33:27 UTC Fri May 8 2026
+114941.588: !
+114941.588: version 15.9
+114941.646: service timestamps debug datetime msec
+114941.692: service timestamps log datetime msec
+114941.740: no service password-encryption
+114941.740: !
+114941.740: hostname R5
+114941.740: !
+114941.784: boot-start-marker
+114941.784: boot-end-marker
+114941.784: !
+114941.838: !
+114941.843: !
+114941.843: no aaa new-model
+114941.843: !
+114941.844: !
+114941.844: !
+114941.892: mmi polling-interval 60
+114941.892: no mmi auto-configure
+114941.941: no mmi pvc
+114941.941: mmi snmp-timeout 180
+114941.942: !
+114941.942: !
+114941.942: !
+114941.942: !
+114941.942: !
+114942.008: !
+114942.008: !
+114942.008: !
+114942.008: !
+114942.009: !
+114942.009: !
+114942.009: no ip domain lookup
+114942.009: ip cef
+114942.062: no ipv6 cef
+114942.062: !
+114942.112: multilink bundle-name authenticated
+114942.113: !
+114942.113: !
+114942.113: !
+114942.113: !
+114942.114: !
+114942.114: redundancy
+114942.155: !
+114942.155: !
+114942.157: ! 
+114942.157: !
+114942.157: !
+114942.157: !
+114942.157: !
+114942.157: !
+114942.157: !
+114942.157: !
+114942.206: !
+114942.207: !
+114942.207: !
+114942.207: !
+114942.207: !
+114942.249: interface Loopback0
+114942.294:  ip address 30.30.30.5 255.255.255.255
+114942.294: !
+114942.347: interface GigabitEthernet0/0
+114942.347:  no ip address
+114942.347:  shutdown
+114942.406:  duplex auto
+114942.406:  speed auto
+114942.406:  media-type rj45
+114942.406: !
+114942.451: interface GigabitEthernet0/1
+114942.505:  ip address 198.51.100.2 255.255.255.252
+114942.566:  duplex auto
+114942.566:  speed auto
+114942.567:  media-type rj45
+114942.567: !
+114942.627: interface GigabitEthernet0/2
+114942.627:  no ip address
+114942.691:  shutdown
+114942.691:  duplex auto
+114942.692:  speed auto
+114942.765:  media-type rj45
+114942.765: !
+114942.765: interface GigabitEthernet0/3
+114942.811:  no ip address
+114942.811:  shutdown
+114942.813:  duplex auto
+114942.813:  speed auto
+114942.861:  media-type rj45
+114942.861: !
+114942.861: router ospf 1
+114942.919: !
+114942.920: router bgp 300
+114942.920:  bgp router-id 30.30.30.5
+114942.968:  bgp log-neighbor-changes
+114943.018:  network 30.30.30.5 mask 255.255.255.255
+114943.076:  neighbor 198.51.100.1 remote-as 200
+114943.076: !
+114943.123: ip forward-protocol nd
+114943.123: !
+114943.123: !
+114943.123: no ip http server
+114943.172: no ip http secure-server
+114943.172: !
+114943.172: !
+114943.173: !
+114943.220: !
+114943.221: control-plane
+114943.221: !
+114943.221: !
+114943.279: line con 0
+114943.280: line aux 0
+114943.280: line vty 0 4
+114943.280:  login
+114943.328:  transport input none
+114943.328: !
+114943.328: no scheduler allocate
+114943.328: !
+114943.328: end
+114943.328: 
+115010.090: R5#
+115010.529: R5#
+115010.591: R5#
+115010.591: R5#
+115010.677: R5#
+115010.677: R5#
+115010.732: R5#
+115010.732: R5#
+115010.792: R5#
+115010.792: R5#
+115010.854: R5#
+115010.855: R5#
+115010.939: R5#
+115010.939: R5#
+115010.963: R5#
+115011.029: R5#
+115011.091: R5#
+115011.091: R5#
+115011.122: R5#
+115011.122: R5#
+115011.184: R5#
+115011.184: R5#
+115011.231: R5#
+115011.283: R5#
+115027.126: R5#
+115027.309: R5#
+115027.501: R5#
+115027.719: R5#
+115028.201: R5#
+115028.251: R5#
+115028.251: R5#
+115028.251: R5#
+115028.312: R5#
+115028.312: R5#
+115028.368: R5#
+115028.368: R5#
+115028.437: R5#
+115028.462: R5#
+115028.498: R5#
+115028.498: R5#
+115028.545: R5#
+115028.572: R5#
+115028.635: R5#
+115028.668: R5#
+115028.668: R5#
+115028.736: R5#
+115033.557: R5#show ip bgp summary
+115033.607: BGP router identifier 30.30.30.5, local AS number 300
+115033.700: BGP table version is 6, main routing table version 6
+115033.749: 5 network entries using 720 bytes of memory
+115033.809: 5 path entries using 420 bytes of memory
+115033.998: 3/3 BGP path/bestpath attribute entries using 480 bytes of memory
+115033.998: 2 BGP AS-PATH entries using 48 bytes of memory
+115034.135: 0 BGP route-map cache entries using 0 bytes of memory
+115034.210: 0 BGP filter-list cache entries using 0 bytes of memory
+115034.210: BGP using 1668 total bytes of memory
+115034.296: BGP activity 5/0 prefixes, 5/0 paths, scan interval 60 secs
+115034.296: 
+115034.366: Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/Pfx115034.367: Rcd
+115034.529: 198.51.100.1    4          200      36      34        6    0    0 00:27:25        4
+115047.625: R5#sh bgp
+115047.685: BGP table version is 6, local router ID is 30.30.30.5
+115047.792: Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+115047.882:               r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+115047.989:               x best-external, a additional-path, c RIB-compressed, 
+115048.037:               t secondary path, 
+115048.085: Origin codes: i - IGP, e - EGP, ? - incomplete
+115048.175: RPKI validation codes: V valid, I invalid, N Not found
+115048.175: 
+115048.271:      Network          Next Hop            Metric LocPrf Weight Path
+115048.327:  *>   0.0.0.0          198.51.100.1             0             0 200 i
+115048.441:  *>   2.2.2.2/32       198.51.100.1                           0 200 100 i
+115048.556:  *>   3.3.3.3/32       198.51.100.1                           0 200 100 i
+115048.642:  *>   4.4.4.4/32       198.51.100.1             0             0 200 i
+115048.735:  *>   30.30.30.5/32    0.0.0.0                  0         32768 i
+115107.155: R5#sh ip bgp 
+115107.220: BGP table version is 6, local router ID is 30.30.30.5
+115107.344: Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+115107.416:               r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+115107.476:               x best-external, a additional-path, c RIB-compressed, 
+115107.523:               t secondary path, 
+115107.631: Origin codes: i - IGP, e - EGP, ? - incomplete
+115107.682: RPKI validation codes: V valid, I invalid, N Not found
+115107.682: 
+115107.748:      Network          Next Hop            Metric LocPrf Weight Path
+115107.875:  *>   0.0.0.0          198.51.100.1             0             0 200 i
+115107.999:  *>   2.2.2.2/32       198.51.100.1                           0 200 100 i
+115108.060:  *>   3.3.3.3/32       198.51.100.1                           0 200 100 i
+115108.182:  *>   4.4.4.4/32       198.51.100.1             0             0 200 i
+115108.245:  *>   30.30.30.5/32    0.0.0.0                  0         32768 i
+115117.398: R5#sh ip bgp 30.30.30.5
+115117.462: BGP routing table entry for 30.30.30.5/32, version 6
+115117.519: Paths: (1 available, best #1, table default)
+115117.564:   Advertised to update-groups:
+115117.564:      2         
+115117.631:   Refresh Epoch 1
+115117.631:   Local
+115117.677:     0.0.0.0 from 0.0.0.0 (30.30.30.5)
+115117.794:       Origin IGP, metric 0, localpref 100, weight 32768, valid, sourced, local, best
+115117.842:       rx pathid: 0, tx pathid: 0x0
+115130.850: R5#sh ip route bgp 
+115130.912: Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+115131.020:        D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+115131.115:        N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+115131.172:        E1 - OSPF external type 1, E2 - OSPF external type 2
+115131.293:        i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+115131.395:        ia - IS-IS inter area, * - candidate default, U - per-user static route
+115131.505:        o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+115131.563:        a - application route
+115131.655:        + - replicated route, % - next hop override, p - overrides from PfR
+115131.655: 
+115131.707: Gateway of last resort is 198.51.100.1 to network 0.0.0.0
+115131.707: 
+115131.821: B*    0.0.0.0/0 [20/0] via 198.51.100.1, 00:24:38
+115131.863:       2.0.0.0/32 is subnetted, 1 subnets
+115131.917: B        2.2.2.2 [20/0] via 198.51.100.1, 00:23:25
+115131.979:       3.0.0.0/32 is subnetted, 1 subnets
+115132.022: B        3.3.3.3 [20/0] via 198.51.100.1, 00:22:55
+115132.085:       4.0.0.0/32 is subnetted, 1 subnets
+115132.143: B        4.4.4.4 [20/0] via 198.51.100.1, 00:24:08
+115154.077: R5#sh ip bgp 2.2.2.2
+115154.138: BGP routing table entry for 2.2.2.2/32, version 4
+115154.201: Paths: (1 available, best #1, table default)
+115154.260:   Not advertised to any peer
+115154.260:   Refresh Epoch 1
+115154.260:   200 100
+115154.306:     198.51.100.1 from 198.51.100.1 (4.4.4.4)
+115154.437:       Origin IGP, localpref 100, valid, external, best
+115154.438:       rx pathid: 0, tx pathid: 0x0
+115209.923: R5#show ip bgp neighbors 192.0.2.2 advertised-route
+115209.967: % No such neighbor or address family
+115217.491: R5#show ip bgp neighbors 192.0.2.2 advertised-routes
+115217.568: % No such neighbor or address family
+115231.482: R5#show ip bgp neighbors 192.0.2.2 received-routes
+115231.534: % No such neighbor or address family
+115238.398: R5#show run
+115238.398: Building configuration...
+115240.136: 
+115240.137: Current configuration : 1314 bytes
+115240.137: !
+115240.230: ! Last configuration change at 03:33:27 UTC Fri May 8 2026
+115240.230: !
+115240.231: version 15.9
+115240.276: service timestamps debug datetime msec
+115240.387: service timestamps log datetime msec
+115240.387: no service password-encryption
+115240.387: !
+115240.434: hostname R5
+115240.434: !
+115240.435: boot-start-marker
+115240.531: boot-end-marker
+115240.532: !
+115240.532: !
+115240.532: !
+115240.532: no aaa new-model
+115240.532: !
+115240.533: !
+115240.533: !
+115240.533: mmi polling-interval 60
+115240.582: no mmi auto-configure
+115240.582: no mmi pvc
+115240.642: mmi snmp-timeout 180
+115240.642: !
+115240.642: !
+115240.642: !
+115240.642: !
+115240.643: !
+115240.643: !
+115240.643: !
+115240.643: !
+115240.643: !
+115240.643: !
+115240.690: !
+115240.691: no ip domain lookup
+115240.691: ip cef
+115240.751: no ipv6 cef
+115240.751: !
+115240.804: multilink bundle-name authenticated
+115240.804: !
+115240.805: !
+115240.805: !
+115240.805: !
+115240.805: !
+115240.805: redundancy
+115240.805: !
+115240.805: !
+115240.806: ! 
+115240.806: !
+115240.806: !
+115240.859: !
+115240.859: !
+115240.859: !
+115240.859: !
+115240.860: !
+115240.860: !
+115240.860: !
+115240.860: !
+115240.860: !
+115240.860: !
+115240.908: interface Loopback0
+115240.955:  ip address 30.30.30.5 255.255.255.255
+115240.955: !
+115241.001: interface GigabitEthernet0/0
+115241.001:  no ip address
+115241.049:  shutdown
+115241.049:  duplex auto
+115241.049:  speed auto
+115241.094:  media-type rj45
+115241.094: !
+115241.142: interface GigabitEthernet0/1
+115241.190:  ip address 198.51.100.2 255.255.255.252
+115241.190:  duplex auto
+115241.236:  speed auto
+115241.236:  media-type rj45
+115241.236: !
+115241.286: interface GigabitEthernet0/2
+115241.287:  no ip address
+115241.333:  shutdown
+115241.333:  duplex auto
+115241.378:  speed auto
+115241.379:  media-type rj45
+115241.379: !
+115241.423: interface GigabitEthernet0/3
+115241.476:  no ip address
+115241.476:  shutdown
+115241.477:  duplex auto
+115241.477:  speed auto
+115241.537:  media-type rj45
+115241.537: !
+115241.537: router ospf 1
+115241.537: !
+115241.583: router bgp 300
+115241.584:  bgp router-id 30.30.30.5
+115241.643:  bgp log-neighbor-changes
+115241.692:  network 30.30.30.5 mask 255.255.255.255
+115241.756:  neighbor 198.51.100.1 remote-as 200
+115241.756: !
+115241.819: ip forward-protocol nd
+115241.820: !
+115241.820: !
+115241.820: no ip http server
+115241.883: no ip http secure-server
+115241.883: !
+115241.883: !
+115241.883: !
+115241.883: !
+115241.884: control-plane
+115241.884: !
+115241.884: !
+115241.926: line con 0
+115241.926: line aux 0
+115241.926: line vty 0 4
+115241.977:  login
+115241.977:  transport input none
+115241.977: !
+115242.039: no scheduler allocate
+115242.039: !
+115242.039: end
+115242.039: 
+120000.171: R5#do wr
+120000.171:       ^
+120000.217: % Invalid input detected at '^' marker.
+120000.217: 
+120000.267: R5#wr
+120000.268: Building configuration...
+120002.725: [OK]
+120003.915: R5#
+120004.069: *May  8 04:00:00.263: %GRUB-5-CONFIG_WRITING: GRUB configuration is being updated on120004.072:  disk. Please wait...
+120004.301: *May  8 04:00:01.057: %GRUB-5-CONFIG_WRITTEN: GRUB configuration was written to disk120023.806:  successfully.
+120023.806: R5#
+120023.806: R5#
+120023.971: R5#terminal length 0
+120024.084: R5#more system:running-config
+120025.956: !
+120026.008: ! Last configuration change at 03:33:27 UTC Fri May 8 2026
+120026.044: !
+120026.044: version 15.9
+120026.092: service timestamps debug datetime msec
+120026.141: service timestamps log datetime msec
+120026.179: no service password-encryption
+120026.222: !
+120026.222: hostname R5
+120026.222: !
+120026.267: boot-start-marker
+120026.276: boot-end-marker
+120026.276: !
+120026.276: !
+120026.277: !
+120026.314: no aaa new-model
+120026.320: !
+120026.320: !
+120026.320: !
+120026.360: mmi polling-interval 60
+120026.401: no mmi auto-configure
+120026.411: no mmi pvc
+120026.442: mmi snmp-timeout 180
+120026.442: !
+120026.443: !
+120026.447: !
+120026.447: !
+120026.447: !
+120026.447: !
+120026.447: !
+120026.487: !
+120026.487: !
+120026.487: !
+120026.487: !
+120026.531: no ip domain lookup
+120026.531: ip cef
+120026.537: no ipv6 cef
+120026.538: !
+120026.578: multilink bundle-name authenticated
+120026.615: !
+120026.616: !
+120026.616: !
+120026.616: !
+120026.616: !
+120026.627: redundancy
+120026.627: !
+120026.627: !
+120026.664: ! 
+120026.664: !
+120026.664: !
+120026.664: !
+120026.664: !
+120026.665: !
+120026.665: !
+120026.666: !
+120026.666: !
+120026.667: !
+120026.706: !
+120026.706: !
+120026.707: !
+120026.713: interface Loopback0
+120026.792:  ip address 30.30.30.5 255.255.255.255
+120026.792: !
+120026.837: interface GigabitEthernet0/0
+120026.852:  no ip address
+120026.852:  shutdown
+120026.880:  duplex auto
+120026.891:  speed auto
+120026.928:  media-type rj45
+120026.928: !
+120026.967: interface GigabitEthernet0/1
+120027.025:  ip address 198.51.100.2 255.255.255.252
+120027.058:  duplex auto
+120027.064:  speed auto
+120027.102:  media-type rj45
+120027.102: !
+120027.148: interface GigabitEthernet0/2
+120027.153:  no ip address
+120027.188:  shutdown
+120027.188:  duplex auto
+120027.194:  speed auto
+120027.232:  media-type rj45
+120027.232: !
+120027.277: interface GigabitEthernet0/3
+120027.283:  no ip address
+120027.323:  shutdown
+120027.328:  duplex auto
+120027.370:  speed auto
+120027.381:  media-type rj45
+120027.381: !
+120027.409: router ospf 1
+120027.410: !
+120027.414: router bgp 300
+120027.461:  bgp router-id 30.30.30.5
+120027.499:  bgp log-neighbor-changes
+120027.544:  network 30.30.30.5 mask 255.255.255.255
+120027.627:  neighbor 198.51.100.1 remote-as 200
+120027.627: !
+120027.642: ip forward-protocol nd
+120027.642: !
+120027.672: !
+120027.677: no ip http server
+120027.720: no ip http secure-server
+120027.723: !
+120027.724: !
+120027.724: !
+120027.724: !
+120027.761: control-plane
+120027.761: !
+120027.761: !
+120027.777: line con 0
+120027.807: line aux 0
+120027.816: line vty 0 4
+120027.816:  login
+120027.851:  transport input none
+120027.851: !
+120027.892: no scheduler allocate
+120027.896: !
+120027.896: end
+120027.896: 

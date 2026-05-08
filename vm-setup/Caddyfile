@@ -1,0 +1,30 @@
+{
+	email bumabuma035@gmail.com
+}
+
+(common) {
+	encode gzip zstd
+	header {
+		Strict-Transport-Security "max-age=31536000;"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+}
+
+code.egulcloud.com {
+	import common
+	reverse_proxy 127.0.0.1:8080 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+}
+
+vnc.egulcloud.com {
+	import common
+	reverse_proxy 127.0.0.1:6901 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+}

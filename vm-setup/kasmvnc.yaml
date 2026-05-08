@@ -1,0 +1,37 @@
+network:
+  protocol: http
+  interface: 127.0.0.1
+  websocket_port: 6901
+  use_ipv4: true
+  use_ipv6: false
+  ssl:
+    require_ssl: false
+
+desktop:
+  resolution:
+    width: 1920
+    height: 1080
+  allow_resize: true
+  pixel_depth: 24
+
+keyboard:
+  ignore_numlock: false
+
+runtime_configuration:
+  allow_client_to_override_kasm_server_settings: true
+  allow_override_standard_vnc_server_settings: true
+
+data_loss_prevention:
+  clipboard:
+    server_to_client:
+      enabled: true
+    client_to_server:
+      enabled: true
+
+encoding:
+  max_frame_rate: 60
+
+logging:
+  log_writer_name: all
+  log_dest: logfile
+  level: 30

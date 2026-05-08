@@ -1,0 +1,173 @@
+{
+  // ============================================================
+  //  Cisco IOS Highlight Patterns for VS Code
+  //  ----------------------------------------------------------
+  //  SecureCRT-iin "Cisco Words - DkBg" keyword list-iig adapt
+  //  hiisen versions. Highlight extension shaardlagatai:
+  //    fabiospampinato.vscode-highlight
+  //
+  //  Ene "highlight.regexes" object-iig settings.json doroo
+  //  hool.
+  // ============================================================
+
+  "highlight.regexes": {
+
+    // === BAD WORDS (улаан, болсон / down / алдаа) ===
+    "(?<!no )(?<![a-zA-Z])\\b(shutdown)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#FF6B6B", "fontWeight": "bold" }]
+    },
+    "\\b(deny|denied|administratively-down|err-disabled|disabled|down|inactive|failed|invalid|unreachable)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#FF6B6B" }]
+    },
+
+    // === GOOD WORDS (ногоон, ажиллаж байгаа) ===
+    "\\bno shutdown\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#98C379", "fontWeight": "bold" }]
+    },
+    "\\b(permit|enabled|active|established|connected|up|success|complete|passed)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#98C379" }]
+    },
+
+    // === INTERFACES (шар) ===
+    "\\b(GigabitEthernet|FastEthernet|TenGigabitEthernet|FortyGigE|HundredGigE|Ethernet|Serial|Loopback|Tunnel|Vlan|Port-channel|Multilink|BRI|ATM|Dialer|Async|Bundle-Ether|MgmtEth)[0-9]+(?:[\\/\\.:][0-9]+)*\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#E5C07B", "fontWeight": "bold" }]
+    },
+    "\\b(Gi|Fa|Te|Fo|Hu|Eth|Se|Lo|Tu|Vl|Po|Mu|Bu)[0-9]+(?:[\\/\\.:][0-9]+)*\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#E5C07B" }]
+    },
+
+    // === IP ADDRESSES (алт) ===
+    "\\b(?:\\d{1,3}\\.){3}\\d{1,3}(?:/\\d{1,2})?\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#D19A66" }]
+    },
+    // IPv6 хаяг (хялбар pattern)
+    "\\b([0-9a-fA-F]{1,4}:){2,7}[0-9a-fA-F:]{1,4}\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#D19A66" }]
+    },
+
+    // === SUBNET MASK (highlight wildcard эсвэл ihzh subnet) ===
+    "\\b(0\\.0\\.0\\.0|255\\.255\\.255\\.255)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#56B6C2" }]
+    },
+
+    // === MAC ADDRESS (бэлгэдэл орзан) ===
+    "\\b(?:[a-fA-F0-9]{2}[:.\\-]){5}[a-fA-F0-9]{2}\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#FFA500" }]
+    },
+    "\\b[a-fA-F0-9]{4}\\.[a-fA-F0-9]{4}\\.[a-fA-F0-9]{4}\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#FFA500" }]
+    },
+
+    // === ROUTING PROTOCOLS (ягаан, тод) ===
+    "^(\\s*)(router\\s+(ospf|ospfv3|bgp|eigrp|rip|isis))\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [
+        {},
+        { "color": "#C678DD", "fontWeight": "bold" }
+      ]
+    },
+    "\\b(ospf|bgp|eigrp|rip|hsrp|vrrp|glbp|isis|pim|igmp)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#C678DD" }]
+    },
+
+    // === SERVICES / PROTOCOLS (хөх) ===
+    "\\b(tcp|udp|icmp|ftp|tftp|scp|sftp|ssh|telnet|http|https|snmp|snmpv2|snmpv3|ntp|dhcp|dns|syslog|netflow|radius|tacacs)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#61AFEF" }]
+    },
+
+    // === SENSITIVE — password, secret, key, community ===
+    "\\b(password|secret|key|community|key-string|pre-shared-key)\\s+\\S+": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#FF7F50", "fontWeight": "bold" }]
+    },
+
+    // === DANGEROUS COMMANDS (тод улаан, анхааруулах) ===
+    "\\b(reload|erase|delete|clear\\s+\\S+|write\\s+erase|format)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{
+        "color": "#FF4444",
+        "fontWeight": "bold",
+        "backgroundColor": "rgba(255, 68, 68, 0.1)"
+      }]
+    },
+
+    // === ACL & POLICY KEYWORDS (улбар шар) ===
+    "\\b(access-list|access-class|access-group|prefix-list|route-map|class-map|policy-map|service-policy|object-group|time-range)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#D19A66" }]
+    },
+
+    // === HOSTNAME (тод шар) ===
+    "^hostname\\s+(\\S+)": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [
+        {},
+        { "color": "#E5C07B", "fontWeight": "bold" }
+      ]
+    },
+
+    // === COMMENTS (саарал italic) ===
+    "^\\s*!.*$": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#5C6370", "fontStyle": "italic" }]
+    },
+
+    // === MAJOR CONFIG SECTIONS (тод болгох) ===
+    "^(interface|router|line|vlan|class-map|policy-map|crypto|access-list)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#56B6C2", "fontWeight": "bold" }]
+    },
+
+    // === BANDWIDTH / SPEED VALUES ===
+    "\\b\\d+\\s*(Kbps|Mbps|Gbps|kbit|Mbit|Gbit)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#56B6C2" }]
+    },
+
+    // === VLAN ID (хөх) ===
+    "\\bvlan\\s+(\\d+)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [
+        {},
+        { "color": "#61AFEF", "fontWeight": "bold" }
+      ]
+    },
+
+    // === AS NUMBER (BGP) ===
+    "\\b(remote-as|router\\s+bgp)\\s+(\\d+)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [
+        {},
+        { "color": "#D19A66", "fontWeight": "bold" }
+      ]
+    },
+
+    // === OSPF AREA / PROCESS ===
+    "\\barea\\s+(\\d+(?:\\.\\d+\\.\\d+\\.\\d+)?)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [
+        {},
+        { "color": "#C678DD" }
+      ]
+    },
+
+    // === IP ROUTING DIRECTIVES ===
+    "\\b(ip\\s+route|ipv6\\s+route|ip\\s+default-gateway|default-information)\\b": {
+      "filterLanguageRegex": "cisco",
+      "decorations": [{ "color": "#56B6C2" }]
+    }
+  }
+}

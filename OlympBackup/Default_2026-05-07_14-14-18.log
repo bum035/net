@@ -1,0 +1,653 @@
+﻿141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137: 
+141423.137:    The highlighted entry will be executed automatically in 3s.
+141423.139:    The highlighted entry will be executed automatically in 3s.
+141423.139:                                                                             
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139: 
+141423.139:    The highlighted entry will be executed automatically in 3s.
+141423.139:                                                
+141423.139: 
+141423.139:    The highlighted entry will be executed automatically in 3s.
+141423.140:    The highlighted entry will be executed automatically in 2s.                 
+141423.141:    The highlighted entry will be executed automatically in 2s.
+141423.141:                                                                             
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141: 
+141423.141:    The highlighted entry will be executed automatically in 3s.
+141423.141:                                                
+141423.141: 
+141423.141:    The highlighted entry will be executed automatically in 2s.
+141423.142:    The highlighted entry will be executed automatically in 1s.                 
+141423.142:    The highlighted entry will be executed automatically in 1s.
+141423.143:                                                                             
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143: 
+141423.143:    The highlighted entry will be executed automatically in 3s.
+141423.143:                                                
+141423.143: 
+141423.143:    The highlighted entry will be executed automatically in 1s.
+141423.144:    The highlighted entry will be executed automatically in 0s.                 
+141423.144:    The highlighted entry will be executed automatically in 0s.
+141423.151:    Booting `IOSv' Booting `IOSv
+141423.151: 
+141423.151: '
+141423.151: 
+141444.902: error: Can't get controller info..
+141444.903: error: Can't get controller info.Booted IOSv. Boot args: [/vios-adventerprisek9-m]
+141445.141: 
+141445.141: Smart Init is enabled
+141446.484: 
+141446.485:               Restricted Rights Legend
+141446.485: 
+141446.485: Use, duplication, or disclosure by the Government is
+141446.485: subject to restrictions as set forth in subparagraph
+141446.486: (c) of the Commercial Computer Software - Restricted
+141446.486: Rights clause at FAR sec. 52.227-19 and subparagraph
+141446.486: (c) (1) (ii) of the Rights in Technical Data and Computer
+141446.531: Software clause at DFARS sec. 252.227-7013.
+141446.532: 
+141446.532:            cisco Systems, Inc.
+141446.532:            170 West Tasman Drive
+141446.532:            San Jose, California 95134-1706
+141446.532: 
+141446.532: 
+141446.532: 
+141446.533: Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.9(3)M6, RELEASE SOFTWARE (fc1)
+141446.579: Technical Support: http://www.cisco.com/techsupport
+141446.579: Copyright (c) 1986-2022 by Cisco Systems, Inc.
+141446.579: Compiled Mon 08-Aug-22 15:22 by mcpre
+141446.580: 
+141446.580: 
+141446.580: 
+141516.127: 
+141516.127: This product contains cryptographic features and is subject to United
+141516.128: States and local country laws governing import, export, transfer and
+141516.128: use. Delivery of Cisco cryptographic products does not imply
+141516.128: third-party authority to import, export, distribute or use encryption.
+141516.129: Importers, exporters, distributors and users are responsible for
+141516.129: compliance with U.S. and local country laws. By using this product you
+141516.130: agree to comply with applicable laws and regulations. If you are unable
+141516.130: to comply with U.S. and local laws, return this product immediately.
+141516.130: 
+141516.132: A summary of U.S. laws governing Cisco cryptographic products may be found at:
+141516.132: http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+141516.132: 
+141516.132: If you require further assistance please contact us by sending email to
+141516.132: export@cisco.com.
+141516.132: 
+141519.420: Cisco IOSv (revision 1.0) with  with 984313K/62464K bytes of memory.Installed image archive
+141519.722: 
+141519.722: Processor board ID 9F35NFFS5ENRWC09T69XS
+141519.723: 4 Gigabit Ethernet interfaces
+141519.723: DRAM configuration is 72 bits wide with parity disabled.
+141519.723: 256K bytes of non-volatile configuration memory.
+141519.770: 2097152K bytes of ATA System CompactFlash 0 (Read/Write)
+141519.770: 0K bytes of ATA CompactFlash 1 (Read/Write)
+141519.770: 0K bytes of ATA CompactFlash 2 (Read/Write)
+141519.770: 0K bytes of ATA CompactFlash 3 (Read/Write)
+141605.227: 
+141605.227: 
+141605.227:          --- System Configuration Dialog ---
+141605.227: 
+141803.463: Would you like to enter the initial configuration dialog? [yes/no]: no
+141803.463: 
+141803.463: 
+141803.464: Press RETURN to get started!
+141803.464: 
+141803.464: 
+141803.465: *Mar  1 00:00:01.836: %ATA-6-DEV_FOUND: device 0x1F0
+141803.795: *Mar  1 00:00:12.814: %NVRAM-5-CONFIG_NVRAM_NOT_FOUND: NVRAM configuration 'flash:/nvram' could not be found on disk.
+141803.937: *May  7 06:15:03.597: %C3600-3-NOMAC: Can't allocate MAC address for interface 0/0
+141804.440: *May  7 06:15:03.750: %C3600-3-NOMAC: Can't allocate MAC address for interface 0/0
+141805.417: *May  7 06:15:05.170: %C3600-3-NOMAC: Can't allocate MAC address for interface 0/0
+141806.334: *May  7 06:15:10.555: %PA-3-PA_INIT_FAILED: Performance Agent failed to initialize (Missing Data License)
+141806.867: *May  7 06:15:15.054: %PNP-6-PNP_DISCOVERY_STARTED: PnP Discovery started
+141808.040: *May  7 06:15:15.058: %PNP-6-PNP_GOOD_UDI_UPDATE: Good UDI [PID:IOSv,VID:,SN:9F35NFFS5ENRWC09T69XS] identified via (platform-re141808.041: gistry)
+141809.336: *May  7 06:15:15.058: %PNP-6-PNP_CDP_UPDATE: Device UDI [PID:IOSv,VID:,SN:9F35NFFS5ENRWC09T69XS] identified for CDP
+141810.145: *May  7 06:15:15.151: %LINK-3-UPDOWN: Interface GigabitEthernet0/0, changed state to up
+141811.414: *May  7 06:15:15.158: %LINK-3-UPDOWN: Interface GigabitEthernet0/1, changed state to up
+141812.443: *May  7 06:15:15.160: %LINK-3-UPDOWN: Interface GigabitEthernet0/2, changed state to up
+141813.694: *May  7 06:15:15.162: %LINK-3-UPDOWN: Interface GigabitEthernet0/3, changed state to up
+141815.135: *May  7 06:15:16.606: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+141816.591: *May  7 06:15:16.608: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+141818.024: *May  7 06:15:16.608: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/2, changed state to up
+141820.252: *May  7 06
+141820.253: -Traceback= 13148Bz 16079Ez 1604DBz 1602B8z 15A275z 15AE3Fz 41AB247z 41955BEz 4199033z 572EFCFz 51E4064z 51A5CF6z 518B8DDz 518A141820.255: 236z 5189F84z 51F541Dz - Process "Crypto CA", CPU hog, PC 0x00155F4C
+141820.256: :15:16.609: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/3, changed state to up
+141821.170: *May  7 06:17:51.208: %LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to administratively down
+141822.321: *May  7 06:17:51.236: %LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to administratively down
+141823.709: *May  7 06:17:51.262: %LINK-5-CHANGED: Interface GigabitEthernet0/2, changed state to administratively down
+141825.165: *May  7 06:17:51.289: %LINK-5-CHANGED: Interface GigabitEthernet0/3, changed state to administratively down
+141825.974: *May  7 06:17:51.777: %IP-5-WEBINST_KILL: Terminating DNS process
+141827.422: *May  7 06:17:52.208: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to down
+141828.847: *May  7 06:17:52.236: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down
+141830.288: *May  7 06:17:52.262: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/2, changed state to down
+141831.216: *May  7 06:17:52.289: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/3, changed state to down
+141831.317: *May  7 06:17:53.378: %SYS-5-RESTART: System restarted --
+141831.460: Cisco IOS Software, IOSv Software (VIOS-ADVENTERPRISEK9-M), Version 15.9(3)M6, RELEASE SOFTWARE (fc1)
+141831.508: Technical Support: http://www.cisco.com/techsupport
+141831.602: Copyright (c) 1986-2022 by Cisco Systems, Inc.
+141831.657: Compiled Mon 08-Aug-22 15:22 by mcpre
+141831.716: *May  7 06:17:53.514: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is OFF
+141831.773: *May  7 06:17:53.515: %CRYPTO-6-GDOI_ON_OFF: GDOI is OFF
+141831.964: *May  7 06:17:56.947: %PNP-6-PNP_BEST_UDI_UPDATE: Best UDI [PID:IOSv,VID:1.0,SN:9F35NFFS5ENRWC09T69XS] identified via (entity-m141831.965: ibs)
+141832.110: *May  7 06:17:56.950: %PNP-6-PNP_SAVING_TECH_SUMMARY: Saving PnP tech summary (/pnp-tech/pnp-tech-discovery-summary)... Please 141832.164: wait. Do not interrupt.
+141832.350: *May  7 06:18:15.549: %SYS-3-CPUHOG: Task is running for (1997)msecs, more than (2000)msecs (0/0),process = Crypto CA.
+141832.505: *May  7 06:18:16.695: %PNP-6-PNP_TECH_SUMMARY_SAVED_OK: PnP tech summary (/pnp-tech/pnp-tech-discovery-summary) saved successfu141832.550: lly (elapsed time: 20 seconds).
+141832.646: *May  7 06:18:16.696: %PNP-6-PNP_DISCOVERY_STOPPED: PnP Discovery stopped (Config Wizard)
+141911.569: *May  7 06:18:26.739: %PLATFORM-5-SIGNATURE_VERIFIED: Image 'flash0:/vios-adventerprisek9-m' passed code signing verification
+141911.616: **************************************************************************
+141911.759: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141911.853: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141911.949: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141912.042: * of the IOSv Software or Documentation to any third party for any       *
+141912.137: * purposes is expressly prohibited except as otherwise authorized by     *
+141912.232: * Cisco in writing.                                                      *
+141912.326: **************************************************************************
+141914.037: Router>
+141914.132: Router>
+141916.014: Router>en
+141916.093: Router#terminal length 0
+141916.188: Router#terminal monitor
+141916.188: % Console already monitors
+141918.470: Router#conf ter
+141918.517: Enter configuration commands, one per line.  End with CNTL/Z.
+141932.389: Router(config)#configure terminal
+141932.389:                        ^
+141932.480: % Invalid input detected at '^' marker.
+141932.480: 
+141938.410: Router(config)#
+141939.980: Router(config)#Building configuration...
+141939.980:                  ^
+141939.980: % Invalid input detected at '^' marker.
+141939.980: 
+141939.980: Router(config)#Current configuration : 3216 bytes
+141939.980:                 ^
+141939.981: % Invalid input detected at '^' marker.
+141939.981: 
+141939.981: Router(config)#version 15.9
+141939.981: Router(config)#service timestamps debug datetime msec
+141939.982: Router(config)#service timestamps log datetime msec
+141939.982: Router(config)#no service password-encryption
+141939.982: Router(config)#hostname R1
+141939.982: R1(config)#boot-start-marker
+141939.983: R1(config)#boot-end-marker
+141939.983: R1(config)#no aaa new-model
+141939.984: R1(config)#mmi polling-interval 60
+141939.984: R1(config)#no mmi auto-configure
+141939.984: R1(config)#no mmi pvc
+141939.985: R1(config)#mmi snmp-timeout 180
+141939.985: R1(config)#no ip domain lookup
+141939.985: R1(config)#ip cef
+141939.985: R1(config)#no ipv6 cef
+141939.985: R1(config)#multilink bundle-name authenticated
+141939.985: R1(config)#redundancy
+141939.986: R1(config-red)#interface Loopback0
+141939.986: R1(config-if)#ip address 1.1.1.1 255.255.255.255
+141939.987: R1(config-if)#interface GigabitEthernet0/0
+141939.987: R1(config-if)#ip address 10.10.12.1 255.255.255.252
+141939.987: R1(config-if)#duplex auto
+141939.987: R1(config-if)#speed auto
+141939.987: R1(config-if)#media-type rj45
+141939.987: R1(config-if)#interface GigabitEthernet0/1
+141939.987: R1(config-if)#no ip address
+141939.987: R1(config-if)#shutdown
+141939.987: R1(config-if)#duplex auto
+141939.987: R1(config-if)#speed auto
+141939.987: R1(config-if)#media-type rj45
+141939.987: R1(config-if)#interface GigabitEthernet0/2
+141939.987: R1(config-if)#no ip address
+141939.987: R1(config-if)#shutdown
+141939.987: R1(config-if)#duplex auto
+141939.987: R1(config-if)#speed auto
+141939.987: R1(config-if)#media-type rj45
+141939.987: R1(config-if)#interface GigabitEthernet0/3
+141939.987: R1(config-if)#no ip address
+141939.987: R1(config-if)#shutdown
+141939.987: R1(config-if)#duplex auto
+141939.987: R1(config-if)#speed auto
+141939.987: R1(config-if)#media-type rj45
+141939.987: R1(config-if)#router ospf 1
+141939.987: R1(config-router)#router-id 1.1.1.1
+141939.987: R1(config-router)#network 1.1.1.1 0.0.0.0 area 10
+141939.987: R1(config-router)#network 10.10.12.0 0.0.0.3 area 10
+141939.987: R1(config-router)#ip forward-protocol nd
+141939.988: R1(config)#no ip http server
+141939.988: R1(config)#no ip http secure-server
+141939.988: R1(config)#ipv6 ioam timestamp
+141939.988: R1(config)#control-plane
+141939.988: R1(config-cp)#banner exec ^C
+141939.989: Enter TEXT message.  End with the character '^'.
+141939.989: **************************************************************************
+141939.990: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141939.992: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141939.992: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141939.993: * of the IOSv Software or Documentation to any third party for any       *
+141939.994: * purposes is expressly prohibited except as otherwise authorized by     *
+141939.994: * Cisco in writing.                                              
+141939.995: *May  7 06:19:30.318: %LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up        *
+141939.995: **************************************************************************^C
+141939.995: R1(config)#banner incoming ^C
+141939.995: Enter TEXT message.  End with the character '^'.
+141939.996: **************************************************************************
+141939.996: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141939.996: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141939.997: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141939.997: * of the IOSv Software or Documentation to any third party for any       *
+141939.998: * purposes is expressly prohibited except as otherwise authorized by     *
+141939.999: * Cisco in writing.                                                      *
+141940.000: **************************************************************************^C
+141940.000: R1(config)#banner login ^C
+141940.000: Enter TEXT message.  End with the character '^'.
+141940.001: **************************************************************************
+141940.002: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141940.003: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141940.004: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141940.004: * of the IOSv Software or Documentation to any third party for any       *
+141940.005: * purposes is expressly prohibited except as otherwise authorized by     *
+141940.042: * Cisco in writing.                                                      *
+141940.091: **************************************************************************^C
+141940.139: R1(config)#line con 0
+141940.186: R1(config-line)#exec-timeout 0 0
+141940.233: R1(config-line)#logging synchronous
+141940.283: R1(config-line)#line aux 0
+141940.329: R1(config-line)#exec-timeout 0 0
+141940.375: R1(config-line)#line vty 0 4
+141940.422: R1(config-line)#exec-timeout 0 0
+141940.470: R1(config-line)#logging synchronous
+141940.470: R1(config-line)#login
+141940.566: % Login disabled on line 578, until 'password' is set
+141940.612: % Login disabled on line 579, until 'password' is set
+141940.707: % Login disabled on line 580, until 'password' is set
+141940.803: % Login disabled on line 581, until 'password' is set
+141940.850: % Login disabled on line 582, until 'password' is set
+141940.898: R1(config-line)#transport input none
+141940.945: R1(config-line)#no scheduler allocate
+141940.993: R1(config)#end
+141940.993: R1#end
+141940.994: Translating "end"
+141940.994: 
+141941.039: Translating "end"
+141941.039: 
+141941.089: % Bad IP address or host name
+141941.089: % Unknow
+141941.277: *May  7 06:19:33.934: %SYS-5-CONFIG_I: Configured from console by consolen command or computer name, or unable to find computer141941.277:  address
+141954.193: R1#show run
+141954.193: Building configuration...
+141955.831: 
+141955.831: Current configuration : 3229 bytes
+141955.831: !
+141955.925: ! Last configuration change at 06:19:33 UTC Thu May 7 2026
+141955.939: !
+141955.939: version 15.9
+141955.972: service timestamps debug datetime msec
+141956.070: service timestamps log datetime msec
+141956.117: no service password-encryption
+141956.117: !
+141956.117: hostname R1
+141956.117: !
+141956.117: boot-start-marker
+141956.165: boot-end-marker
+141956.165: !
+141956.165: !
+141956.165: !
+141956.210: no aaa new-model
+141956.210: !
+141956.210: !
+141956.210: !
+141956.258: mmi polling-interval 60
+141956.259: no mmi auto-configure
+141956.309: no mmi pvc
+141956.310: mmi snmp-timeout 180
+141956.310: !
+141956.310: !
+141956.310: !
+141956.310: !
+141956.311: !
+141956.359: !
+141956.360: !
+141956.360: !
+141956.360: !
+141956.360: !
+141956.360: !
+141956.400: no ip domain lookup
+141956.400: ip cef
+141956.400: no ipv6 cef
+141956.400: !
+141956.492: multilink bundle-name authenticated
+141956.492: !
+141956.492: !
+141956.503: !
+141956.503: !
+141956.503: !
+141956.504: redundancy
+141956.504: !
+141956.504: !
+141956.504: ! 
+141956.505: !
+141956.541: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.542: !
+141956.588: interface Loopback0
+141956.635:  ip address 1.1.1.1 255.255.255.255
+141956.635: !
+141956.679: interface GigabitEthernet0/0
+141956.742:  ip address 10.10.12.1 255.255.255.252
+141956.742:  shutdown
+141956.774:  duplex auto
+141956.774:  speed auto
+141956.825:  media-type rj45
+141956.825: !
+141956.869: interface GigabitEthernet0/1
+141956.869:  no ip address
+141956.915:  shutdown
+141956.915:  duplex auto
+141956.915:  speed auto
+141956.964:  media-type rj45
+141956.964: !
+141957.012: interface GigabitEthernet0/2
+141957.013:  no ip address
+141957.013:  shutdown
+141957.059:  duplex auto
+141957.059:  speed auto
+141957.109:  media-type rj45
+141957.109: !
+141957.109: interface GigabitEthernet0/3
+141957.153:  no ip address
+141957.153:  shutdown
+141957.199:  duplex auto
+141957.199:  speed auto
+141957.249:  media-type rj45
+141957.249: !
+141957.250: router ospf 1
+141957.295:  router-id 1.1.1.1
+141957.295:  network 1.1.1.1 0.0.0.0 area 10
+141957.344:  network 10.10.12.0 0.0.0.3 area 10
+141957.390: !
+141957.390: ip forward-protocol nd
+141957.390: !
+141957.438: !
+141957.438: no ip http server
+141957.485: no ip http secure-server
+141957.485: !
+141957.533: ipv6 ioam timestamp
+141957.533: !
+141957.533: !
+141957.533: !
+141957.533: control-plane
+141957.534: !
+141957.578: banner exec ^CC
+141957.675: **************************************************************************
+141957.768: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141957.864: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141957.960: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141958.059: * of the IOSv Software or Documentation to any third party for any       *
+141958.151: * purposes is expressly prohibited except as otherwise authorized by     *
+141958.247: * Cisco in writing.                                                      *
+141958.388: **************************************************************************^C
+141958.388: banner incoming ^CC
+141958.575: **************************************************************************
+141958.670: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141958.763: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141958.858: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141958.953: * of the IOSv Software or Documentation to any third party for any       *
+141959.047: * purposes is expressly prohibited except as otherwise authorized by     *
+141959.144: * Cisco in writing.                                                      *
+141959.243: **************************************************************************^C
+141959.284: banner login ^CC
+141959.387: **************************************************************************
+141959.472: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+141959.566: * education. IOSv is provided as-is and is not supported by Cisco's      *
+141959.663: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+141959.755: * of the IOSv Software or Documentation to any third party for any       *
+141959.897: * purposes is expressly prohibited except as otherwise authorized by     *
+141959.993: * Cisco in writing.                                                      *
+142000.090: **************************************************************************^C
+142000.090: !
+142000.090: line con 0
+142000.136:  exec-timeout 0 0
+142000.136:  logging synchronous
+142000.185: line aux 0
+142000.185:  exec-timeout 0 0
+142000.232: line vty 0 4
+142000.232:  exec-timeout 0 0
+142000.232:  logging synchronous
+142000.282:  login
+142000.282:  transport input none
+142000.282: !
+142000.329: no scheduler allocate
+142000.330: !
+142000.330: end
+142000.376: 
+142000.376: R1# 
+142000.376: R1# 
+142000.376: R1# 
+142000.377: R1# 
+142000.377: R1# 
+142000.423: R1# 
+142000.423: R1# 
+142000.423: R1#do show run
+142000.424:       ^
+142000.472: % Invalid input detected at '^' marker.
+142000.472: 
+142000.517: R1# 
+142000.517: R1# 
+142000.518: R1# 
+142322.465: R1#
+142322.561: R1#terminal length 0
+142322.609: R1#show running-config
+142322.655: Building configuration...
+142324.369: 
+142324.370: Current configuration : 3229 bytes
+142324.374: !
+142324.462: ! Last configuration change at 06:19:33 UTC Thu May 7 2026
+142324.462: !
+142324.512: version 15.9
+142324.512: service timestamps debug datetime msec
+142324.607: service timestamps log datetime msec
+142324.657: no service password-encryption
+142324.657: !
+142324.657: hostname R1
+142324.657: !
+142324.657: boot-start-marker
+142324.715: boot-end-marker
+142324.715: !
+142324.715: !
+142324.716: !
+142324.763: no aaa new-model
+142324.764: !
+142324.764: !
+142324.764: !
+142324.764: mmi polling-interval 60
+142324.812: no mmi auto-configure
+142324.812: no mmi pvc
+142324.860: mmi snmp-timeout 180
+142324.860: !
+142324.860: !
+142324.860: !
+142324.860: !
+142324.860: !
+142324.908: !
+142324.908: !
+142324.908: !
+142324.908: !
+142324.908: !
+142324.909: !
+142324.954: no ip domain lookup
+142324.955: ip cef
+142324.955: no ipv6 cef
+142324.955: !
+142325.005: multilink bundle-name authenticated
+142325.006: !
+142325.006: !
+142325.006: !
+142325.006: !
+142325.050: !
+142325.051: redundancy
+142325.051: !
+142325.051: !
+142325.051: ! 
+142325.051: !
+142325.051: !
+142325.097: !
+142325.097: !
+142325.097: !
+142325.097: !
+142325.097: !
+142325.097: !
+142325.097: !
+142325.098: !
+142325.098: !
+142325.098: !
+142325.151: interface Loopback0
+142325.210:  ip address 1.1.1.1 255.255.255.255
+142325.211: !
+142325.211: interface GigabitEthernet0/0
+142325.465:  ip address 10.10.12.1 255.255.255.252
+142325.465:  shutdown
+142325.465:  duplex auto
+142325.465:  speed auto
+142325.465:  media-type rj45
+142325.465: !
+142325.466: interface GigabitEthernet0/1
+142325.466:  no ip address
+142325.466:  shutdown
+142325.466:  duplex auto
+142325.466:  speed auto
+142325.512:  media-type rj45
+142325.512: !
+142325.558: interface GigabitEthernet0/2
+142325.558:  no ip address
+142325.559:  shutdown
+142325.605:  duplex auto
+142325.605:  speed auto
+142325.605:  media-type rj45
+142325.605: !
+142325.656: interface GigabitEthernet0/3
+142325.700:  no ip address
+142325.700:  shutdown
+142325.748:  duplex auto
+142325.748:  speed auto
+142325.797:  media-type rj45
+142325.798: !
+142325.798: router ospf 1
+142325.798:  router-id 1.1.1.1
+142325.844:  network 1.1.1.1 0.0.0.0 area 10
+142325.892:  network 10.10.12.0 0.0.0.3 area 10
+142325.939: !
+142325.939: ip forward-protocol nd
+142325.939: !
+142325.987: !
+142325.988: no ip http server
+142325.988: no ip http secure-server
+142326.035: !
+142326.035: ipv6 ioam timestamp
+142326.036: !
+142326.036: !
+142326.036: !
+142326.081: control-plane
+142326.082: !
+142326.129: banner exec ^CC
+142326.224: **************************************************************************
+142326.320: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+142326.423: * education. IOSv is provided as-is and is not supported by Cisco's      *
+142326.524: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+142326.620: * of the IOSv Software or Documentation to any third party for any       *
+142326.715: * purposes is expressly prohibited except as otherwise authorized by     *
+142326.810: * Cisco in writing.                                                      *
+142326.907: **************************************************************************^C
+142326.953: banner incoming ^CC
+142327.125: **************************************************************************
+142327.221: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+142327.316: * education. IOSv is provided as-is and is not supported by Cisco's      *
+142327.412: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+142327.525: * of the IOSv Software or Documentation to any third party for any       *
+142327.616: * purposes is expressly prohibited except as otherwise authorized by     *
+142327.712: * Cisco in writing.                                                      *
+142327.806: **************************************************************************^C
+142327.806: banner login ^CC
+142327.932: **************************************************************************
+142328.032: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+142328.139: * education. IOSv is provided as-is and is not supported by Cisco's      *
+142328.234: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+142328.345: * of the IOSv Software or Documentation to any third party for any       *
+142328.443: * purposes is expressly prohibited except as otherwise authorized by     *
+142328.536: * Cisco in writing.                                                      *
+142328.631: **************************************************************************^C
+142328.631: !
+142328.631: line con 0
+142328.678:  exec-timeout 0 0
+142328.724:  logging synchronous
+142328.724: line aux 0
+142328.773:  exec-timeout 0 0
+142328.773: line vty 0 4
+142328.773:  exec-timeout 0 0
+142328.820:  logging synchronous
+142328.820:  login
+142328.867:  transport input none
+142328.867: !
+142328.914: no scheduler allocate
+142328.914: !
+142328.914: end
+142328.914: 
+143533.499: 
+143533.499: The network connection was aborted by the local system.
+143533.499: 
