@@ -1,0 +1,152 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "1",
+        "type": "model",
+        "color": "cyan",
+        "rawValue": true
+      },
+      {
+        "id": "2",
+        "type": "separator"
+      },
+      {
+        "id": "3",
+        "type": "custom-command",
+        "commandPath": "bash ~/.claude/scripts/sl-effort.sh",
+        "color": "yellow",
+        "timeout": 2000,
+        "preserveColors": false
+      },
+      {
+        "id": "8",
+        "type": "separator"
+      },
+      {
+        "id": "9",
+        "type": "session-clock",
+        "color": "green"
+      }
+    ],
+    [
+      {
+        "id": "10",
+        "type": "context-bar",
+        "color": "green"
+      },
+      {
+        "id": "11",
+        "type": "separator"
+      },
+      {
+        "id": "28",
+        "type": "session-cost",
+        "color": "green"
+      }
+    ],
+    [
+      {
+        "id": "25",
+        "type": "separator"
+      },
+      {
+        "id": "22",
+        "type": "reset-timer",
+        "color": "brightBlack"
+      },
+      {
+        "id": "23",
+        "type": "separator"
+      },
+      {
+        "id": "26",
+        "type": "weekly-reset-timer",
+        "color": "brightBlack"
+      }
+    ],
+    [
+      {
+        "id": "20",
+        "type": "session-usage",
+        "color": "green",
+        "metadata": {
+          "display": "progress-short"
+        }
+      },
+      {
+        "id": "21",
+        "type": "separator"
+      },
+      {
+        "id": "24",
+        "type": "weekly-usage",
+        "color": "green",
+        "metadata": {
+          "display": "progress-short"
+        }
+      }
+    ],
+    [
+      {
+        "id": "30",
+        "type": "current-working-dir",
+        "color": "blue"
+      },
+      {
+        "id": "31",
+        "type": "separator"
+      },
+      {
+        "id": "32",
+        "type": "git-branch",
+        "color": "magenta"
+      },
+      {
+        "id": "33",
+        "type": "separator"
+      },
+      {
+        "id": "34",
+        "type": "git-changes",
+        "color": "yellow"
+      },
+      {
+        "id": "35",
+        "type": "separator"
+      },
+      {
+        "id": "36",
+        "type": "git-insertions",
+        "color": "green"
+      },
+      {
+        "id": "37",
+        "type": "separator"
+      },
+      {
+        "id": "38",
+        "type": "git-deletions",
+        "color": "red"
+      }
+    ]
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 2,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false
+  }
+}
