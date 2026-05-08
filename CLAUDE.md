@@ -6,6 +6,18 @@
 
 > 🟢 **Олимпиадын дүрэм**: AI болон интернет **ЗӨВШӨӨРСӨН**. Claude Code, claude.ai, ChatGPT, Google, Cisco/NX-OS docs бүгд ашиглах боломжтой. Доорх workflow-д Claude Code-ыг гол edit tool гэж тооцсон.
 
+## 🚀 Олимпиадын өдрийн нэг-команд bootstrap
+
+Repo-г clone хийсний дараа:
+
+| Платформ | Нэг команд |
+|---|---|
+| **Linux** | `bash ~/net/scripts/setup-linux.sh` |
+| **Windows** | `pwsh $env:USERPROFILE\net\scripts\setup-windows.ps1` |
+| **USB fallback bundle** (интернет байхгүй бол) | `bash ~/net/scripts/make-usb-bundle.sh ~/Desktop` → `net-usb-<date>.zip`-ийг USB-р зөөнө |
+
+Эдгээр скрипт нь idempotent — олон удаа ажилласан ч өмнөх state-ыг эвдэхгүй. Алхам алхмаар `[ OK ] / [SKIP] / [FAIL]` гэж report хийнэ. Доорх manual setup-ыг **зөвхөн алхам бүрийг нарийвчлан ойлгоход эсвэл скрипт алдаа өгсөн үед** хэрэглэнэ.
+
 ## Setup workflow — Linux VM (Ubuntu — primary)
 
 > Linux SecureCRT-ийн Windows-той ялгаа: config зам нь `~/.vandyke/SecureCRT/Config/` (`%APPDATA%` биш). VBS script-үүдийн COM-объектууд (`WScript.Shell`, `Scripting.FileSystemObject`) **ажиллахгүй** — оронд нь Linux-д зориулсан Python хувилбар (`Scripts/backup_configs.py`, `Scripts/push_config.py`) эсвэл terminal-аас netmiko script ашиглана.
@@ -238,7 +250,7 @@ EVE-NG WebUI → SecureCRT (console)
 |---|---|
 | `secureCRT/VanDyke/Config/` | **SecureCRT config payload** — Sessions, Commands, Keywords, Scripts, ButtonBar, Global.ini. **Linux:** `~/.vandyke/SecureCRT/Config/`-руу subdir symlink. **Windows:** `%APPDATA%\VanDyke\Config\`-руу junction |
 | `secureCRT/VanDyke/Config/Scripts/*.py` | **Linux SecureCRT Python хувилбар** (VBS-ийн оронд) — `backup_configs.py`, `push_config.py` |
-| `scripts/` | **Terminal-side helper-ууд** — `eve_telnet.sh` (EVE-NG telnet wrapper), `netmiko_backup.py` (batch backup), `netmiko_push.py` (config push), `scrt-telnet-handler.sh` (telnet:// URL parse → SecureCRT), `inventory.example.yml` |
+| `scripts/` | **Terminal-side helper-ууд + bootstrap** — `setup-linux.sh` / `setup-windows.ps1` (one-shot машины тохиргоо), `make-usb-bundle.sh` (offline .zip), `eve_telnet.sh` (EVE-NG telnet wrapper), `netmiko_backup.py` (batch backup), `netmiko_push.py` (config push), `scrt-telnet-handler.sh` (telnet:// URL parse → SecureCRT), `start-olymp-session.sh` (tmux), `inventory.example.yml` |
 | `secureCRT/securecrt-telnet.desktop` | Linux desktop entry — telnet:// URL handler-ыг SecureCRT-руу заана (EVE-NG Connect товч) |
 | `EVE-NG/` | EVE-NG protocol handlers — `.reg` (telnet/vnc/wireshark URL handler) + `.bat` wrappers. Зөвхөн Windows-ийн EVE-NG web UI "Connect" workflow-д хэрэгтэй |
 | `OlympBackup/` | `backup_configs.{vbs,py}` болон `netmiko_backup.py`-ийн өмнөх run-ийн жишээ (test data) — олимпиадын дараа цэвэрлэж болно |
