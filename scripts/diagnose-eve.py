@@ -44,6 +44,13 @@ import urllib.parse
 import http.cookiejar
 import ssl
 
+# Windows console (cp1252) chokes on Unicode. Force UTF-8 if possible.
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 
 COMMON_CREDS = [
     {"username": "", "password": "", "secret": ""},
@@ -283,7 +290,7 @@ def check_node(host, port, name=""):
 def emit_inventory(host, lab_data, lab_path):
     eve_host = urllib.parse.urlparse(host if host.startswith(("http://","https://")) else "http://"+host).hostname
     print()
-    print("# ───── auto-generated inventory.yml ─────")
+    print("# ===== auto-generated inventory.yml =====")
     print(f"# lab: {lab_path}")
     print(f"# host: {eve_host}")
     print()
