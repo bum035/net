@@ -40,7 +40,19 @@ try:
         NetmikoTimeoutException,
     )
 except ImportError:
-    sys.exit("netmiko not installed. Run:\n    pip install netmiko\n  (offline) python -m pip install --no-index --find-links wheels netmiko")
+    import os as _os
+    _olymp_py = _os.path.expandvars(r"%USERPROFILE%\PyOlymp\Python312\python.exe")
+    msg = "netmiko not installed for this Python (%s).\n" % sys.executable
+    if _os.path.exists(_olymp_py):
+        msg += "\nThe olympiad bundle installed netmiko in PyOlymp's Python 3.12.\n"
+        msg += "Run with the bundled Python instead:\n"
+        msg += "    %s %s %s\n" % (_olymp_py, sys.argv[0], " ".join(sys.argv[1:]))
+        msg += "  or use the wrapper:  usb-offline\\py-olymp.cmd %s %s\n" % (sys.argv[0], " ".join(sys.argv[1:]))
+        msg += "  or open a NEW PowerShell so PATH refreshes.\n"
+    else:
+        msg += "\nInstall offline wheels (run from usb-offline/ folder):\n"
+        msg += "    python -m pip install --no-index --find-links wheels netmiko pyyaml\n"
+    sys.exit(msg)
 
 try:
     import yaml

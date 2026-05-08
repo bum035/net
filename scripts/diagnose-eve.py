@@ -63,15 +63,17 @@ COMMON_CREDS = [
 
 def col(s, c="reset"):
     codes = {"red": 31, "green": 32, "yellow": 33, "cyan": 36, "reset": 0}
-    if not sys.stdout.isatty():
+    if not sys.stderr.isatty():
         return s
     return f"\033[{codes[c]}m{s}\033[0m"
 
 
-def OK(m):    print(col("[ OK ]", "green"),  m)
-def FAIL(m):  print(col("[FAIL]", "red"),    m)
-def WARN(m):  print(col("[WARN]", "yellow"), m)
-def INFO(m):  print(col("[INFO]", "cyan"),   m)
+# Diagnostic output goes to STDERR so that `> file` redirection of stdout
+# captures ONLY the --emit-inventory yaml (clean file).
+def OK(m):    print(col("[ OK ]", "green"),  m, file=sys.stderr)
+def FAIL(m):  print(col("[FAIL]", "red"),    m, file=sys.stderr)
+def WARN(m):  print(col("[WARN]", "yellow"), m, file=sys.stderr)
+def INFO(m):  print(col("[INFO]", "cyan"),   m, file=sys.stderr)
 
 
 def tcp_open(host, port, timeout=4):
@@ -212,7 +214,7 @@ def check_eve(host, user, password, port=None, tenant=None, try_alternates=True)
     else:
         INFO(f"{len(labs)} lab(s) at root:")
         for L in labs:
-            print(f"        {L['path']}    (mtime: {L.get('mtime','?')})")
+            print(f"        {L['path']}    (mtime: {L.get('mtime','?')})", file=sys.stderr)
     return {"eve": eve, "cj": cj, "labs": labs, "active_lab": whoami.get("lab", "")}
 
 
@@ -241,7 +243,7 @@ def check_lab(eve, cj, lab_path):
         proto = "telnet" if url.startswith("telnet://") else ("vnc" if url.startswith("vnc://") else "?")
         port = url.split(":")[-1] if ":" in url else "?"
         status = {0: "stopped", 1: "starting", 2: "running"}.get(n.get("status"), "?")
-        print(f"        node{nid:>3}  {n.get('name','?'):<10}  {proto:<6} :{port:<6}  status={status:<8} image={n.get('image','?')[:40]}")
+        print(f"        node{nid:>3}  {n.get('name','?'):<10}  {proto:<6} :{port:<6}  status={status:<8} image={n.get('image','?')[:40]}", file=sys.stderr)
 
     code, body = http_request("GET", f"{lab_url}/topology", cj)
     try:
@@ -250,7 +252,7 @@ def check_lab(eve, cj, lab_path):
         links = []
     INFO(f"{len(links)} link(s)")
     for L in links:
-        print(f"        {L.get('source','?')}.{L.get('source_label','?')} <-> {L.get('destination','?')}.{L.get('destination_label','?')}")
+        print(f"        {L.get('source','?')}.{L.get('source_label','?')} <-> {L.get('destination','?')}.{L.get('destination_label','?')}", file=sys.stderr)
 
     return {"nodes": data, "links": links}
 
@@ -346,9 +348,9 @@ def main():
             "secret":   args.node_password or "",
         }] + COMMON_CREDS
 
-    print(col("=" * 70, "cyan"))
-    print(col(" EVE-NG diagnostics", "cyan"))
-    print(col("=" * 70, "cyan"))
+    print(col("=" * 70, "cyan"), file=sys.stderr)
+    print(col(" EVE-NG diagnostics", "cyan"), file=sys.stderr)
+    print(col("=" * 70, "cyan"), file=sys.stderr)
 
     # When explicit creds given, do NOT try common alternates unless asked
     try_alts = not (explicit_creds or args.no_fallback_creds)
@@ -372,7 +374,7 @@ def main():
         sys.exit(1)
 
     if args.check_nodes and lab_data["nodes"]:
-        print()
+        print(file=sys.stderr)
         INFO("--- per-node probe (telnet + login) ---")
         eve_host = urllib.parse.urlparse(eve_state["eve"]).hostname
         any_fail = False
@@ -392,10 +394,10 @@ def main():
                 FAIL(line)
                 any_fail = True
         if any_fail:
-            print()
+            print(file=sys.stderr)
             WARN("Some nodes failed login. Add username/password to inventory.yml:")
-            print("  devices:")
-            print("    - {name: R1, host: 10.x.y.z, port: 32769, username: cisco, password: cisco}")
+            print("  devices:", file=sys.stderr)
+            print("    - {name: R1, host: 10.x.y.z, port: 32769, username: cisco, password: cisco}", file=sys.stderr)
 
     if args.emit_inventory:
         emit_inventory(args.host, lab_data, lab)

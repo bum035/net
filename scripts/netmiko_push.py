@@ -23,7 +23,15 @@ try:
         NetmikoTimeoutException,
     )
 except ImportError:
-    sys.exit("netmiko not installed. Run:\n    pip install netmiko")
+    import os as _os
+    _olymp_py = _os.path.expandvars(r"%USERPROFILE%\PyOlymp\Python312\python.exe")
+    msg = "netmiko not installed for this Python (%s).\n" % sys.executable
+    if _os.path.exists(_olymp_py):
+        msg += "Run with bundled Python: %s %s %s\n" % (_olymp_py, sys.argv[0], " ".join(sys.argv[1:]))
+        msg += "Or use wrapper:  usb-offline\\py-olymp.cmd %s %s\n" % (sys.argv[0], " ".join(sys.argv[1:]))
+    else:
+        msg += "Install: python -m pip install --no-index --find-links wheels netmiko\n"
+    sys.exit(msg)
 
 
 DEFAULT_CREDS = [
