@@ -2,23 +2,35 @@
 """Pre-flight diagnostics for olympiad EVE-NG access.
 
 Walks through every layer that can fail BEFORE you start config grabbing:
-  1. EVE host reachable (TCP 80/443/22)
-  2. EVE-NG REST API auth
-  3. Lab list, currently active lab
+  1. EVE host reachable (TCP 80/443 or custom port)
+  2. EVE-NG REST API auth (with explicit credentials or auto-fallback)
+  3. Lab list, currently active lab (or specific --lab)
   4. Per-node telnet port reachable
   5. Per-node banner / hostname / privileged-mode reachability with cred fallback
 
 Usage:
-    ./diagnose-eve.py --host 10.2.0.163
-    ./diagnose-eve.py --host 10.2.0.163 --user admin --password eve
-    ./diagnose-eve.py --host 10.2.0.163 --lab lab-04-gre-ipsec-vpn.unl
-    ./diagnose-eve.py --host 10.2.0.163 --emit-inventory
-        # → prints inventory.yml stub for the active lab
+    # Olympiad-day usage with custom IP, port, user, pass, locked lab:
+    ./diagnose-eve.py --host 10.50.40.30 --port 8080 \\
+                      --user student1 --password Lab2026 \\
+                      --lab "/students/student1/locked-lab.unl" \\
+                      --check-nodes --emit-inventory
+
+    # Per-node telnet probe with custom device creds:
+    ./diagnose-eve.py --host 10.50.40.30 --port 8080 \\
+                      --user student1 --password Lab2026 \\
+                      --node-user cisco --node-password cisco \\
+                      --check-nodes
+
+    # URL with embedded port (alternative):
+    ./diagnose-eve.py --host http://10.50.40.30:8080 --user x --password y
+
+    # Default-cred discovery (no explicit creds -> tries admin/eve, admin/admin, etc.):
+    ./diagnose-eve.py --host 10.50.40.30
 
 Exit code:
-    0 — all checks pass
-    1 — EVE unreachable / auth failed
-    2 — some nodes have problems
+    0 - all checks pass
+    1 - EVE unreachable / auth failed
+    2 - some nodes have problems
 """
 
 import argparse
@@ -86,12 +98,19 @@ def http_request(method, url, cj, data=None):
         return 0, str(e)
 
 
-def check_eve(host, user, password):
+def check_eve(host, user, password, port=None, tenant=None, try_alternates=True):
     eve = host.rstrip("/")
     if not eve.startswith(("http://", "https://")):
         eve = "http://" + eve
 
     parsed = urllib.parse.urlparse(eve)
+
+    # If --port was given explicitly, override URL port
+    if port:
+        eve_host_only = parsed.hostname
+        eve = f"{parsed.scheme}://{eve_host_only}:{port}"
+        parsed = urllib.parse.urlparse(eve)
+
     eve_host = parsed.hostname
     eve_port = parsed.port or (443 if parsed.scheme == "https" else 80)
 
@@ -100,47 +119,70 @@ def check_eve(host, user, password):
     # Layer 1: TCP reachability
     if not tcp_open(eve_host, eve_port):
         FAIL(f"EVE-NG TCP {eve_host}:{eve_port} closed/unreachable")
-        # try common alternates
         for alt in (80, 443, 8080, 8443):
             if alt != eve_port and tcp_open(eve_host, alt):
-                WARN(f"  ↪ but TCP {eve_host}:{alt} IS open — try {parsed.scheme}://{eve_host}:{alt}")
+                scheme_alt = "https" if alt in (443, 8443) else "http"
+                WARN(f"  ALTERNATE TCP {eve_host}:{alt} open -> try --host {scheme_alt}://{eve_host}:{alt}")
         return None
     OK(f"EVE-NG TCP {eve_host}:{eve_port} open")
 
     cj = http.cookiejar.CookieJar()
 
-    # Layer 2: API status (no auth)
+    # Layer 2: API status (no auth needed)
     code, body = http_request("GET", f"{eve}/api/status", cj)
     if code == 0:
         FAIL(f"GET /api/status network error: {body}")
         return None
-    INFO(f"GET /api/status → HTTP {code}")
+    INFO(f"GET /api/status -> HTTP {code}")
 
     # Layer 3: login
-    code, body = http_request("POST", f"{eve}/api/auth/login", cj,
-                              data={"username": user, "password": password, "html5": "-1"})
+    payload = {"username": user, "password": password, "html5": "-1"}
+    if tenant:
+        payload["tenant"] = tenant
+    code, body = http_request("POST", f"{eve}/api/auth/login", cj, data=payload)
     try:
         j = json.loads(body)
     except Exception:
         j = {}
-    if code != 200 or j.get("status") != "success":
-        FAIL(f"login failed (user={user}): HTTP {code}  body={body[:300]}")
-        # try common alternate creds
-        for alt in [("admin", "eve"), ("admin", "admin"), ("admin", "unl"), ("root", "eve")]:
+
+    if code == 200 and j.get("status") == "success":
+        OK(f"login succeeded (user={user}{', tenant='+tenant if tenant else ''})")
+    else:
+        # Show clean error
+        msg = j.get("message") if j else None
+        if msg:
+            FAIL(f"login failed (user={user}): HTTP {code} - {msg}")
+        elif "Slim Application Error" in body:
+            FAIL(f"login failed (user={user}): HTTP {code} - EVE server error (Slim app exception)")
+            INFO("  Possible: wrong tenant, account locked, EVE-NG version mismatch")
+            INFO("  Check via browser:  " + eve)
+        else:
+            FAIL(f"login failed (user={user}): HTTP {code}  body={body[:200]}")
+
+        if not try_alternates:
+            return None
+
+        # Only try alternates when caller did not pass explicit creds
+        for alt in [("admin", "eve"), ("admin", "admin"), ("admin", "unl"), ("admin", "Admin@123"), ("root", "eve")]:
             if alt == (user, password):
                 continue
             INFO(f"  trying alternate creds {alt[0]}/{alt[1]} ...")
-            code2, body2 = http_request("POST", f"{eve}/api/auth/login", cj,
-                                        data={"username": alt[0], "password": alt[1], "html5": "-1"})
+            payload_alt = {"username": alt[0], "password": alt[1], "html5": "-1"}
+            if tenant:
+                payload_alt["tenant"] = tenant
+            code2, body2 = http_request("POST", f"{eve}/api/auth/login", cj, data=payload_alt)
             try:
                 j2 = json.loads(body2)
             except Exception:
                 j2 = {}
             if code2 == 200 and j2.get("status") == "success":
-                OK(f"  alt creds work: {alt[0]}/{alt[1]} — use these instead")
+                OK(f"  alt creds WORK: {alt[0]}/{alt[1]} - use these instead")
                 user, password = alt
                 break
         else:
+            FAIL("All credentials failed.")
+            INFO("  Tomorrow olympiad: ask the proctor for IP/port/user/pass/lab path explicitly.")
+            INFO("  Then re-run:  --host <ip> --port <port> --user <user> --password <pass> --lab <path>")
             return None
     OK(f"login succeeded (user={user})")
 
@@ -267,21 +309,45 @@ def emit_inventory(host, lab_data, lab_path):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--host", required=True, help="EVE-NG host (with or without http://)")
-    p.add_argument("--user", default="admin")
-    p.add_argument("--password", default="eve")
+    p.add_argument("--host", required=True, help="EVE-NG host (with or without http://, optional :port)")
+    p.add_argument("--port", type=int, default=None, help="override port (defaults to URL port or 80/443)")
+    p.add_argument("--user", default=None, help="EVE-NG login username (default: admin)")
+    p.add_argument("--password", default=None, help="EVE-NG login password (default: eve)")
+    p.add_argument("--tenant", default=None, help="EVE-NG Pro tenant ID (only if Pro multi-tenant)")
     p.add_argument("--lab", default=None, help="lab path (defaults to your active lab)")
+    p.add_argument("--no-fallback-creds", action="store_true",
+                   help="disable trying common alternate creds when login fails (when given explicit creds)")
     p.add_argument("--check-nodes", action="store_true",
                    help="probe each node's telnet + login (slower, ~5s/node)")
+    p.add_argument("--node-user", default=None, help="username for per-node telnet probe")
+    p.add_argument("--node-password", default=None, help="password for per-node telnet probe")
     p.add_argument("--emit-inventory", action="store_true",
                    help="print inventory.yml for the lab")
     args = p.parse_args()
+
+    # Detect whether caller explicitly gave creds
+    explicit_creds = (args.user is not None) or (args.password is not None)
+    user = args.user if args.user is not None else "admin"
+    password = args.password if args.password is not None else "eve"
+
+    # If --node-user/--node-password given, override the per-node probe creds
+    if args.node_user is not None or args.node_password is not None:
+        global COMMON_CREDS
+        COMMON_CREDS = [{
+            "username": args.node_user or "",
+            "password": args.node_password or "",
+            "secret":   args.node_password or "",
+        }] + COMMON_CREDS
 
     print(col("=" * 70, "cyan"))
     print(col(" EVE-NG diagnostics", "cyan"))
     print(col("=" * 70, "cyan"))
 
-    eve_state = check_eve(args.host, args.user, args.password)
+    # When explicit creds given, do NOT try common alternates unless asked
+    try_alts = not (explicit_creds or args.no_fallback_creds)
+    eve_state = check_eve(args.host, user, password,
+                          port=args.port, tenant=args.tenant,
+                          try_alternates=try_alts)
     if not eve_state:
         sys.exit(1)
 
