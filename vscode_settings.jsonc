@@ -1,0 +1,151 @@
+{
+  // ============================================================
+  //  VS Code — Olympiad Edition + Cisco settings
+  //  ----------------------------------------------------------
+  //  Bumbaa-gin huviin settings + olympiad tohirgoo.
+  //  Cisco IOS highlight regex-iin yum bol cisco_highlights.jsonc
+  //  faild bui — eniig settings.json doroo merge hiisniig daraa
+  //  cisco_highlights.jsonc-iin "highlight.regexes" object-iig
+  //  davhar paste hiine.
+  //
+  //  SHAARDLAGATAY EXTENSIONS:
+  //    - markhillard.cisco-ios-ng       (Cisco syntax base)
+  //    - fabiospampinato.vscode-highlight (regex highlight)
+  //    - eamodio.gitlens                (Git visualization)
+  //    - zhuangtongfa.material-theme    (One Dark Pro Nord)
+  //    - pkief.material-icon-theme      (icons)
+  // ============================================================
+
+  // === EDITOR ===
+  "editor.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
+  "editor.fontSize": 13,
+  "editor.fontWeight": "500",
+  "editor.lineHeight": 25,
+  "editor.tabSize": 1,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "off",
+  "editor.minimap.enabled": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "block",
+  "editor.formatOnSave": false,
+  "editor.largeFileOptimizations": false,
+  "editor.detectIndentation": false,
+  "editor.stickyScroll.enabled": true,
+  "editor.suggestSelection": "first",
+  "editor.linkedEditing": true,
+
+  // === FILES — Cisco config recognition + safety ===
+  "files.associations": {
+    "*.cfg": "cisco",
+    "*.conf": "cisco",
+    "*.ios": "cisco",
+    "*.cisco": "cisco",
+    "*.txt": "plaintext"
+  },
+  "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.encoding": "utf8",
+  "files.eol": "\r\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/*.log": true,
+    "**/*.bak": true,
+    "**/*.tmp": true,
+    "**/Thumbs.db": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/*.log": true
+  },
+
+  // === SEARCH ===
+  "search.exclude": {
+    "**/*.log": true,
+    "**/*.bak": true,
+    "**/.git": true,
+    "**/node_modules": true
+  },
+  "search.useGlobalIgnoreFiles": true,
+  "search.smartCase": true,
+
+  // === GIT ===
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.ignoreMissingGitWarning": true,
+  "git.openRepositoryInParentFolders": "always",
+  "git.suggestSmartCommit": false,
+  "diffEditor.codeLens": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+
+  // === WORKBENCH ===
+  "workbench.colorTheme": "One Dark Pro Nord",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 20,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.startupEditor": "none",
+
+  // === EXPLORER ===
+  "explorer.sortOrder": "type",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmPasteNative": false,
+  "explorer.compactFolders": false,
+
+  // === TERMINAL ===
+  "terminal.integrated.fontFamily": "Cascadia Code",
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.stickyScroll.enabled": false,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "block",
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.scrollback": 50000,
+
+  // === PRIVACY ===
+  "telemetry.telemetryLevel": "off",
+  "redhat.telemetry.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "settingsSync.ignoredExtensions": [],
+  "update.mode": "manual",
+  "extensions.autoUpdate": false,
+
+  // === AI DISABLED ===
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "chat.commandCenter.enabled": false,
+
+  // === CISCO LANGUAGE-specific ===
+  "[cisco]": {
+    "editor.tabSize": 1,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "off",
+    "editor.formatOnSave": false,
+    "editor.detectIndentation": false,
+    "editor.semanticHighlighting.enabled": true,
+    "editor.guides.indentation": false
+  },
+
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": false
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
+
+  // NOTE: For Cisco IOS regex highlights, see net/cisco_highlights.jsonc.
+  // Paste its "highlight.regexes" object alongside these settings.
+}

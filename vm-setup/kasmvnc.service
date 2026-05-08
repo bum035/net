@@ -1,0 +1,13 @@
+[Unit]
+Description=KasmVNC Server (XFCE)
+After=default.target network-online.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/kasmvncserver -depth 24 -geometry 1920x1080 :1
+ExecStop=/usr/bin/kasmvncserver -kill :1
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,486 @@
+﻿093841.358: 
+093841.359: **************************************************************************
+093841.359: * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+093841.396: * education. IOSv is provided as-is and is not supported by Cisco's      *
+093841.397: * Technical Advisory Center. Any use or disclosure, in whole or in part, *
+093841.476: * of the IOSv Software or Documentation to any third party for any       *
+093841.545: * purposes is expressly prohibited except as otherwise authorized by     *
+093842.656: * Cisco in writing.                                                      *
+093842.657: **************************************************************************
+093915.889: R3>
+093915.889: R3>
+093916.209: R3>
+093916.209: R3>
+093916.209: R3>
+093916.209: R3>
+093916.296: R3>
+093916.296: R3>
+093916.296: R3>
+093918.393: R3>en
+093918.618: R3#terminal length 0
+093918.902: R3#terminal monitor
+093918.902: % Console already monitors
+093918.902: R3#
+093919.552: R3#
+093919.552: R3#
+093919.739: R3#
+093919.739: R3#
+093920.098: R3#
+093925.141: R3#show run
+093925.141: Building configuration...
+093927.177: 
+093927.177: Current configuration : 3198 bytes
+093927.177: !
+093927.177: version 15.9
+093927.178: service timestamps debug datetime msec
+093927.178: service timestamps log datetime msec
+093927.178: no service password-encryption
+093927.178: !
+093927.178: hostname R3
+093927.178: !
+093927.178: boot-start-marker
+093927.180: boot-end-marker
+093927.180: !
+093927.180: !
+093927.180: !
+093927.180: no aaa new-model
+093927.180: !
+093927.180: !
+093927.180: !
+093927.180: mmi polling-interval 60
+093927.180: no mmi auto-configure
+093927.352: no mmi pvc
+093927.353: mmi snmp-timeout 180
+093927.353: !
+093927.353: !
+093927.353: !
+093927.353: !
+093927.354: !
+093927.354: !
+093927.354: !
+093927.354: !
+093927.355: !
+093927.355: !
+093927.355: !
+093927.619: no ip domain lookup
+093927.619: ip cef
+093927.620: no ipv6 cef
+093927.620: !
+093927.620: multilink bundle-name authenticated
+093927.620: !
+093927.620: !
+093927.620: !
+093927.620: !
+093927.620: !
+093927.621: redundancy
+093927.622: !
+093927.622: !
+093927.622: ! 
+093927.622: !
+093927.622: !
+093928.104: !
+093928.104: !
+093928.105: !
+093928.105: !
+093928.105: !
+093928.105: !
+093928.105: !
+093928.105: !
+093928.105: !
+093928.105: !
+093928.105: interface Loopback0
+093928.105:  ip address 3.3.3.3 255.255.255.255
+093928.105: !
+093928.106: interface GigabitEthernet0/0
+093928.106:  ip address 10.0.34.1 255.255.255.252
+093928.106:  duplex auto
+093928.106:  speed auto
+093928.106:  media-type rj45
+093928.106: !
+093928.106: interface GigabitEthernet0/1
+093928.106:  ip address 10.0.23.2 255.255.255.252
+093928.575:  duplex auto
+093928.575:  speed auto
+093928.575:  media-type rj45
+093928.575: !
+093928.575: interface GigabitEthernet0/2
+093928.575:  no ip address
+093928.575:  shutdown
+093928.575:  duplex auto
+093928.575:  speed auto
+093928.575:  media-type rj45
+093928.575: !
+093928.575: interface GigabitEthernet0/3
+093928.575:  no ip address
+093928.575:  shutdown
+093928.576:  duplex auto
+093928.576:  speed auto
+093928.576:  media-type rj45
+093928.577: !
+093928.577: router ospf 3
+093928.577:  router-id 3.3.3.3
+093929.078:  network 3.3.3.3 0.0.0.0 area 0
+093929.078:  network 10.0.23.0 0.0.0.3 area 0
+093929.078:  network 10.0.34.0 0.0.0.3 area 0
+093929.078: !
+093929.079: ip forward-protocol nd
+093929.079: !
+093929.079: !
+093929.079: no ip http server
+093929.079: no ip http secure-server
+093929.079: !
+093929.079: ipv6 ioam timestamp
+093929.079: !
+093929.079: !
+093929.079: !
+093929.079: control-plane
+093929.079: !
+093929.079: banner exec ^C
+093929.079: **********************************************************093929.080: ****************
+093929.234: * IOSv is strictly limited to use for evaluation, demonstr093929.235: ation and IOS  *
+093929.236: * education. IOSv is provided as-is and is not supported b093929.236: y Cisco's      *
+093929.237: * Technical Advisory Center. Any use or disclosure, in who093929.238: le or in part, *
+093929.238: * of the IOSv Software or Documentation to any third party093929.239:  for any       *
+093929.239: * purposes is expressly prohibited except as otherwise aut093929.239: horized by     *
+093929.409: * Cisco in writing.                                       093929.409:                *
+093929.761: **********************************************************093929.762: ****************^C
+093929.762: banner incoming ^C
+093929.763: **********************************************************093929.764: ****************
+093929.764: * IOSv is strictly limited to use for evaluation, demonstr093930.004: ation and IOS  *
+093930.005: * education. IOSv is provided as-is and is not supported b093930.006: y Cisco's      *
+093930.006: * Technical Advisory Center. Any use or disclosure, in who093930.008: le or in part, *
+093930.008: * of the IOSv Software or Documentation to any third party093930.009:  for any       *
+093930.156: * purposes is expressly prohibited except as otherwise aut093930.157: horized by     *
+093930.455: * Cisco in writing.                                       093930.456:                *
+093930.457: **********************************************************093930.458: ****************^C
+093930.459: banner login ^C
+093930.594: **********************************************************093930.596: ****************
+093930.597: * IOSv is strictly limited to use for evaluation, demonstr093930.598: ation and IOS  *
+093930.599: * education. IOSv is provided as-is and is not supported b093930.600: y Cisco's      *
+093930.601: * Technical Advisory Center. Any use or disclosure, in who093930.678: le or in part, *
+093930.746: * of the IOSv Software or Documentation to any third party093930.747:  for any       *
+093930.847: * purposes is expressly prohibited except as otherwise aut093930.848: horized by     *
+093930.908: * Cisco in writing.                                       093931.010:                *
+093931.011: **********************************************************093931.072: ****************^C
+093931.072: !
+093931.072: line con 0
+093931.072:  exec-timeout 0 0
+093931.161:  logging synchronous
+093931.161: line aux 0
+093931.352:  exec-timeout 0 0
+093931.352: line vty 0 4
+093931.352:  exec-timeout 0 0
+093931.353:  logging synchronous
+093931.353:  login
+093931.353:  transport input none
+093931.353: !
+093931.354: no scheduler allocate
+093931.354: !
+093931.354: end
+093931.354: 
+093942.154: R3#conf t
+093942.155: Enter configuration commands, one per line.  End with CNTL093942.156: /Z.
+093942.156: R3(config)#no banner exec
+093942.355: R3(config)#no banner login
+093942.356: R3(config)#no banner incoming
+093942.356: R3(config)#no banner motd
+093942.357: R3(config)#no mmi polling-interval
+093942.538: R3(config)#no mmi auto-configure
+093942.538: R3(config)#no mmi pvc
+093942.539: R3(config)#no mmi snmp-timeout
+093942.767: R3(config)#no multilink bundle-name authenticated
+093942.767: R3(config)#no ipv6 ioam timestamp
+093942.769: R3(config)#no scheduler allocate
+093942.769: R3(config)#no ip http server
+093942.769: R3(config)#no ip http secure-server
+093942.769: R3(config)#no ip domain lookup
+093942.771: R3(config)#end
+093942.771: R3#wr
+093942.819: Building configuration...
+093944.518: [OK]
+093944.519: *May  8 01:39:43.845: %SYS-5-CONFIG_I: Configured from con093945.763: sole by console
+093946.270: R3#
+093946.271: *May  8 01:39:45.456: %GRUB-5-CONFIG_WRITING: GRUB configu093946.272: ration is being updated on disk. Please wait...
+093946.272: *May  8 01:39:46.254: %GRUB-5-CONFIG_WRITTEN: GRUB configu093946.273: ration was written to disk successfully.
+093948.424: R3#
+093948.480: R3#
+093948.543: R3#
+093948.878: R3#
+093949.107: R3#
+093949.489: R3#
+093949.703: R3#
+093949.897: R3#
+093949.897: R3#
+093953.097: R3#show run
+093953.099: Building configuration...
+093955.053: 
+093955.053: Current configuration : 1389 bytes
+093955.053: !
+093955.053: ! Last configuration change at 01:39:43 UTC Fri May 8 2026
+093955.053: !
+093955.054: version 15.9
+093955.054: service timestamps debug datetime msec
+093955.056: service timestamps log datetime msec
+093955.057: no service password-encryption
+093955.057: !
+093955.057: hostname R3
+093955.057: !
+093955.057: boot-start-marker
+093955.058: boot-end-marker
+093955.058: !
+093955.058: !
+093955.058: !
+093955.059: no aaa new-model
+093955.059: !
+093955.059: !
+093955.059: !
+093955.059: mmi polling-interval 60
+093955.060: no mmi auto-configure
+093955.114: no mmi pvc
+093955.115: mmi snmp-timeout 180
+093955.115: !
+093955.115: !
+093955.116: !
+093955.116: !
+093955.116: !
+093955.229: !
+093955.229: !
+093955.229: !
+093955.229: !
+093955.229: !
+093955.230: !
+093955.230: no ip domain lookup
+093955.230: ip cef
+093955.505: no ipv6 cef
+093955.505: !
+093955.505: multilink bundle-name authenticated
+093955.505: !
+093955.505: !
+093955.505: !
+093955.505: !
+093955.506: !
+093955.506: redundancy
+093955.506: !
+093955.506: !
+093955.506: ! 
+093955.506: !
+093955.506: !
+093955.506: !
+093955.506: !
+093955.506: !
+093955.507: !
+093955.507: !
+093955.507: !
+093955.507: !
+093955.507: !
+093955.507: !
+093955.507: !
+093955.766: interface Loopback0
+093955.766:  ip address 3.3.3.3 255.255.255.255
+093955.766: !
+093955.766: interface GigabitEthernet0/0
+093955.767:  ip address 10.0.34.1 255.255.255.252
+093955.767:  duplex auto
+093955.767:  speed auto
+093956.065:  media-type rj45
+093956.065: !
+093956.065: interface GigabitEthernet0/1
+093956.065:  ip address 10.0.23.2 255.255.255.252
+093956.065:  duplex auto
+093956.065:  speed auto
+093956.065:  media-type rj45
+093956.065: !
+093956.067: interface GigabitEthernet0/2
+093956.067:  no ip address
+093956.071:  shutdown
+093956.072:  duplex auto
+093956.258:  speed auto
+093956.258:  media-type rj45
+093956.258: !
+093956.258: interface GigabitEthernet0/3
+093956.258:  no ip address
+093956.259:  shutdown
+093956.259:  duplex auto
+093956.259:  speed auto
+093956.259:  media-type rj45
+093956.259: !
+093956.259: router ospf 3
+093956.259:  router-id 3.3.3.3
+093956.259:  network 3.3.3.3 0.0.0.0 area 0
+093956.259:  network 10.0.23.0 0.0.0.3 area 0
+093956.260:  network 10.0.34.0 0.0.0.3 area 0
+093956.717: !
+093956.717: ip forward-protocol nd
+093956.717: !
+093956.717: !
+093956.717: no ip http server
+093956.717: no ip http secure-server
+093956.717: !
+093956.717: !
+093956.717: !
+093956.718: !
+093956.718: control-plane
+093956.718: !
+093956.718: !
+093956.718: line con 0
+093956.718:  exec-timeout 0 0
+093956.718:  logging synchronous
+093956.718: line aux 0
+093956.718:  exec-timeout 0 0
+093956.718: line vty 0 4
+093956.720:  exec-timeout 0 0
+093956.720:  logging synchronous
+093956.720:  login
+093956.720:  transport input none
+093956.720: !
+093956.720: no scheduler allocate
+093956.720: !
+093956.720: end
+093956.720: 
+100839.688: R3#show ip route 1.1.1.1
+100839.688: Routing entry for 1.1.1.1/32
+100839.689:   Known via "ospf 3", distance 110, metric 20, type extern100839.691:  2, forward metric 1
+100839.736:   Last update from 10.0.23.1 on GigabitEthernet0/1, 00:03:100839.781: 17 ago
+100839.782:   Routing Descriptor Blocks:
+100839.884:   * 10.0.23.1, from 2.2.2.2, 00:03:17 ago, via GigabitEthe100839.942: rnet0/1
+100839.988:       Route metric is 20, traffic share count is 1
+101419.462: R3#
+101419.463: R3#
+101419.463: R3#
+101419.625: R3#terminal length 0
+101419.728: R3#more system:running-config
+101421.552: !
+101421.603: ! Last configuration change at 01:39:43 UTC Fri May 8 2026
+101421.643: !
+101421.644: version 15.9
+101421.690: service timestamps debug datetime msec
+101421.736: service timestamps log datetime msec
+101421.777: no service password-encryption
+101421.822: !
+101421.822: hostname R3
+101421.822: !
+101421.860: boot-start-marker
+101421.867: boot-end-marker
+101421.867: !
+101421.867: !
+101421.868: !
+101421.900: no aaa new-model
+101421.904: !
+101421.904: !
+101421.908: !
+101421.948: mmi polling-interval 60
+101421.986: no mmi auto-configure
+101421.992: no mmi pvc
+101422.030: mmi snmp-timeout 180
+101422.032: !
+101422.032: !
+101422.036: !
+101422.037: !
+101422.037: !
+101422.037: !
+101422.037: !
+101422.074: !
+101422.075: !
+101422.075: !
+101422.076: !
+101422.115: no ip domain lookup
+101422.115: ip cef
+101422.119: no ipv6 cef
+101422.119: !
+101422.180: multilink bundle-name authenticated
+101422.180: !
+101422.183: !
+101422.184: !
+101422.186: !
+101422.186: !
+101422.226: redundancy
+101422.226: !
+101422.227: !
+101422.233: ! 
+101422.233: !
+101422.233: !
+101422.233: !
+101422.233: !
+101422.274: !
+101422.274: !
+101422.274: !
+101422.274: !
+101422.274: !
+101422.275: !
+101422.277: !
+101422.277: !
+101422.311: interface Loopback0
+101422.354:  ip address 3.3.3.3 255.255.255.255
+101422.357: !
+101422.402: interface GigabitEthernet0/0
+101422.450:  ip address 10.0.34.1 255.255.255.252
+101422.484:  duplex auto
+101422.487:  speed auto
+101422.527:  media-type rj45
+101422.528: !
+101422.570: interface GigabitEthernet0/1
+101422.611:  ip address 10.0.23.2 255.255.255.252
+101422.617:  duplex auto
+101422.654:  speed auto
+101422.659:  media-type rj45
+101422.659: !
+101422.707: interface GigabitEthernet0/2
+101422.743:  no ip address
+101422.755:  shutdown
+101422.785:  duplex auto
+101422.794:  speed auto
+101422.830:  media-type rj45
+101422.830: !
+101422.875: interface GigabitEthernet0/3
+101422.879:  no ip address
+101422.879:  shutdown
+101422.918:  duplex auto
+101422.925:  speed auto
+101422.960:  media-type rj45
+101422.960: !
+101422.965: router ospf 3
+101423.005:  router-id 3.3.3.3
+101423.047:  network 3.3.3.3 0.0.0.0 area 0
+101423.090:  network 10.0.23.0 0.0.0.3 area 0
+101423.132:  network 10.0.34.0 0.0.0.3 area 0
+101423.133: !
+101423.174: ip forward-protocol nd
+101423.174: !
+101423.174: !
+101423.211: no ip http server
+101423.393: no ip http secure-server
+101423.394: !
+101423.394: !
+101423.395: !
+101423.395: !
+101423.399: control-plane
+101423.399: !
+101423.399: !
+101423.399: line con 0
+101423.399:  exec-timeout 0 0
+101423.399:  logging synchronous
+101423.399: line aux 0
+101423.399:  exec-timeout 0 0
+101423.422: line vty 0 4
+101423.425:  exec-timeout 0 0
+101423.474:  logging synchronous
+101423.475:  login
+101423.510:  transport input none
+101423.510: !
+101423.549: no scheduler allocate
+101423.549: !
+101423.552: end
+101423.552: 
+101437.585: R3#
+101437.779: R3#
+101437.930: R3#
+101442.103: R3#do wr
+101442.103:       ^
+101442.159: % Invalid input detected at '^' marker.
+101442.159: 
+101444.837: R3#wr
+101444.838: Building configuration...
+101447.306: [OK]
+101448.220: R3#
+101448.223: *May  8 02:14:48.234: %GRUB-5-CONFIG_WRITING: GRUB configu101448.315: ration is being updated on disk. Please wait...
+101448.360: *May  8 02:14:49.024: %GRUB-5-CONFIG_WRITTEN: GRUB configu101448.456: ration was written to disk successfully.

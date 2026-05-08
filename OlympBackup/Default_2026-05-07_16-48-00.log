@@ -1,0 +1,152 @@
+﻿164803.543: 
+164803.962: R1#terminal length 0
+164804.587: R1#terminal monitor
+164804.587: % Console already monitors
+164805.148: R1#
+164805.203: R1#
+164805.579: R1#
+164805.579: R1#
+164806.223: R1#
+164818.698: R1#show run
+164818.698: Building configuration...
+164820.442: 
+164820.444: Current configuration : 1346 bytes
+164820.444: !
+164820.553: ! Last configuration change at 08:09:53 UTC Thu May 7 2026
+164820.553: !
+164820.553: version 15.9
+164820.598: service timestamps debug datetime msec
+164820.649: service timestamps log datetime msec
+164820.708: no service password-encryption
+164820.708: !
+164820.708: hostname R1
+164820.708: !
+164820.805: boot-start-marker
+164820.807: boot-end-marker
+164820.808: !
+164820.809: !
+164820.810: !
+164820.810: no aaa new-model
+164820.810: !
+164820.811: !
+164820.811: !
+164820.861: mmi polling-interval 60
+164820.913: no mmi auto-configure
+164820.913: no mmi pvc
+164820.982: mmi snmp-timeout 180
+164820.982: !
+164820.984: !
+164820.984: !
+164820.984: !
+164820.984: !
+164820.984: !
+164820.984: !
+164820.985: !
+164820.985: !
+164820.985: !
+164820.985: !
+164821.043: no ip domain lookup
+164821.043: ip cef
+164821.043: no ipv6 cef
+164821.043: !
+164821.101: multilink bundle-name authenticated
+164821.102: !
+164821.102: !
+164821.102: !
+164821.102: !
+164821.102: !
+164821.102: redundancy
+164821.162: !
+164821.162: !
+164821.162: ! 
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.162: !
+164821.163: !
+164821.163: !
+164821.207: interface Loopback0
+164821.258:  ip address 1.1.1.1 255.255.255.255
+164821.258: !
+164821.314: interface GigabitEthernet0/0
+164821.366:  ip address 10.10.12.1 255.255.255.252
+164821.366:  duplex auto
+164821.366:  speed auto
+164821.435:  media-type rj45
+164821.436: !
+164821.437: interface GigabitEthernet0/1
+164821.490:  no ip address
+164821.490:  shutdown
+164821.491:  duplex auto
+164821.548:  speed auto
+164821.548:  media-type rj45
+164821.548: !
+164821.596: interface GigabitEthernet0/2
+164821.596:  no ip address
+164821.645:  shutdown
+164821.645:  duplex auto
+164821.645:  speed auto
+164821.697:  media-type rj45
+164821.697: !
+164821.753: interface GigabitEthernet0/3
+164821.753:  no ip address
+164821.753:  shutdown
+164821.796:  duplex auto
+164821.796:  speed auto
+164821.845:  media-type rj45
+164821.845: !
+164821.846: router ospf 1
+164821.897:  router-id 1.1.1.1
+164821.898:  network 1.1.1.1 0.0.0.0 area 10
+164821.958:  network 10.10.12.0 0.0.0.3 area 10
+164821.958: !
+164822.292: ip forward-protocol nd
+164822.292: !
+164822.292: !
+164822.292: no ip http server
+164822.292: no ip http secure-server
+164822.293: !
+164822.293: !
+164822.293: !
+164822.293: !
+164822.293: control-plane
+164822.293: !
+164822.293: !
+164822.293: line con 0
+164822.293:  exec-timeout 0 0
+164822.293:  logging synchronous
+164822.294: line aux 0
+164822.294:  exec-timeout 0 0
+164822.295: line vty 0 4
+164822.295:  exec-timeout 0 0
+164822.295:  logging synchronous
+164822.302:  login
+164822.378:  transport input none
+164822.378: !
+164822.378: no scheduler allocate
+164822.378: !
+164822.378: end
+164822.378: 
+164822.378: R1# 
+164822.378: R1# 
+164822.436: R1# 
+164822.436: R1# 
+164822.436: R1# 
+164822.436: R1# 
+164822.436: R1# 
+164822.479: R1#do show run
+164822.479:       ^
+164822.529: % Invalid input detected at '^' marker.
+164822.529: 
+164822.529: R1# 
+164822.529: R1# 
+164822.572: R1# 
+165621.594: 
+165621.594: The network connection was aborted by the local system.
+165621.594: 
