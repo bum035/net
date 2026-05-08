@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"http://localhost:3000/api/departments?depth=0&limit=100\")",
+      "Bash(python3 -c ':*)"
+    ]
+  }
+}
