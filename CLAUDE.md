@@ -6,7 +6,110 @@
 
 > 🟢 **Олимпиадын дүрэм**: AI болон интернет **ЗӨВШӨӨРСӨН**. Claude Code, claude.ai, ChatGPT, Google, Cisco/NX-OS docs бүгд ашиглах боломжтой. Доорх workflow-д Claude Code-ыг гол edit tool гэж тооцсон.
 
-## Setup workflow (олимпиадын машин дээр)
+## Setup workflow — Linux VM (Ubuntu — primary)
+
+> Linux SecureCRT-ийн Windows-той ялгаа: config зам нь `~/.vandyke/SecureCRT/Config/` (`%APPDATA%` биш). VBS script-үүдийн COM-объектууд (`WScript.Shell`, `Scripting.FileSystemObject`) **ажиллахгүй** — оронд нь Linux-д зориулсан Python хувилбар (`Scripts/backup_configs.py`, `Scripts/push_config.py`) эсвэл terminal-аас netmiko script ашиглана.
+
+### Алхам 1 — Repo татах
+
+```bash
+cd ~
+git clone https://github.com/bum035/net.git
+code ~/net
+```
+
+USB fallback: `net/` folder-ыг copy.
+
+### Алхам 2 — SecureCRT config (per-subdir symlink)
+
+Зорилго: `~/.vandyke/SecureCRT/Config/` доторх **зөвхөн** `Sessions`, `Commands`, `Keywords`, `Scripts`, `Global.ini`, `ButtonBarV5.ini`, `SCRTMenuToolbarV3.ini` нь репог зааж өгнө. License (`SecureCRT_eval.lic`) нь жинхэнэ файл хэвээр үлдэнэ — symlink-аар орлуулбал лиценз ажиллахаа болино.
+
+```bash
+cd ~/.vandyke/SecureCRT
+mv Config Config.bak                            # хуучин default-ыг backup
+mkdir -p Config
+cp Config.bak/SecureCRT_eval.lic Config/ 2>/dev/null || true
+cp Config.bak/SSH2.ini Config/ 2>/dev/null || true
+
+REPO=~/net/secureCRT/VanDyke/Config
+DEST=~/.vandyke/SecureCRT/Config
+for d in Sessions Commands Keywords Scripts KnownHosts Snapshots; do
+    ln -sfn "$REPO/$d" "$DEST/$d"
+done
+for f in Global.ini ButtonBarV5.ini SCRTMenuToolbarV3.ini; do
+    ln -sfn "$REPO/$f" "$DEST/$f"
+done
+ls -la "$DEST"   # бүх дотор нь "->" гарч буйг шалга
+```
+
+**Шалгах:** SecureCRT-г бүрэн хааж нээгээд → Sessions tree дээр `pod-template/R1`...`SW3` гарах ёстой. Button Bar дээр `BACKUP`, `PUSH`, `clean_ALL` товч харагдах ёстой.
+
+### Алхам 3 — Python script (VBS-ийн оронд)
+
+ButtonBar-ийн `BACKUP`/`PUSH` товч default-аар `.vbs` файл руу заасан байна. Linux дээр SecureCRT нь VBS engine ажиллуулдаг **гэхдээ** `WScript.Shell` гэх Windows COM object-ууд тэнд байхгүй тул бичсэн VBS-үүд **ажиллахгүй**.
+
+Шийдэл — 2 сонголт:
+1. **Manual run**: SecureCRT GUI → `Script → Run...` → `~/net/secureCRT/VanDyke/Config/Scripts/backup_configs.py` сонгоно. `push_config.py`-г идэвхтэй tab дээр ижилхэн.
+2. **Button Bar товч re-target**: `Tools → Button Bar Manager → BACKUP товч → Edit → Run script` талбарыг `${VDS_CONFIG_PATH}/Scripts/backup_configs.py`-руу солино. PUSH товчны хувьд `push_config.py`. Дараа `File → Save Settings`.
+
+Backup output:
+```
+$OLYMP_BACKUP_DIR (тавиагүй бол ~/OlympBackup/)
+```
+
+### Алхам 4 — VS Code extensions
+
+```bash
+code --install-extension fabiospampinato.vscode-highlight
+code --install-extension Anthropic.claude-code
+code --install-extension auchenberg.vscode-browser-preview   # claude.ai VS Code дотор
+```
+
+`cisco_highlights.jsonc`-ыг `Ctrl+Shift+P → Preferences: Open User Settings (JSON)` → root-д paste. `.cfg` файл нээж өнгө гарч буйг шалга.
+
+### Алхам 5 — Claude Code login
+
+```bash
+npx @anthropic-ai/claude-code   # browser auth
+```
+
+Эсвэл VS Code Claude Code panel → Sign in. Backup нэвтрэлтүүд: claude.ai (Browser Preview tab), chat.openai.com.
+
+### Алхам 6 — netmiko + telnet (terminal fallback)
+
+VS Code terminal-аас шууд EVE-NG node-руу холбогдоно. SecureCRT хэрэгтэйгүй.
+
+```bash
+pip3 install --user netmiko pyyaml          # netmiko 4.6+ already суугаа
+
+# Хурдан telnet helper
+~/net/scripts/eve_telnet.sh 32769            # localhost:32769
+echo "R1 32769" >> ~/.eve_pods.conf
+echo "R2 32770" >> ~/.eve_pods.conf
+~/net/scripts/eve_telnet.sh R1               # нэрээр харна
+
+# Batch backup бүх pod
+cp ~/net/scripts/inventory.example.yml ~/pod1.yml
+$EDITOR ~/pod1.yml                           # port-уудыг pod-тойгоо тааруулна
+~/net/scripts/netmiko_backup.py ~/pod1.yml
+
+# Single push
+~/net/scripts/netmiko_push.py ~/OlympBackup/R1_2026-05-09_10-30.cfg \
+    --host 127.0.0.1 --port 32769
+
+# Single ad-hoc backup (inventory-гүйгээр)
+~/net/scripts/netmiko_backup.py --host 127.0.0.1 --port 32769 --name R1
+```
+
+### Алхам 7 — Browser-in-VS Code (claude.ai холбоо)
+
+`Ctrl+Shift+P → Browser Preview: Open Preview` → `https://claude.ai`. Side-by-side Claude Code panel + Claude.ai веб = config debug хурдан болно.
+
+---
+
+## Setup workflow — Windows (alt-machine)
+
+> Олимпиадын машин Windows бол энэ замаар.
 
 ### Алхам 1 — Repo татах
 
@@ -105,14 +208,18 @@ EVE-NG WebUI → SecureCRT (console)
 
 | Path | Үүрэг |
 |---|---|
-| `secureCRT/VanDyke/Config/` | **SecureCRT config payload** — Sessions, Commands, Keywords, Scripts, ButtonBar, Global.ini. **`%APPDATA%\VanDyke\Config\`-руу хуулагдах ёстой** |
-| `EVE-NG/` | EVE-NG protocol handlers — `.reg` (telnet/vnc/wireshark URL handler) + `.bat` wrappers. Зөвхөн EVE-NG web UI-ийн "Connect" workflow-д хэрэгтэй |
-| `OlympBackup/` | `backup_configs.vbs`-ийн өмнөх run-ийн жишээ (test data) — олимпиадын дараа цэвэрлэж болно |
+| `secureCRT/VanDyke/Config/` | **SecureCRT config payload** — Sessions, Commands, Keywords, Scripts, ButtonBar, Global.ini. **Linux:** `~/.vandyke/SecureCRT/Config/`-руу subdir symlink. **Windows:** `%APPDATA%\VanDyke\Config\`-руу junction |
+| `secureCRT/VanDyke/Config/Scripts/*.py` | **Linux SecureCRT Python хувилбар** (VBS-ийн оронд) — `backup_configs.py`, `push_config.py` |
+| `scripts/` | **Terminal-side helper-ууд** — `eve_telnet.sh` (EVE-NG telnet wrapper), `netmiko_backup.py` (batch backup), `netmiko_push.py` (config push), `inventory.example.yml` |
+| `EVE-NG/` | EVE-NG protocol handlers — `.reg` (telnet/vnc/wireshark URL handler) + `.bat` wrappers. Зөвхөн Windows-ийн EVE-NG web UI "Connect" workflow-д хэрэгтэй |
+| `OlympBackup/` | `backup_configs.{vbs,py}` болон `netmiko_backup.py`-ийн өмнөх run-ийн жишээ (test data) — олимпиадын дараа цэвэрлэж болно |
 | `cisco_highlights.jsonc` | VS Code Highlight extension regex (`.cfg`-д өнгө) — SecureCRT-н "Cisco Words - DkBg" port |
+| `vscode_settings.jsonc` | VS Code user settings (Cascadia, `*.cfg → cisco`, CRLF, telemetry off, дэлгэц layout). `cisco_highlights.jsonc`-той хамт settings.json-руу merge |
 | `*.spsl` | SecureCRT chat-paste snippet (`pc_ip`, `show`, `nat_pat`, `ipsec_gre`) |
 | `button bar.sh` | Button bar товчны жагсаалтын текст reference |
-| `reference/` | Offline cheat sheet, lab PDF, өмнөх жилийн config-ууд, AI prompt template (АН тасрах эсвэл хурдан хайх боломж) |
-| `.gitignore` | `*.exe`, license artifacts, pre-installed binary folder-уудыг ignore |
+| `reference/` | Offline cheat sheet, lab PDF, өмнөх жилийн config-ууд, AI prompt template (`prompts.md` бэлэн; PDF + 2024/2025 round2 placeholder, олимпиадын өмнөх өдөр Windows local-аас хуулна) |
+| `vm-setup/` | **Linux cloud VM provisioning scripts** (Caddy + code-server + KasmVNC + Claude CLI). Олимпиадын станцыг remote dev workstation болгох routes — `code.egulcloud.com` / `vnc.egulcloud.com`. Энэ folder нь Windows toolkit-д хэрэгтэй биш, цөөн scripts ба `REPORT.md` (gitignore) |
+| `.gitignore` | `*.exe`, license artifacts, pre-installed binary folder-ууд, `id_ed25519`, `vm-setup/REPORT.md`, `OlympBackup/*.cfg/*.log`-ыг ignore |
 
 ## SecureCRT config — `VanDyke/Config/`
 
@@ -126,8 +233,10 @@ EVE-NG WebUI → SecureCRT (console)
 | `Sessions/pod-template/` | **Бэлэн стуб session-ууд** — `R1`, `R2`, `R3`, `SW1`, `SW2`, `SW3` (Telnet, Default-аас бусад settings inherited). Pod-ийн IP мэдсэний дараа right-click → **Clone Session** хийж `pod1/R1` руу хувилаад Hostname/Port-ыг оруулна |
 | `Commands/<topic>/__Commands__.ini` | Button Bar команд (dhcp/etherch/interface/nat/routing/show). `\\r` = Enter. `SEND_TO_ALL_SESSIONS` нь "Send Commands to All Sessions" toggle идэвхтэй tab бүрд илгээнэ |
 | `Keywords/Cisco Words - DkBg.ini` | SecureCRT терминалын **үг-түвшний** highlighting. `cisco_highlights.jsonc`-той нийцтэй байх ёстой — нэг үг хоёр дээр хоёр өөр өнгөтэй байвал төөрнө |
-| `Scripts/backup_configs.vbs` | Бүх tab-аас `show running-config` татаж `%USERPROFILE%\OlympBackup\<hostname>_<timestamp>.cfg`. `%OLYMP_BACKUP_DIR%` орчны хувьсагч тавьсан бол түүнийг ашиглана (admin permission-гүй машин дээр C:\-руу бичих ёсгүй) |
-| `Scripts/push_config.vbs` | `.cfg` файлыг идэвхтэй session-руу мөр-мөрөөр push (`LINE_DELAY_MS=50`). File picker default — backup-той ижил зам |
+| `Scripts/backup_configs.vbs` | **Windows-only.** Бүх tab-аас `show running-config` татаж `%USERPROFILE%\OlympBackup\<hostname>_<timestamp>.cfg`. `%OLYMP_BACKUP_DIR%` орчны хувьсагч тавьсан бол түүнийг ашиглана |
+| `Scripts/push_config.vbs` | **Windows-only.** `.cfg` файлыг идэвхтэй session-руу мөр-мөрөөр push (`LINE_DELAY_MS=50`). File picker default — backup-той ижил зам |
+| `Scripts/backup_configs.py` | **Linux SecureCRT хувилбар.** Ижил логик, `~/OlympBackup/` (эсвэл `$OLYMP_BACKUP_DIR`)-руу бичнэ. VBS-ийн COM-объект ажиллахгүй тул энийг ашиглана |
+| `Scripts/push_config.py` | **Linux SecureCRT хувилбар.** File picker → идэвхтэй tab руу line-by-line push |
 | `ButtonBarV5.ini` | Toolbar товчуудын тодорхойлолт (`button bar.sh` нь reference хувилбар) |
 | `Global.ini` | Global preferences. Font, color, keymap дотроос гарна — patch хийхэд **SecureCRT хаасан байх ёстой**, нээлттэй үед өөрөө дарж бичнэ |
 | `SCRTMenuToolbarV3.ini` | Menu/toolbar layout |
@@ -202,6 +311,7 @@ SecureCRT chat window дээр right-click → **Send → Paste**. Эсвэл `V
 ## Don'ts
 
 - **Live PSK / production credential** энэ repo-д commit хийхгүй — origin public. `untitled.key` болон `sonfig extracted.*`-г үзэхэд урьдчилан scrub.
+- **SSH private key, VM password** — `id_ed25519` болон `vm-setup/REPORT.md`-ийг **хэзээ ч commit хийхгүй**. (2026-05-08 нэг удаа алдсан, `git filter-repo`-аар scrub хийсэн.) Шинэ credential нэмэх үед `git status` дээр давхар шалгана.
 - `.vbs` script-ийг өөрчлөхгүй — `BACKUP_DIR` нь `%OLYMP_BACKUP_DIR%` (хэрэв тавьсан бол) → `%USERPROFILE%\OlympBackup\` (default) зам шийдвэрлэдэг. Олимпиадын машин өөр зам шаардвал env var-аар л дарж бич.
 - `OlympBackup/`-д үлдсэн May-7/8 test файлуудыг устгахгүй — реал run-ийн жишээ.
 - `Global.ini` / `SCRTMenuToolbarV3.ini`-ийг **SecureCRT нээлттэй үед** засахгүй — нэрээ дарж бичнэ.
