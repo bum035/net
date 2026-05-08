@@ -345,6 +345,14 @@ EVE-NG WebUI → SecureCRT (console)
 | Troubleshoot logic | "BGP neighbor 'Active' state-д наалджээ. Шалгах команд + хэрэв `update-source` алгассан бол хэрхэн засах вэ?" |
 | Olympiad task parse | "Энэ даалгавар: <paste>. Топологи болон тавьсан шаардлагыг нэгтгэн config skeleton гарга" |
 
+### Claude Code skills (slash command-аар дуудах)
+
+| Skill | Зорилго | Хэрэглэх үе |
+|---|---|---|
+| `/simplify` | Засварсан config / script-ийг review хийж reuse, чанар, эффективностыг сайжруулах | `.cfg` засаад push-н өмнө review хүс — deprecated keyword, redundant block-ыг олно |
+| `/loop <interval> <prompt>` | Тогтмол интервалаар prompt дахин ажиллуулах | "5 минут тутамд preflight шалга" гэх мэт |
+| `/diagnose` | Bug / regression-ыг дискрипт diagnosis loop-аар олох | Config push хийсэн ч ажиллахгүй болсон үед |
+
 ### AI ашиглахгүй хэсэг (өөрөө хийх ёстой)
 
 - **Хариу шалгах** — AI буруу config гаргаж магадгүй (вершин syntax, deprecated keyword). `show run` дээр өөрөө хяна.
@@ -376,7 +384,7 @@ EVE-NG WebUI → SecureCRT (console)
 | `vscode_settings.jsonc` | VS Code user settings (Cascadia, `*.cfg → cisco`, CRLF, telemetry off, дэлгэц layout). `cisco_highlights.jsonc`-той хамт settings.json-руу merge |
 | `*.spsl` | SecureCRT chat-paste snippet (`pc_ip`, `show`, `nat_pat`, `ipsec_gre`) |
 | `button bar.sh` | Button bar товчны жагсаалтын текст reference |
-| `reference/` | Offline cheat sheet, lab PDF, өмнөх жилийн config-ууд, AI prompt template (`prompts.md` бэлэн; PDF + 2024/2025 round2 placeholder, олимпиадын өмнөх өдөр Windows local-аас хуулна) |
+| `reference/` | Offline cheat sheet, lab PDF, өмнөх жилийн config-ууд, AI prompt template. `prompts.md` ✓, `cheatsheet/{ospf,bgp,vpc,ipsec}.md` ✓ (internet-down fallback). PDF + 2024/2025 round2 placeholder, олимпиадын өмнөх өдөр Windows local-аас хуулна |
 | `usb-offline/` | **Цэвэр шинэ Windows машинд интернетгүйгээр Python + netmiko + Graphviz суулгах бундл** (~200 MB). `setup-windows-offline.ps1` (`-PythonVersion 3.10|3.11|3.12|3.13`, `-Diagnose`, `-ForceEmbed`, `-SkipPython` flag), `OFFLINE_README.md`, `TROUBLESHOOTING.md` (бүх алдааны шинж тэмдэг → шийдэл + manual fallback), `python-full/` (4 хувилбарын installer: 3.10.11, 3.11.9, 3.12.7, 3.13.1), `python-embed/` (мөн 4), `graphviz/`, `wheels/` (3.12), `wheels-py310/`, `wheels-py311/`, `wheels-py313/`. `.gitignore`-ын `*.exe` блокыг `!usb-offline/...` rule-аар override хийсэн |
 | `vm-setup/` | **Linux cloud VM provisioning scripts** (Caddy + code-server + KasmVNC + Claude CLI). Олимпиадын станцыг remote dev workstation болгох routes — `code.egulcloud.com` / `vnc.egulcloud.com`. Энэ folder нь Windows toolkit-д хэрэгтэй биш, цөөн scripts ба `REPORT.md` (gitignore) |
 | `olymp-day/` | **Олимпиадын өдрийн ажлын workspace** — `lab-01-ospf` ... `lab-05-libre` хоосон folder, `scratch/`, `CLAUDE.md` (Claude-д өгөх exam-day context). Tmux script энд cd хийнэ. Олимпиадын task-ийн config-уудыг энд бичнэ |
@@ -459,6 +467,62 @@ SecureCRT chat window дээр right-click → **Send → Paste**. Эсвэл `V
 | **Claude Code VS Code ext** | Linux + Windows | Inline edit, panel chat | `Ctrl+Esc` |
 | **claude.ai веб (Browser Preview)** | Linux + Windows | CLI down эсвэл vision хэрэгтэй | `Browser Preview: Open Preview` → `https://claude.ai` |
 | **EVE-NG Web "Connect"** | Linux + Windows | One-click telnet to node | **Linux:** `xdg-mime default securecrt-telnet.desktop x-scheme-handler/telnet`. **Windows:** `.reg` merge |
+
+## CLI toolbox (Linux)
+
+> Олимпиадын өдөр гар дэлгэц-ээс хэрэглэх tool-ууд. Дээрх workflow-уудаас гадуур ad-hoc debugging-д.
+
+### Network analysis
+
+| Tool | Зорилго | Жишээ |
+|---|---|---|
+| `ipcalc` / `sipcalc` | Subnet math (network/host range, /N → mask) | `sipcalc 10.0.0.0/22` |
+| `mtr` | Path debug + per-hop loss | `mtr -rwc 20 10.0.0.1` |
+| `iperf3` | Bandwidth test | `iperf3 -c <peer>` (server: `iperf3 -s`) |
+| `arp-scan` | LAN device discovery | `sudo arp-scan -I eth0 --localnet` |
+| `nc` (netcat) | Port test, raw TCP/UDP | `nc -vz 10.0.0.1 179` (BGP), `nc -vzu 10.0.0.1 161` (SNMP) |
+| `socat` | Advanced relay (telnet→ssh, port forward) | `socat TCP-LISTEN:8080,fork TCP:10.0.0.1:80` |
+
+### Pcap
+
+| Tool | Зорилго |
+|---|---|
+| `tcpdump` | Quick capture | `sudo tcpdump -i eth0 -nn 'port 179'` |
+| `tshark` | CLI pcap анализ | `tshark -r capture.pcap -Y bgp` |
+| `wireshark` | GUI (KasmVNC-аас) | display filter `bgp.update`, `ospf`, `isakmp` |
+
+### Packet craft / debug
+
+| Tool | Use case |
+|---|---|
+| `scapy` | IPSec / GRE / OSPF packet craft Python-аас | `from scapy.all import *; send(IP(dst="10.0.0.1")/UDP(dport=500)/Raw("test"))` |
+| `hping3` | TCP/SYN flood test (lab only!) | `sudo hping3 -S -p 179 10.0.0.1` |
+
+### Cisco config
+
+| Tool | Зорилго |
+|---|---|
+| `ciscoconfparse2` | `show run`-аас tree-аар query Python-ээр | `from ciscoconfparse2 import CiscoConfParse; p = CiscoConfParse('R1.cfg', syntax='ios'); p.find_objects(r'^interface')` |
+| `ttp` (template) | Show output → структурт data | `ttp(data=output, template=template).result()` |
+| `napalm` | Multi-vendor config get/load/diff | `napalm.get_network_driver('ios')(...).get_config()` |
+| `netmiko` | SSH/Telnet automation | `netmiko_backup.py / netmiko_push.py` нь wrapper |
+
+### Editor / shell
+
+| Tool | Use case |
+|---|---|
+| `nvim` / `vim` | Router-аас SSH хийгээд config edit | `vim ~/OlympBackup/R1_*.cfg` |
+| `fzf` | Fuzzy file/cmd search | `Ctrl+R` history, `vim $(fzf)` |
+| `ranger` | TUI file manager | `ranger ~/net/olymp-day/` |
+| `tmux` | Multi-pane (claude / shell / monitor) | `bash ~/net/scripts/start-olymp-session.sh` |
+
+### Git / diff
+
+| Tool | Use case |
+|---|---|
+| `meld` | Visual config diff | `meld R1_<old>.cfg R1_<new>.cfg` |
+| `colordiff` | CLI colored diff | `colordiff R1_<old>.cfg R1_<new>.cfg | less -R` |
+| `tig` | Git TUI (browse history) | `cd ~/net && tig` |
 
 ## Олимпиадын өдрийн checklist
 

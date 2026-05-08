@@ -49,3 +49,9 @@ image.png
 tmp
 __pycache__/
 *.pyc
+
+# Playwright MCP transient session logs
+.playwright-mcp/
+
+# olymp-run.py local config (per-machine, may contain live EVE creds)
+olymp.conf
