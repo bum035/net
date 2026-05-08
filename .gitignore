@@ -5,10 +5,41 @@
 # License artifacts — public repo, leak risk
 sonfig extracted.*
 untitled.key
+*.lic
+secureCRT/VanDyke/Config/SecureCRT_eval.lic
+
+# Linux SecureCRT runtime files (per-machine)
+.vandyke/
+.eve_pods.conf
+
+# Olympiad backups (machine-local, contain live configs)
+OlympBackup/*.cfg
+OlympBackup/*.log
+
+# VM credentials — never commit
+vm-setup/REPORT.md
+vm-setup/10-unify-passwords.sh
 
 # Pre-installed app folders (EVE-NG-Win-Client-Pack-аас)
 VanDyke Software/
 supperputty/
 id_ed25519
+
+# SecureCRT transient runtime state (auto-changes on every launch)
+secureCRT/VanDyke/Config/Snapshots/AutoSessions.xml
+secureCRT/VanDyke/Config/Recent File List SecureCRT.ini
+secureCRT/VanDyke/Config/Recent Script List.ini
+secureCRT/VanDyke/Config/Recent Snapshot List.ini
+secureCRT/VanDyke/Config/PrimaryScratchpadContents.txt
+
+# USB fallback build artifacts
+net-usb-*.zip
+
+# Ad-hoc screenshots
+image.png
+*.screenshot.png
+
 # Ephemeral
 tmp
+__pycache__/
+*.pyc

@@ -1,0 +1,38 @@
+# EVE-NG pod inventory жишээ — netmiko_backup.py-д өгөх
+# Pod-ийн node-ийн telnet port-ыг EVE-NG WebUI → "More actions → Console" эсвэл
+# /opt/unetlab/data/Logs/ дотор олж бичнэ.
+
+backup_dir: ~/OlympBackup
+
+devices:
+  - name: R1
+    host: 127.0.0.1
+    port: 32769
+    device_type: cisco_ios_telnet
+    username: ""
+    password: ""
+
+  - name: R2
+    host: 127.0.0.1
+    port: 32770
+    device_type: cisco_ios_telnet
+
+  - name: R3
+    host: 127.0.0.1
+    port: 32771
+    device_type: cisco_ios_telnet
+
+  - name: SW1
+    host: 127.0.0.1
+    port: 32772
+    device_type: cisco_ios_telnet
+
+  - name: SW2
+    host: 127.0.0.1
+    port: 32773
+    device_type: cisco_ios_telnet
+
+  - name: SW3
+    host: 127.0.0.1
+    port: 32774
+    device_type: cisco_ios_telnet
