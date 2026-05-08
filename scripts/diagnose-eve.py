@@ -305,7 +305,7 @@ def emit_inventory(host, lab_data, lab_path):
     for nid, n in sorted(lab_data["nodes"].items(), key=lambda x: int(x[0])):
         url = n.get("url", "")
         if not url.startswith("telnet://"):
-            print(f"  # node{nid} ({n.get('name')}): NON-TELNET ({url}) — skipped, use VNC/console manually")
+            print(f"  # node{nid} ({n.get('name')}): NON-TELNET ({url}) - skipped, use VNC/console manually")
             continue
         port = url.split(":")[-1]
         print(f"  - name: {n.get('name')}")
@@ -393,7 +393,7 @@ def main():
                 any_fail = True
         if any_fail:
             print()
-            WARN("Зарим node-д login алга. inventory.yml дотор username/password оруулна:")
+            WARN("Some nodes failed login. Add username/password to inventory.yml:")
             print("  devices:")
             print("    - {name: R1, host: 10.x.y.z, port: 32769, username: cisco, password: cisco}")
 
