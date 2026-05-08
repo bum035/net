@@ -38,5 +38,9 @@ LOG="${HOME}/.cache/scrt-telnet.log"
 mkdir -p "$(dirname "$LOG")"
 echo "[$(date '+%F %T')] URL=$URL  HOST=$HOST  PORT=$PORT" >> "$LOG"
 
+# Qt6 chrome-ыг GTK theme (Arc-Dark)-аар bind хийхдээ — SecureCRT-ийг dark болгоно
+export QT_QPA_PLATFORMTHEME=gtk3
+export GTK_THEME=Arc-Dark
+
 # SecureCRT шинэ tab дотор telnet
 exec SecureCRT /T /TELNET "$HOST" "$PORT"
