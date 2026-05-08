@@ -118,7 +118,38 @@ npx @anthropic-ai/claude-code   # browser auth
 
 Эсвэл VS Code Claude Code panel → Sign in. Backup нэвтрэлтүүд: claude.ai (Browser Preview tab), chat.openai.com.
 
-### Алхам 6 — netmiko + telnet (terminal fallback)
+### Алхам 6a — Олимпиадын өдөр — `olymp-run.py` (нэг команд бүгдийг хийнэ)
+
+```bash
+# Эхний удаа: interactive setup (host/port/user/pass/per-node creds)
+# дараа нь ~/net/olymp.conf-руу хадгална
+python3 ~/net/scripts/olymp-run.py
+
+# Дараагийн run-ууд: conf-аас уншина (prompt алга)
+# Лабын нэрийг auto-detect → ~/net/olymp-day/<lab-name>/ үүсгэнэ
+# inventory.yml + backup + topology.svg/png + tar.gz бүгдийг үүсгэнэ
+python3 ~/net/scripts/olymp-run.py
+
+# Зарим тохиолдол:
+python3 ~/net/scripts/olymp-run.py --reconfigure       # conf-ыг дахин асуух
+python3 ~/net/scripts/olymp-run.py --lab "/path.unl"   # active биш лаб
+python3 ~/net/scripts/olymp-run.py --dry-run           # backup алгасах
+```
+
+`olymp.conf` (auto-saved):
+```yaml
+eve:
+  host: 10.X.Y.Z
+  port: 80
+  user: student1
+  password: Lab2026
+node_defaults: {username: '', password: ''}
+node_overrides:                          # only for nodes with AAA
+  R1: {username: cisco, password: cisco}
+  SW2: {username: admin, password: Admin@123}
+```
+
+### Алхам 6b — netmiko + telnet (terminal fallback)
 
 VS Code terminal-аас шууд EVE-NG node-руу холбогдоно. SecureCRT хэрэгтэйгүй.
 
@@ -288,7 +319,7 @@ EVE-NG WebUI → SecureCRT (console)
 |---|---|
 | `secureCRT/VanDyke/Config/` | **SecureCRT config payload** — Sessions, Commands, Keywords, Scripts, ButtonBar, Global.ini. **Linux:** `~/.vandyke/SecureCRT/Config/`-руу subdir symlink. **Windows:** `%APPDATA%\VanDyke\Config\`-руу junction |
 | `secureCRT/VanDyke/Config/Scripts/*.py` | **Linux SecureCRT Python хувилбар** (VBS-ийн оронд) — `backup_configs.py`, `push_config.py` |
-| `scripts/` | **Terminal-side helper-ууд + bootstrap** — `setup-linux.sh` / `setup-windows.ps1` (one-shot машины тохиргоо), `make-usb-bundle.sh` (offline .zip), `eve_telnet.sh` (EVE-NG telnet wrapper), `netmiko_backup.py` (multi-cred + retry batch backup), `netmiko_push.py` (config push w/ auth fallback + slow mode), `diagnose-eve.py` (EVE pre-flight: auth, lab list, per-node probe, inventory.yml auto-emit), `scrt-telnet-handler.sh` (telnet:// URL parse → SecureCRT), `start-olymp-session.sh` (tmux), `inventory.example.yml` |
+| `scripts/` | **Terminal-side helper-ууд + bootstrap** — `setup-linux.sh` / `setup-windows.ps1` (one-shot машины тохиргоо), `make-usb-bundle.sh` (offline .zip), `eve_telnet.sh` (EVE-NG telnet wrapper), `olymp-run.py` (**end-to-end orchestrator**: interactive prompts → save conf → auto-detect lab → folder + inventory + backup + topology + archive), `netmiko_backup.py` (multi-cred + retry batch backup), `netmiko_push.py` (config push w/ auth fallback + slow mode), `diagnose-eve.py` (EVE pre-flight: auth, lab list, per-node probe, inventory.yml auto-emit), `scrt-telnet-handler.sh` (telnet:// URL parse → SecureCRT), `start-olymp-session.sh` (tmux), `inventory.example.yml` |
 | `secureCRT/securecrt-telnet.desktop` | Linux desktop entry — telnet:// URL handler-ыг SecureCRT-руу заана (EVE-NG Connect товч) |
 | `EVE-NG/` | EVE-NG protocol handlers — `.reg` (telnet/vnc/wireshark URL handler) + `.bat` wrappers. Зөвхөн Windows-ийн EVE-NG web UI "Connect" workflow-д хэрэгтэй |
 | `OlympBackup/` | `backup_configs.{vbs,py}` болон `netmiko_backup.py`-ийн өмнөх run-ийн жишээ (test data) — олимпиадын дараа цэвэрлэж болно |
