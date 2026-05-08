@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SecureCRT (telnet handler)
+Comment=Open telnet:// URLs in SecureCRT (EVE-NG Connect button)
+Exec=/home/ubuntu/net/scripts/scrt-telnet-handler.sh %u
+TryExec=/home/ubuntu/net/scripts/scrt-telnet-handler.sh
+Type=Application
+Terminal=false
+Categories=Network;
+MimeType=x-scheme-handler/telnet;
+NoDisplay=true

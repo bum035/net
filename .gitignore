@@ -26,3 +26,5 @@ supperputty/
 id_ed25519
 # Ephemeral
 tmp
+__pycache__/
+*.pyc
