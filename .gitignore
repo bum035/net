@@ -1,35 +1,35 @@
 # Installers / binaries — олимпиадын машин дээр аль хэдийн суусан
-*.exe
-*.msi
+# *.exe
+# *.msi
 # Override: usb-offline/ дотрох бундлэгдсэн installer-уудыг хадгал
-!usb-offline/python-full/*.exe
-!usb-offline/python-embed/*.zip
-!usb-offline/graphviz/*.zip
-!usb-offline/wheels/*.whl
-!usb-offline/wheels/*.tar.gz
+# !usb-offline/python-full/*.exe
+# !usb-offline/python-embed/*.zip
+# !usb-offline/graphviz/*.zip
+# !usb-offline/wheels/*.whl
+# !usb-offline/wheels/*.tar.gz
 
 # License artifacts — public repo, leak risk
-sonfig extracted.*
-untitled.key
-*.lic
-secureCRT/VanDyke/Config/SecureCRT_eval.lic
+# sonfig extracted.*
+# untitled.key
+# *.lic
+# secureCRT/VanDyke/Config/SecureCRT_eval.lic
 
 # Linux SecureCRT runtime files (per-machine)
 .vandyke/
 .eve_pods.conf
 
 # Olympiad backups (machine-local, contain live configs)
-OlympBackup/*.cfg
-OlympBackup/*.log
+# OlympBackup/*.cfg
+# OlympBackup/*.log
 
 # VM credentials — never commit
-vm-setup/REPORT.md
-vm-setup/10-unify-passwords.sh
+# vm-setup/REPORT.md
+# vm-setup/10-unify-passwords.sh
 
 # Pre-installed app folders (EVE-NG-Win-Client-Pack-аас)
-VanDyke Software/
-supperputty/
-id_ed25519
+# VanDyke Software/
+# supperputty/
+# id_ed25519
 
 # SecureCRT transient runtime state (auto-changes on every launch)
 secureCRT/VanDyke/Config/Snapshots/AutoSessions.xml
@@ -39,7 +39,7 @@ secureCRT/VanDyke/Config/Recent Snapshot List.ini
 secureCRT/VanDyke/Config/PrimaryScratchpadContents.txt
 
 # USB fallback build artifacts
-net-usb-*.zip
+# net-usb-*.zip
 
 # Ad-hoc screenshots
 image.png
