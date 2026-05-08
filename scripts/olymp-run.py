@@ -1,26 +1,43 @@
 #!/usr/bin/env python3
-"""End-to-end olympiad-day orchestrator.
+"""End-to-end olympiad-day orchestrator with multiple operation modes.
 
-WHAT IT DOES (one command, fully automatic):
-  1. Asks for EVE-NG IP / port / user / password / tenant interactively.
-     Saves the answers to a config file (default: ~/net/olymp.conf).
-     If the config already exists, reads from it (no prompts).
-  2. Asks for default node telnet credentials and per-node overrides
-     (only used for nodes that need non-default auth, e.g. AAA).
-  3. Logs in to EVE-NG, detects the currently active lab.
-  4. Creates a folder named after the lab (sanitized) under
-     ~/net/olymp-day/<lab-name>/ with a timestamped backup subfolder.
-  5. Generates inventory.yml with ALL nodes, default + override creds.
-  6. Runs netmiko_backup.py to grab running-config from every node.
-  7. Renders Graphviz topology (svg + png) if dot is available.
-  8. Creates tar.gz snapshot of the lab folder.
+MODES (--mode):
+  full       (default) Login -> detect lab -> inventory -> backup -> topology -> archive
+  setup     Interactive prompt only (then exits without connecting)
+  diagnose  EVE pre-flight checks: TCP, login, lab list, per-node telnet probe
+  backup    Inventory + backup only (skip topology + archive)
+  push      Push a single .cfg file to its device
+              Requires --push-cfg <path> (device name auto-detected from filename
+              or pass --push-name <name>)
+  push-all  Push every .cfg in a backup folder back to corresponding devices
+              Default: latest backup folder. Override with --push-dir
+  scrt      Generate SecureCRT session .ini files (one per device)
+              Output to lab folder + optionally --deploy to live SecureCRT
+  topology  Render Graphviz topology only (no backup)
+  archive   Create tar.gz of the lab folder (no backup)
+  list-labs Show all labs at the EVE-NG root folder
 
-Usage:
+Usage examples:
+  # First time: interactive setup, then full workflow
   python scripts/olymp-run.py
-  python scripts/olymp-run.py --reconfigure          # re-prompt all values
-  python scripts/olymp-run.py --config myconf.yaml   # custom config path
-  python scripts/olymp-run.py --lab "/path/to.unl"   # override active lab
-  python scripts/olymp-run.py --dry-run              # build inventory, skip backup
+
+  # Daily: skip prompts, just backup
+  python scripts/olymp-run.py --mode backup
+
+  # Generate SecureCRT sessions and copy to live config
+  python scripts/olymp-run.py --mode scrt --deploy
+
+  # Push entire latest backup back to devices (after a config rollback)
+  python scripts/olymp-run.py --mode push-all --yes
+
+  # Push single .cfg
+  python scripts/olymp-run.py --mode push --push-cfg backup-2026-05-09_10-00/R1_*.cfg
+
+  # Diagnose only (no folder creation)
+  python scripts/olymp-run.py --mode diagnose
+
+  # Re-prompt for credentials
+  python scripts/olymp-run.py --reconfigure
 
 Config file format (~/net/olymp.conf):
   eve:
@@ -494,6 +511,164 @@ def run_backup(inv_path, extra_args=None):
 
 
 # ---------------------------------------------------------------------------
+# push helpers
+# ---------------------------------------------------------------------------
+def latest_backup_dir(lab_dir):
+    """Find the most recent backup-* subfolder."""
+    if not os.path.isdir(lab_dir):
+        return None
+    candidates = [d for d in os.listdir(lab_dir)
+                  if d.startswith("backup-") and os.path.isdir(os.path.join(lab_dir, d))]
+    if not candidates:
+        return None
+    candidates.sort(reverse=True)
+    return os.path.join(lab_dir, candidates[0])
+
+
+def device_from_filename(cfg_path):
+    """Extract device name from a .cfg filename like 'R1_2026-05-09_10-00.cfg'."""
+    base = os.path.basename(cfg_path)
+    base = re.sub(r"\.cfg$", "", base)
+    # strip trailing timestamp pattern _YYYY-MM-DD_HH-MM
+    base = re.sub(r"_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}$", "", base)
+    return base
+
+
+def run_push_one(cfg_file, device, py=None, slow=False, yes=False):
+    """Push a single .cfg file using netmiko_push.py."""
+    push_script = os.path.join(SCRIPTS_DIR, "netmiko_push.py")
+    if not os.path.exists(push_script):
+        FAIL(f"netmiko_push.py missing at {push_script}")
+        return 2
+    py = py or find_python_with_netmiko()
+    if not py:
+        FAIL("No Python with netmiko found.")
+        return 3
+    cmd = [py, push_script, cfg_file,
+           "--host", str(device["host"]),
+           "--port", str(device["port"]),
+           "--type", device.get("device_type", "cisco_ios_telnet")]
+    if device.get("username") is not None:
+        cmd += ["--user", str(device["username"])]
+    if device.get("password") is not None:
+        cmd += ["--password", str(device["password"])]
+    if device.get("secret") is not None:
+        cmd += ["--secret", str(device["secret"])]
+    if slow:
+        cmd.append("--slow")
+    INFO(f"  push: {os.path.basename(cfg_file)} -> {device['name']} ({device['host']}:{device['port']})")
+    if not yes:
+        try:
+            ans = input("    Proceed? [y/N]: ").strip().lower()
+        except KeyboardInterrupt:
+            return 130
+        if ans not in ("y", "yes"):
+            INFO("    skipped")
+            return 0
+    return subprocess.call(cmd)
+
+
+def load_inventory_devices(inv_path):
+    if yaml is None:
+        sys.exit("PyYAML required: pip install pyyaml")
+    with open(inv_path, "r", encoding="utf-8") as f:
+        inv = yaml.safe_load(f) or {}
+    return {d["name"]: d for d in inv.get("devices", [])}
+
+
+def run_push_all(lab_dir, push_dir, slow=False, yes=False):
+    """Push every .cfg in push_dir (or latest backup) to its device."""
+    if not push_dir:
+        push_dir = latest_backup_dir(lab_dir)
+    if not push_dir or not os.path.isdir(push_dir):
+        FAIL(f"no backup dir found in {lab_dir}")
+        return 1
+
+    inv_path = os.path.join(lab_dir, "inventory.yml")
+    if not os.path.exists(inv_path):
+        FAIL(f"inventory.yml missing at {inv_path}")
+        return 2
+    devices = load_inventory_devices(inv_path)
+
+    cfgs = sorted([f for f in os.listdir(push_dir) if f.endswith(".cfg")])
+    if not cfgs:
+        FAIL(f"no .cfg files in {push_dir}")
+        return 1
+
+    INFO(f"push-all: {len(cfgs)} .cfg(s) from {push_dir}")
+    py = find_python_with_netmiko()
+    if not py:
+        FAIL("No Python with netmiko found.")
+        return 3
+
+    if not yes:
+        print(f"  About to push {len(cfgs)} configs back to live devices.", file=sys.stderr)
+        ans = input("  Confirm push-all? [y/N]: ").strip().lower()
+        if ans not in ("y", "yes"):
+            INFO("aborted")
+            return 0
+
+    ok = fail = 0
+    for f in cfgs:
+        path = os.path.join(push_dir, f)
+        name = device_from_filename(path)
+        d = devices.get(name)
+        if not d:
+            WARN(f"  no device named {name} in inventory - skipping {f}")
+            fail += 1
+            continue
+        rc = run_push_one(path, d, py=py, slow=slow, yes=True)  # already confirmed above
+        if rc == 0:
+            ok += 1
+        else:
+            WARN(f"  push failed for {name} (rc={rc})")
+            fail += 1
+    INFO(f"push-all summary: {ok} OK, {fail} FAIL")
+    return 0 if fail == 0 else 2
+
+
+def run_scrt(lab_dir, lab_name, deploy=False):
+    """Generate SecureCRT sessions via olymp-scrt.py."""
+    scrt_script = os.path.join(SCRIPTS_DIR, "olymp-scrt.py")
+    inv_path    = os.path.join(lab_dir, "inventory.yml")
+    out_dir     = os.path.join(lab_dir, "secureCRT")
+    if not os.path.exists(scrt_script):
+        FAIL(f"olymp-scrt.py missing at {scrt_script}")
+        return 2
+    if not os.path.exists(inv_path):
+        FAIL(f"inventory.yml missing at {inv_path} - run 'olymp-run.py --mode backup' first")
+        return 2
+    cmd = [sys.executable, scrt_script,
+           "--inventory", inv_path,
+           "--output", out_dir,
+           "--lab-name", lab_name]
+    if deploy:
+        cmd.append("--deploy")
+    INFO("running: " + " ".join(cmd))
+    return subprocess.call(cmd)
+
+
+def run_diagnose(eve_cfg, lab_path=None, host_for_check=None):
+    """Run diagnose-eve.py with current config values."""
+    diag_script = os.path.join(SCRIPTS_DIR, "diagnose-eve.py")
+    if not os.path.exists(diag_script):
+        FAIL(f"diagnose-eve.py missing at {diag_script}")
+        return 2
+    cmd = [sys.executable, diag_script,
+           "--host", eve_cfg["host"],
+           "--port", str(eve_cfg["port"]),
+           "--user", eve_cfg["user"],
+           "--password", eve_cfg["password"],
+           "--check-nodes"]
+    if eve_cfg.get("tenant"):
+        cmd += ["--tenant", eve_cfg["tenant"]]
+    if lab_path:
+        cmd += ["--lab", lab_path]
+    INFO("running: " + " ".join(cmd[:8]) + " ...")  # don't echo password
+    return subprocess.call(cmd)
+
+
+# ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
 def main():
@@ -513,6 +688,23 @@ def main():
                     help="pass --raw-on-fail to netmiko_backup.py (write transcript on failure)")
     ap.add_argument("--slow", action="store_true",
                     help="pass --slow to netmiko_backup.py (bigger timeouts)")
+
+    ap.add_argument("--mode",
+                    choices=["full", "setup", "diagnose", "backup",
+                             "push", "push-all", "scrt", "topology",
+                             "archive", "list-labs"],
+                    default="full",
+                    help="operation mode (default: full)")
+    ap.add_argument("--push-cfg",
+                    help="(--mode push) .cfg file to push")
+    ap.add_argument("--push-name",
+                    help="(--mode push) device name (overrides filename auto-detect)")
+    ap.add_argument("--push-dir",
+                    help="(--mode push-all) backup directory (default: latest)")
+    ap.add_argument("--yes", "-y", action="store_true",
+                    help="(push modes) answer YES to per-device confirmation")
+    ap.add_argument("--deploy", action="store_true",
+                    help="(--mode scrt) copy generated .ini files to live SecureCRT folder")
     args = ap.parse_args()
 
     cfg_path = os.path.expanduser(args.config)
