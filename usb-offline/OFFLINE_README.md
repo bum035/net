@@ -14,10 +14,16 @@ usb-offline/
 ├── setup-windows-offline.ps1     ← гол bootstrap (PowerShell, -Diagnose support)
 ├── OFFLINE_README.md             ← энэ файл (workflow runbook)
 ├── TROUBLESHOOTING.md            ← алдааны хүснэгт + manual fallback
-├── python-full/
-│   └── python-3.12.7-amd64.exe   (26MB, full installer — InstallAllUsers=0)
-├── python-embed/
-│   └── python-3.12.7-embed-amd64.zip  (11MB, no-admin fallback)
+├── python-full/   ← 4 хувилбарын full installer
+│   ├── python-3.10.11-amd64.exe   (28 MB)
+│   ├── python-3.11.9-amd64.exe    (26 MB)
+│   ├── python-3.12.7-amd64.exe    (26 MB) ← default
+│   └── python-3.13.1-amd64.exe    (28 MB)
+├── python-embed/  ← 4 хувилбарын no-admin fallback
+│   ├── python-3.10.11-embed-amd64.zip  (8 MB)
+│   ├── python-3.11.9-embed-amd64.zip   (11 MB)
+│   ├── python-3.12.7-embed-amd64.zip   (11 MB) ← default
+│   └── python-3.13.1-embed-amd64.zip   (11 MB)
 ├── graphviz/
 │   └── windows_10_cmake_Release_Graphviz-12.2.1-win64.zip  (9MB, dot.exe + dll-үүд)
 ├── wheels/                       ← Python 3.12 wheels (default)
@@ -75,10 +81,15 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 .\setup-windows-offline.ps1
 
 # Сонголтот flag-ууд:
+#   -PythonVersion 3.10|3.11|3.12|3.13   default 3.12; өөр хувилбар суулгахыг хүсвэл сонго
 #   -ForceEmbed        full installer-аас зайлсхийж, embed Python-руу шилжих
 #   -SkipPython        Python install алгасах (PATH дотор аль хэдийн байгаа гэж үзэх)
 #   -InstallRoot D:\PyOlymp   диск дүүрсэн бол өөр drive-руу
 ```
+
+> Жишээ: `\setup-windows-offline.ps1 -PythonVersion 3.11` → Python 3.11.9-ийг
+> `%USERPROFILE%\PyOlymp\Python311\` дотор install хийнэ + `wheels-py311/`-аас
+> netmiko суулгана.
 
 Юу болно (5-7 сек):
 1. ✅ Python 3.12 шалгана. Байгаа бол алгасна. Үгүй бол:

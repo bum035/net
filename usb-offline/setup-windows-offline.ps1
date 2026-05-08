@@ -20,6 +20,9 @@
 .PARAMETER InstallRoot
     Default: %USERPROFILE%\PyOlymp
 
+.PARAMETER PythonVersion
+    Хүссэн Python хувилбар: 3.10 / 3.11 / 3.12 (default) / 3.13. Бүгд бундлд бий.
+
 .PARAMETER ForceEmbed
     Force embed Python install (no-admin path).
 
@@ -30,18 +33,29 @@
     Зөвхөн system шалгана, install хийхгүй.
 
 .EXAMPLE
-    PS> .\setup-windows-offline.ps1
-    PS> .\setup-windows-offline.ps1 -Diagnose
-    PS> .\setup-windows-offline.ps1 -ForceEmbed
+    PS> .\setup-windows-offline.ps1                       # default 3.12 install
+    PS> .\setup-windows-offline.ps1 -PythonVersion 3.11   # 3.11 install
+    PS> .\setup-windows-offline.ps1 -Diagnose             # шалгах л
+    PS> .\setup-windows-offline.ps1 -ForceEmbed           # admin зөрчилтэй бол embed
 #>
 
 [CmdletBinding()]
 param(
     [string]$InstallRoot = "$env:USERPROFILE\PyOlymp",
+    [ValidateSet('3.10','3.11','3.12','3.13','auto')]
+    [string]$PythonVersion = '3.12',
     [switch]$ForceEmbed,
     [switch]$SkipPython,
     [switch]$Diagnose
 )
+
+# Python version → installer file pattern
+$VERSION_MAP = @{
+    '3.10' = @{ Full = 'python-3.10.11-amd64.exe'; Embed = 'python-3.10.11-embed-amd64.zip'; Tag = '310' }
+    '3.11' = @{ Full = 'python-3.11.9-amd64.exe';  Embed = 'python-3.11.9-embed-amd64.zip';  Tag = '311' }
+    '3.12' = @{ Full = 'python-3.12.7-amd64.exe';  Embed = 'python-3.12.7-embed-amd64.zip';  Tag = '312' }
+    '3.13' = @{ Full = 'python-3.13.1-amd64.exe';  Embed = 'python-3.13.1-embed-amd64.zip';  Tag = '313' }
+}
 
 $ErrorActionPreference = 'Continue'   # don't bail on first error
 $BundleDir = $PSScriptRoot
@@ -187,12 +201,28 @@ if (-not $SkipPython) {
 
     if (-not $PYTHON_EXE) {
         $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-        $fullInst = Get-ChildItem "$BundleDir\python-full\python-*-amd64.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+
+        # Choose installer by -PythonVersion (default 3.12)
+        $vmap = $VERSION_MAP[$PythonVersion]
+        if (-not $vmap) {
+            Write-Fail "Unknown PythonVersion: $PythonVersion"; exit 1
+        }
+        $fullInst = Get-Item "$BundleDir\python-full\$($vmap.Full)" -ErrorAction SilentlyContinue
+        $targetVer = $vmap.Tag
+
+        if (-not $fullInst) {
+            # fallback to any available
+            $fullInst = Get-ChildItem "$BundleDir\python-full\python-*-amd64.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($fullInst) {
+                Write-Warn "Хүссэн $PythonVersion installer олдсонгүй; auto-fallback: $($fullInst.Name)"
+            }
+        }
 
         if ($fullInst -and -not $ForceEmbed) {
             Write-Step "Full installer ажиллуулна: $($fullInst.Name)"
             Write-Info "(Хэрэглэгчийн install — admin шаардлагагүй; 30-60s болно)"
             $logFile = "$env:TEMP\python-install.log"
+            $targetDir = "$InstallRoot\Python$targetVer"
             $args = @(
                 '/quiet',
                 'InstallAllUsers=0',
@@ -200,14 +230,14 @@ if (-not $SkipPython) {
                 'Include_test=0',
                 'Include_doc=0',
                 'Include_launcher=0',
-                "TargetDir=$InstallRoot\Python312",
+                "TargetDir=$targetDir",
                 "/log",
                 "$logFile"
             )
             $proc = Start-Process -FilePath $fullInst.FullName -ArgumentList $args -Wait -PassThru -ErrorAction SilentlyContinue
-            if ($proc -and $proc.ExitCode -eq 0 -and (Test-Path "$InstallRoot\Python312\python.exe")) {
-                $PYTHON_EXE = "$InstallRoot\Python312\python.exe"
-                $PYTHON_VER = "312"
+            if ($proc -and $proc.ExitCode -eq 0 -and (Test-Path "$targetDir\python.exe")) {
+                $PYTHON_EXE = "$targetDir\python.exe"
+                $PYTHON_VER = $targetVer
                 Write-OK "Python full installer амжилттай → $PYTHON_EXE"
             } else {
                 $code = if ($proc) { $proc.ExitCode } else { "?" }
@@ -218,7 +248,11 @@ if (-not $SkipPython) {
         }
 
         if (-not $PYTHON_EXE) {
-            $embedZip = Get-ChildItem "$BundleDir\python-embed\python-*-embed-amd64.zip" -ErrorAction SilentlyContinue | Select-Object -First 1
+            $embedZip = Get-Item "$BundleDir\python-embed\$($vmap.Embed)" -ErrorAction SilentlyContinue
+            if (-not $embedZip) {
+                $embedZip = Get-ChildItem "$BundleDir\python-embed\python-*-embed-amd64.zip" -ErrorAction SilentlyContinue | Select-Object -First 1
+                if ($embedZip) { Write-Warn "Хүссэн $PythonVersion embed олдсонгүй; auto-fallback: $($embedZip.Name)" }
+            }
             if (-not $embedZip) { Write-Fail "python-embed .zip алга"; exit 1 }
 
             $portDir = "$InstallRoot\python-portable"
@@ -251,15 +285,18 @@ if (-not $SkipPython) {
                 Write-Fail "wheels\get-pip.py алга — embed Python-д pip суулгаж чадахгүй"
                 exit 1
             }
-            Write-Step "pip bootstrap: $getPip"
-            & $py $getPip --no-index --find-links="$BundleDir\wheels" 2>&1 | Out-Host
+            # version-specific wheels-folder сонго
+            $bootstrapWheels = "$BundleDir\wheels-py$targetVer"
+            if (-not (Test-Path $bootstrapWheels)) { $bootstrapWheels = "$BundleDir\wheels" }
+            Write-Step "pip bootstrap: $getPip (wheels: $bootstrapWheels)"
+            & $py $getPip --no-index --find-links="$bootstrapWheels" 2>&1 | Out-Host
             if ($LASTEXITCODE -ne 0) {
                 Write-Fail "pip bootstrap амжилтгүй (exit $LASTEXITCODE)"
                 Write-Info "Manual: $py -m ensurepip эсвэл .whl-ийг гар хуулах"
                 exit 1
             }
             $PYTHON_EXE = $py
-            $PYTHON_VER = "312"
+            $PYTHON_VER = $targetVer
             Write-OK "Embed Python бэлэн → $PYTHON_EXE"
         }
     }
