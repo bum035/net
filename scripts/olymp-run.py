@@ -442,14 +442,55 @@ def make_archive(lab_dir, output_root, lab_name):
     return None
 
 
-def run_backup(inv_path):
-    """Invoke netmiko_backup.py in the same Python interpreter."""
+def find_python_with_netmiko():
+    """Find a Python that has netmiko installed.
+    Order: current sys.executable, PyOlymp bundled, py launcher (-3.12).
+    """
+    candidates = [sys.executable]
+    pyolymp = os.path.expandvars(r"%USERPROFILE%\PyOlymp\Python312\python.exe")
+    if os.path.exists(pyolymp):
+        candidates.append(pyolymp)
+    # Linux equivalents
+    for p in ("/usr/bin/python3", "/usr/local/bin/python3"):
+        if os.path.exists(p):
+            candidates.append(p)
+
+    for py in candidates:
+        try:
+            rc = subprocess.call([py, "-c", "import netmiko"],
+                                 stdout=subprocess.DEVNULL,
+                                 stderr=subprocess.DEVNULL)
+            if rc == 0:
+                return py
+        except Exception:
+            continue
+    return None
+
+
+def run_backup(inv_path, extra_args=None):
+    """Invoke netmiko_backup.py in a Python that has netmiko."""
     backup_script = os.path.join(SCRIPTS_DIR, "netmiko_backup.py")
     if not os.path.exists(backup_script):
         FAIL(f"netmiko_backup.py missing at {backup_script}")
         return 2
-    INFO(f"running: {sys.executable} {backup_script} {inv_path}")
-    return subprocess.call([sys.executable, backup_script, inv_path])
+
+    py = find_python_with_netmiko()
+    if not py:
+        FAIL("No Python with netmiko found.")
+        INFO("Install via:")
+        INFO("  cd usb-offline && .\\setup-windows-offline.ps1")
+        INFO("Or check current Python is the right one:")
+        INFO(f"  current: {sys.executable}")
+        return 3
+
+    if py != sys.executable:
+        INFO(f"netmiko found in: {py}  (orchestrator runs in {sys.executable})")
+
+    cmd = [py, backup_script, inv_path]
+    if extra_args:
+        cmd.extend(extra_args)
+    INFO("running: " + " ".join(cmd))
+    return subprocess.call(cmd)
 
 
 # ---------------------------------------------------------------------------
@@ -468,6 +509,10 @@ def main():
                     help="build inventory.yml but skip backup/topology/archive")
     ap.add_argument("--no-confirm", action="store_true",
                     help="skip the 'press Enter to continue' confirmation")
+    ap.add_argument("--raw-on-fail", action="store_true",
+                    help="pass --raw-on-fail to netmiko_backup.py (write transcript on failure)")
+    ap.add_argument("--slow", action="store_true",
+                    help="pass --slow to netmiko_backup.py (bigger timeouts)")
     args = ap.parse_args()
 
     cfg_path = os.path.expanduser(args.config)
@@ -543,11 +588,18 @@ def main():
     if not args.dry_run:
         print(file=sys.stderr)
         STEP("Running netmiko_backup.py")
-        rc = run_backup(inv_path)
+        extra = []
+        if args.raw_on_fail:
+            extra.append("--raw-on-fail")
+        if args.slow:
+            extra.append("--slow")
+        rc = run_backup(inv_path, extra_args=extra)
         if rc == 0:
             OK("backup complete")
         else:
             WARN(f"backup exit code {rc} - some devices may have failed")
+            INFO("Re-run with --raw-on-fail to capture transcripts:")
+            INFO(f"  python {sys.argv[0]} --raw-on-fail")
 
     # Topology
     if cfg.get("generate_topology", True):
