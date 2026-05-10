@@ -1,0 +1,15 @@
+! ===== CorpSW-3 (corp-esw03) — 1 task: TFTP-1 (config restore) =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- TFTP-1 (config restored) -----
+show vlan brief
+show ip interface brief
+show interfaces status
+show running-config
+show startup-config | include hostname
+!
+! ----- DONE CorpSW-3 -----

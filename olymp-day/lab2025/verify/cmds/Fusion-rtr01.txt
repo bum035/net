@@ -1,0 +1,21 @@
+! ===== Fusion-rtr01 — 2 tasks: OSPF-2, NTP master =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- OSPF-2 -----
+show running-config | section router ospf 1
+show ip ospf interface brief
+show ip ospf neighbor
+!
+! ----- NTP master -----
+show ntp status
+show ntp associations
+show running-config | section ntp
+show running-config | include clock timezone
+!
+show ip interface brief | exclude unassigned
+!
+! ----- DONE Fusion-rtr01 -----

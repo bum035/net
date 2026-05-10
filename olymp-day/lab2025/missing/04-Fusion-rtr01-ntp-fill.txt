@@ -1,0 +1,62 @@
+!================================================
+! Fusion-rtr01 — NTP placeholder fill (NTP master + upstream)
+!================================================
+! Зорилго: Fusion-rtr01.txt-ийн <EVE_NTP_IP>-г бодит NTP source-оор солих
+!================================================
+!
+! ⚠ Сонголтууд (priority order):
+!   1. EVE-NG host: 36.50.7.52 — гэхдээ Fusion-rtr01 routing-аар хүрэхгүй магадгүй
+!      (cloud VM нь GW-1-ээс цаашхи intenet, FAB-аар лаб-руу firewall)
+!   2. Lab-internal mgmt server (хэрэв байвал): DC subnet доторх Linux node
+!   3. Fusion-rtr01 өөрөө `ntp master` болж stratum-5 хэвээр явах (offline OK)
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! Сонголт A — EVE host upstream (хэрэв reachable бол)
+! ════════════════════════════════════════════════
+ntp server 36.50.7.52 prefer
+ntp master 5
+
+! ════════════════════════════════════════════════
+! Сонголт B — Reachable биш бол `ntp server` мөрийг алгасах,
+!            зөвхөн `ntp master` үлдээх
+! ════════════════════════════════════════════════
+! no ntp server <EVE_NTP_IP>
+! ntp master 5
+
+! ════════════════════════════════════════════════
+! Hardening (хоёр сонголтод хамаатай):
+! ════════════════════════════════════════════════
+ntp authentication-key 1 md5 OlympNTP2026
+ntp authenticate
+ntp trusted-key 1
+!
+! ACL — зөвхөн дотоод сүлжээ NTP query хийх эрхтэй
+ip access-list standard NTP_ALLOW
+ permit 10.1.0.0 0.0.255.255
+ deny any log
+!
+ntp access-group peer NTP_ALLOW
+ntp access-group serve-only NTP_ALLOW
+!
+end
+wr mem
+
+!================================================
+! VERIFY:
+!   show ntp status              ! Stratum, ref clock
+!   show ntp associations        ! upstream sync
+!   show ntp associations detail ! authentication OK эсэх
+!================================================
+
+!================================================
+! Client side — Fusion-rtr02 + бусад router-ууд:
+!   ntp server <Fusion-rtr01-Lo1-IP>
+!   ntp authentication-key 1 md5 OlympNTP2026
+!   ntp authenticate
+!   ntp trusted-key 1
+!================================================

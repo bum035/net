@@ -1,0 +1,61 @@
+
+corp-dsw01#show clock
+*06:14:50.709 UTC Sat May 9 2026
+corp-dsw01#show vrrp bri
+corp-dsw01#show vrrp brief 
+Interface          Grp Pri Time  Own Pre State   Master addr     Group addr
+Vl10               10  110 3570       Y  Master  10.1.16.3       10.1.16.1      
+Vl20               20  110 3570       Y  Master  10.1.1.253      10.1.1.254     
+Vl30               30  100 3609       Y  Backup  10.1.2.252      10.1.2.254     
+corp-dsw01#show ip ospf neigh
+corp-dsw01#show ip ospf neighbor 
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.1.18.7         1   FULL/BDR        00:00:31    10.1.19.9       Vlan1010
+10.1.18.4         1   FULL/DR         00:00:36    10.1.19.3       Vlan1011
+10.1.18.7         1   FULL/BDR        00:00:34    10.1.19.13      Vlan1030
+10.1.18.6         1   FULL/DR         00:00:39    10.1.19.7       Vlan1031
+10.1.18.7         1   FULL/BDR        00:00:34    10.1.19.11      Vlan1020
+10.1.18.5         1   FULL/DR         00:00:32    10.1.19.5       Vlan1021
+corp-dsw01#show ip ospf neighbor  vrf FinDep
+Translating "vrf"...domain server (255.255.255.255)
+                                   ^
+% Invalid input detected at '^' marker.
+
+corp-dsw01#show ip ospf neighbor vrf FinDep 
+Translating "vrf"...domain server (255.255.255.255)
+                                  ^
+% Invalid input detected at '^' marker.
+
+corp-dsw01#sho ip route vrf FinDep 0.0.0.0
+
+Routing Table: FinDep
+% Network not in table
+corp-dsw01#sho ip route vrf TechDep 0.0.0.0
+
+Routing Table: TechDep
+% Network not in table
+corp-dsw01#sho ip inter  brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+GigabitEthernet1/0     unassigned      YES unset  up                    up      
+GigabitEthernet1/1     unassigned      YES unset  up                    up      
+GigabitEthernet1/2     unassigned      YES unset  up                    up      
+GigabitEthernet1/3     unassigned      YES unset  up                    up      
+Loopback2              10.1.18.1       YES NVRAM  up                    up      
+Loopback3              10.1.18.2       YES NVRAM  up                    up      
+Loopback4              10.1.18.3       YES NVRAM  up                    up      
+Loopback5              unassigned      YES unset  up                    up      
+Vlan10                 10.1.16.3       YES NVRAM  up                    up      
+Vlan20                 10.1.1.253      YES NVRAM  up                    up      
+Vlan30                 10.1.2.253      YES NVRAM  up                    up      
+Vlan1010               10.1.19.8       YES NVRAM  up                    up      
+Vlan1011               10.1.19.2       YES NVRAM  up                    up      
+Vlan1020               10.1.19.10      YES NVRAM  up                    up      
+Vlan1021               10.1.19.4       YES NVRAM  up                    up      
+Vlan1030               10.1.19.12      YES NVRAM  up                    up      
+Vlan1031               10.1.19.6       YES NVRAM  up                    up      
+corp-dsw01#

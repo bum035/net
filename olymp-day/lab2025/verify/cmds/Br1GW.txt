@@ -1,0 +1,22 @@
+! ===== Br1GW — 1 task: IPsec mirror (Branch side) =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- IPsec (mirror) -----
+show crypto ikev2 sa
+show crypto ipsec sa | include peer|encaps|decaps|local ident|remote ident
+show crypto session
+show interface Tunnel0
+show running-config | section crypto
+show running-config interface Tunnel0
+!
+! ----- Reachability -----
+show ip route
+show ip interface brief | exclude unassigned
+ping 10.1.1.1 source 10.1.8.1
+ping 10.1.2.1 source 10.1.8.1
+!
+! ----- DONE Br1GW -----

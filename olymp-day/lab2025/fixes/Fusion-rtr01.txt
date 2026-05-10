@@ -1,0 +1,159 @@
+!========================================
+! Fusion-rtr01 (Fusion_Router-1) — OSPF-2 + NTP master
+!========================================
+! Tasks: OSPF-2 (3 pts) + NTP master (2 pts)
+!========================================
+
+terminal length 0
+enable
+conf t
+
+! ── OSPF-2: passive-interface default + neighbor interface-уудыг манай идэвхжүүлэх
+! Одоо `passive-interface default` БАЙХГҮЙ → бүх interface-аар hello илгээж байна
+! OSPFv3 нь аль хэдийн `passive-interface default`-той ✓
+router ospf 1
+ passive-interface default
+ no passive-interface GigabitEthernet0/0.1010
+ no passive-interface GigabitEthernet0/0.1020
+ no passive-interface GigabitEthernet0/0.1030
+ no passive-interface GigabitEthernet0/1
+ no passive-interface GigabitEthernet0/2.300
+!
+
+! ── NTP master + EVE-NG sync
+! <EVE_NTP_IP> — EVE-NG host (cloud: 36.50.7.52). Reachable биш бол `ntp server` мөрийг алгасах,
+! зөвхөн `ntp master 3`-аар удирдах clock-той үлдэх.
+clock timezone ULAT 8
+ntp source Loopback1
+ntp server <EVE_NTP_IP>
+ntp master 3
+!
+
+end
+wr mem
+
+!========================================
+! VERIFY:
+!   show ip ospf interface | inc Hello|Passive    ! зөвхөн 5 interface active байх ёстой
+!   show ip ospf neighbor                         ! байсан neighbor-ууд хадгалагдах ёстой
+!   show ntp status                               ! Stratum 3 эсвэл 4 (если sync) бүхий master
+!   show ntp associations                         ! Fusion-rtr02 client харагдах
+!   show clock
+!========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fusion-rtr01#show ip ospf interface | inc Hello|Passive
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:08
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:00
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    No Hellos (Passive interface) 
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:03
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:08
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    Hello due in 00:00:05
+Fusion-rtr01#show ospf neigh
+Fusion-rtr01#show ospf neighbor 
+
+          OSPFv3 1 address-family ipv6 (router-id 10.1.18.7)
+
+Neighbor ID     Pri   State           Dead Time   Interface ID    Interface
+10.1.18.8         1   FULL/DR         00:00:34    14              GigabitEthernet0/2.300
+10.1.18.12        1   FULL/DR         00:00:36    3               GigabitEthernet0/1
+10.1.18.1         1   FULL/BDR        00:00:37    22              GigabitEthernet0/0.1030
+10.1.18.1         1   FULL/BDR        00:00:35    20              GigabitEthernet0/0.1020
+10.1.18.1         1   FULL/BDR        00:00:38    18              GigabitEthernet0/0.1010
+Fusion-rtr01#show ntp stat
+Fusion-rtr01#show ntp status 
+Clock is unsynchronized, stratum 9, reference is 10.16.15.17    
+nominal freq is 1000.0003 Hz, actual freq is 1000.0003 Hz, precision is 2**15
+ntp uptime is 16300 (1/100 of seconds), resolution is 1000
+reference time is EDA93793.4156B6FF (12:33:23.255 ULAT Sat May 9 2026)
+clock offset is 148.9877 msec, root delay is 6.78 msec
+root dispersion is 353.45 msec, peer dispersion is 62.96 msec
+loopfilter state is 'FREQ' (Drift being measured), drift is 0.000000000 s/s
+system poll interval is 64, last update was 56 sec ago.
+Fusion-rtr01#
+Fusion-rtr01#show ntp ass
+Fusion-rtr01#show ntp associations 
+
+  address         ref clock       st   when   poll reach  delay  offset   disp
+*~10.16.15.17     127.127.1.1      8     66     64     3  6.786 148.987 62.964
+ ~127.127.1.1     .LOCL.           2     15     16   377  0.000   0.000  0.261
+ * sys.peer, # selected, + candidate, - outlyer, x falseticker, ~ configured
+Fusion-rtr01#
+Fusion-rtr01#show clock
+*12:34:36.105 ULAT Sat May 9 2026
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#show run | sec router ospf 1
+router ospf 1
+ router-id 10.1.18.7
+ redistribute static subnets
+ passive-interface default
+ no passive-interface GigabitEthernet0/0.1010
+ no passive-interface GigabitEthernet0/0.1020
+ no passive-interface GigabitEthernet0/0.1030
+ no passive-interface GigabitEthernet0/1
+ no passive-interface GigabitEthernet0/2.300
+ network 10.1.18.7 0.0.0.0 area 0
+ network 10.1.19.8 0.0.0.1 area 10
+ network 10.1.19.10 0.0.0.1 area 10
+ network 10.1.19.12 0.0.0.1 area 10
+ network 10.1.19.20 0.0.0.1 area 0
+ network 10.1.19.22 0.0.0.1 area 0
+ network 10.1.19.32 0.0.0.1 area 0
+ network 133.34.13.0 0.0.0.127 area 0
+ default-information originate
+Fusion-rtr01#show ip ospf
+Fusion-rtr01#show ip ospf  inter
+Fusion-rtr01#show ip ospf  interface bri
+Fusion-rtr01#show ip ospf  interface brief 
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+Lo2          1     0               10.1.18.7/32       1     LOOP  0/0
+Gi0/2.300    1     0               10.1.19.20/31      1     BDR   1/1
+Gi0/1        1     0               10.1.19.32/31      1     BDR   1/1
+Gi0/2.310    1     0               10.1.19.22/31      1     DR    0/0
+Gi0/0.1030   1     10              10.1.19.13/31      1     BDR   1/1
+Gi0/0.1020   1     10              10.1.19.11/31      1     BDR   1/1
+Gi0/0.1010   1     10              10.1.19.9/31       1     BDR   1/1
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#
+Fusion-rtr01#

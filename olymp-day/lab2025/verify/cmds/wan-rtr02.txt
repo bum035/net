@@ -1,0 +1,29 @@
+! ===== wan-rtr02 (GW-2) — 4 tasks: iBGP, BGP-1, BGP-3, OSPF-4 =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- iBGP / BGP-1/3 -----
+show ip ospf neighbor
+show ipv6 ospf neighbor
+show ip route 10.1.18.8
+show ipv6 route 2001:DB8:ABCD:17::8
+show ip bgp summary
+show bgp ipv6 unicast summary
+show ip bgp
+show bgp ipv6 unicast
+show running-config | section router bgp
+show running-config | section community
+show running-config | section route-map
+show running-config | include bgp-community
+!
+! ----- OSPF-4 -----
+show running-config | section router ospfv3
+show ipv6 route ::/0
+show ip route 0.0.0.0
+!
+show ip interface brief | exclude unassigned
+!
+! ----- DONE wan-rtr02 -----

@@ -1,0 +1,208 @@
+!================================================
+! corp-dsw01 (CorpGW-1) — VRRP + OSPF-1 + OSPF-5
+!================================================
+! Tasks: VRRP (2) + OSPF-1 (1/2) + OSPF-5 (1/2)
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! 1) VRRP — Vlan20 (FinDep) тул track + decrement
+! ════════════════════════════════════════════════
+! ⚠ Зохион байгуулагч: даалгавар "vlan 30" биш ВЕТЫН **vlan 20** (FinDep)
+! Одоогийн: corp-dsw01 vrrp 20 priority 110 (active) → uplink уналаа ч priority бууж
+!           corp-dsw02-руу шилжихгүй
+! Шийдэл: track Vlan1020 (FinDep transit to Fusion) → decrement 30 → 110-30=80 < 100
+!         → corp-dsw02 (priority 100 default) active болно
+
+track 10 interface Vlan1020 line-protocol
+!
+interface Vlan20
+ vrrp 20 track 10 decrement 30
+!
+
+! Илүү найдвартай — Vlan1010 ч track хийж болно (мгмт уплинк үед):
+! track 11 interface Vlan1010 line-protocol
+! interface Vlan20
+!  vrrp 20 track 11 decrement 30
+
+! ════════════════════════════════════════════════
+! 2) OSPF-1 — VRF FinDep/TechDep-д Vlan20/Vlan30 SVI subnet нэмэх
+! ════════════════════════════════════════════════
+router ospf 2 vrf FinDep
+ network 10.1.1.0 0.0.0.255 area 10
+!
+router ospf 3 vrf TechDep
+ network 10.1.2.0 0.0.0.255 area 10
+!
+
+! ════════════════════════════════════════════════
+! 3) OSPF-5 — VRF-уудад default route originate
+! ════════════════════════════════════════════════
+router ospf 2 vrf FinDep
+ default-information originate always
+!
+router ospf 3 vrf TechDep
+ default-information originate always
+!
+
+end
+wr mem
+
+!================================================
+! VERIFY:
+!   show track 10                                  ! Vlan1020 Up
+!   show vrrp brief                                ! Vlan20 Master, priority 110
+!   ! Test failover: shut Vlan1020 → vrrp priority 80 → corp-dsw02 active
+!   show ip route vrf FinDep ospf | inc 10.1.1.0
+!   show ip route vrf TechDep ospf | inc 10.1.2.0
+!   show ip route vrf FinDep | inc 0\.0\.0\.0
+!================================================
+
+
+
+
+
+
+
+
+
+
+
+
+corp-dsw01#conf ter
+Enter configuration commands, one per line.  End with CNTL/Z.
+corp-dsw01(config)#track
+corp-dsw01(config)#track 10 inter
+corp-dsw01(config)#track 10 interface Vl
+corp-dsw01(config)#track 10 interface Vlan 1020 lin
+corp-dsw01(config)#track 10 interface Vlan 1020 line-protocol 
+corp-dsw01(config-track)#interface vlan20
+corp-dsw01(config-if)#vrrp 20 tr
+corp-dsw01(config-if)#vrrp 20 track 10 dec
+corp-dsw01(config-if)#vrrp 20 track 10 decrement 30
+corp-dsw01(config-if)#exit tr
+corp-dsw01(config-if)#exit   
+corp-dsw01(config)#track
+corp-dsw01(config)#track 11 inte
+corp-dsw01(config)#track 11 interface vlan 1010
+corp-dsw01(config)#track 11 interface vlan 1010 lin
+corp-dsw01(config)#track 11 interface vlan 1010 line-protocol 
+corp-dsw01(config-track)#interface vlan 20  
+corp-dsw01(config-if)#crrp
+corp-dsw01(config-if)#vrrp
+corp-dsw01(config-if)#vrrp 20 tr
+corp-dsw01(config-if)#vrrp 20 track 11 dec
+corp-dsw01(config-if)#vrrp 20 track 11 decrement 30
+corp-dsw01(config-if)#router ospf 2 vrf FinDep
+corp-dsw01(config-router)#net
+corp-dsw01(config-router)#network 10.1.1.0 0.0.0.255 are
+corp-dsw01(config-router)#network 10.1.1.0 0.0.0.255 area 10
+corp-dsw01(config-router)#router osp
+corp-dsw01(config-router)#router ospf 3 vrf TechDep
+corp-dsw01(config-router)#router ospf 3 vrf TechDep
+corp-dsw01(config-router)#net
+corp-dsw01(config-router)#network 10.1.2.0 0.0.0.255 are
+corp-dsw01(config-router)#network 10.1.2.0 0.0.0.255 area 10
+corp-dsw01(config-router)#def
+corp-dsw01(config-router)#default-im
+corp-dsw01(config-router)#default-i 
+corp-dsw01(config-router)#default-information or
+corp-dsw01(config-router)#default-information originate al
+corp-dsw01(config-router)#default-information originate always 
+corp-dsw01(config-router)#router ospf 2 vrf FinDep             
+corp-dsw01(config-router)#default-information originate always 
+corp-dsw01(config-router)#end 
+corp-dsw01#
+*May  9 05:23:04.999: %SYS-5-CONFIG_I: Configured from console by consolewr
+Building configuration...
+Compressed configuration from 7219 bytes to 3586 bytes[OK]
+*May  9 05:23:12.301: %GRUB-5-CONFIG_WRITING: GRUB configuration is being updated on disk. Please wait...
+*May  9 05:23:13.066: %GRUB-5-CONFIG_WRITTEN: GRUB configuration was written to disk successfully.
+corp-dsw01#
+corp-dsw01#
+
+
+
+corp-dsw01#show track 10
+Track 10
+  Interface Vlan1020 line-protocol
+  Line protocol is Up
+    1 change, last change 00:04:46
+  Tracked by:
+    VRRP Vlan20 20
+corp-dsw01#show vrr
+corp-dsw01#show vrrp bri
+corp-dsw01#show vrrp brief 
+Interface          Grp Pri Time  Own Pre State   Master addr     Group addr
+Vl10               10  110 3570       Y  Master  10.1.16.3       10.1.16.1      
+Vl20               20  110 3570       Y  Master  10.1.1.253      10.1.1.254     
+Vl30               30  100 3609       Y  Backup  10.1.2.252      10.1.2.254     
+corp-dsw01#sho ip rou
+corp-dsw01#sho ip route vrf
+corp-dsw01#sho ip route vrf FinDep ospf
+
+Routing Table: FinDep
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 22 subnets, 4 masks
+O        10.1.2.0/24 [110/3] via 10.1.19.11, 00:01:48, Vlan1020
+O        10.1.16.0/27 [110/3] via 10.1.19.11, 03:30:06, Vlan1020
+O        10.1.18.1/32 [110/3] via 10.1.19.11, 03:30:06, Vlan1020
+O        10.1.18.3/32 [110/3] via 10.1.19.11, 00:59:45, Vlan1020
+O        10.1.18.4/32 [110/4] via 10.1.19.11, 03:30:06, Vlan1020
+O        10.1.18.5/32 [110/2] via 10.1.19.5, 03:30:16, Vlan1021
+O        10.1.18.6/32 [110/4] via 10.1.19.11, 00:59:45, Vlan1020
+O        10.1.19.2/31 [110/3] via 10.1.19.11, 03:30:06, Vlan1020
+O        10.1.19.6/31 [110/3] via 10.1.19.11, 00:59:45, Vlan1020
+O        10.1.19.8/31 [110/2] via 10.1.19.11, 00:59:55, Vlan1020
+O        10.1.19.12/31 [110/2] via 10.1.19.11, 00:59:45, Vlan1020
+O        10.1.19.14/31 [110/4] via 10.1.19.11, 03:30:06, Vlan1020
+O        10.1.19.16/31 [110/2] via 10.1.19.5, 03:30:16, Vlan1021
+O        10.1.19.18/31 [110/4] via 10.1.19.11, 00:59:45, Vlan1020
+O E2     10.16.15.0/24 [110/20] via 10.1.19.11, 03:30:16, Vlan1020
+corp-dsw01#sho ip route vrf TechDep ospf
+
+Routing Table: TechDep
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 22 subnets, 4 masks
+O        10.1.1.0/24 [110/3] via 10.1.19.13, 00:02:48, Vlan1030
+O        10.1.16.0/27 [110/3] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.18.1/32 [110/3] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.18.2/32 [110/3] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.18.4/32 [110/4] via 10.1.19.13, 01:00:11, Vlan1030
+                      [110/4] via 10.1.19.7, 03:30:36, Vlan1031
+O        10.1.18.5/32 [110/4] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.18.6/32 [110/2] via 10.1.19.7, 03:30:36, Vlan1031
+O        10.1.19.2/31 [110/3] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.19.4/31 [110/3] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.19.8/31 [110/2] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.19.10/31 [110/2] via 10.1.19.13, 01:00:11, Vlan1030
+O        10.1.19.14/31 [110/3] via 10.1.19.7, 03:30:36, Vlan1031
+O        10.1.19.16/31 [110/3] via 10.1.19.7, 03:30:36, Vlan1031
+O        10.1.19.18/31 [110/2] via 10.1.19.7, 03:30:36, Vlan1031
+O E2     10.16.15.0/24 [110/20] via 10.1.19.13, 01:00:11, Vlan1030
+corp-dsw01#  

@@ -1,0 +1,37 @@
+! ===== corp-dsw02 (CorpGW-2) — 5 tasks: OSPF-1, OSPF-3, OSPF-5, OSPF-6, HSRP =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- HSRP Vlan30 -----
+show standby brief
+show standby Vlan30
+show track
+show running-config interface Vlan30
+show running-config interface Loopback5
+!
+! ----- OSPF-1 (VRF neighbor) -----
+show ip ospf neighbor
+show ip ospf neighbor vrf FinDep
+show ip ospf neighbor vrf TechDep
+show running-config | section router ospf
+!
+! ----- OSPF-3 (router ospfv3) -----
+show running-config | section router ospfv3
+show ipv6 ospf interface brief
+show ipv6 ospf neighbor
+!
+! ----- OSPF-5 (default-info VRF) -----
+show ip route vrf FinDep 0.0.0.0
+show ip route vrf TechDep 0.0.0.0
+show running-config | include default-information
+!
+! ----- OSPF-6 (md5 key vlan1020) -----
+show running-config interface Vlan1020
+show ip ospf interface Vlan1020
+!
+show ip interface brief | exclude unassigned
+!
+! ----- DONE corp-dsw02 -----

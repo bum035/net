@@ -1,0 +1,35 @@
+!========================================
+! Fusion-rtr02 (Fusion_Router-2) — OSPF-6 + NTP client
+!========================================
+! Tasks: OSPF-6 (2 pts) + NTP (1/2 нь энд)
+!========================================
+
+terminal length 0
+enable
+conf t
+
+! ── OSPF-6: vlan1020 md5 key fix
+! Одоогийн: Fusion-rtr02 = ospfkeyl1234 (lowercase 'l')
+!           CorpGW-2  = ospfkeyI1234 (uppercase 'I')
+! Шийдэл: хоёр талд clean key (`ospfKey12345`)-аар сольж эргэлзээгүй болгох
+interface GigabitEthernet0/0.1020
+ no ip ospf message-digest-key 1
+ ip ospf message-digest-key 1 md5 ospfKey12345
+!
+
+! ── NTP client: Fusion-rtr01-аас sync
+clock timezone ULAT 8
+ntp source Loopback1
+ntp server 10.1.17.3
+!
+
+end
+wr mem
+
+!========================================
+! VERIFY:
+!   show ip ospf neighbor                          ! Vlan1020 (CorpGW-2 10.1.19.16) FULL болох ёстой
+!   show ip ospf interface GigabitEthernet0/0.1020 ! authentication MD5, key 1
+!   show ntp associations                          ! 10.1.17.3 sync
+!   show clock                                     ! +08 ULAT
+!========================================

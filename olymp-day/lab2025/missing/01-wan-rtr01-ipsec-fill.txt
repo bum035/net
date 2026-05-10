@@ -1,0 +1,75 @@
+!================================================
+! wan-rtr01 (GW-1) — IPsec placeholder fill
+!================================================
+! Зорилго: wan-rtr01.txt дотор үлдсэн <BR1GW_PUB_IP>, <IPSEC_PSK>-ийг бодит утгаар сольж,
+!          Br1GW нь ISP-DHCP байгаа учир peer IP **dynamic** болгох
+!================================================
+!
+! ⚠ Br1GW.txt дотроос баталсан утгууд:
+!     PSK              = OlympLab2026
+!     Br1GW public IP  = ISP DHCP-ээс (тогтворгүй) → 0.0.0.0 wildcard
+!     GW-1 public IP   = 202.43.65.2 (Br1GW талд hardcoded)
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! Хуучин (placeholder)-ыг устгах
+! ════════════════════════════════════════════════
+no crypto ikev2 keyring KR_BR1
+no crypto ikev2 profile PROF_BR1
+no interface Tunnel100
+!
+
+! ════════════════════════════════════════════════
+! Шинээр зөв утгаар бичих — dynamic peer
+! ════════════════════════════════════════════════
+crypto ikev2 keyring KR_BR1
+ peer BR1GW
+  address 0.0.0.0 0.0.0.0
+  pre-shared-key local OlympLab2026
+  pre-shared-key remote OlympLab2026
+ exit
+!
+crypto ikev2 profile PROF_BR1
+ match identity remote address 0.0.0.0 0.0.0.0
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local KR_BR1
+!
+crypto ipsec transform-set TS_AES esp-aes esp-sha-hmac
+ mode tunnel
+!
+crypto ipsec profile IPSEC_BR1
+ set transform-set TS_AES
+ set ikev2-profile PROF_BR1
+!
+! Static peer мэдэгдсэн бол tunnel destination бөгдрөх; dynamic бол DVTI ашиглана.
+! Хэрэв lab-д Br1GW-ын ISP-IP-ийг лекторт мэдсэн бол доорх Tunnel100-руу бүгд хэрэглэ:
+interface Tunnel100
+ ip address 192.168.255.1 255.255.255.252
+ tunnel source GigabitEthernet0/2
+ tunnel destination 0.0.0.0
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile IPSEC_BR1
+!
+ip route 10.1.8.0 255.255.255.0 Tunnel100
+!
+end
+wr mem
+
+!================================================
+! ⚠ Хэрэв Br1GW нь fixed public IP авсан бол:
+!   • 0.0.0.0 0.0.0.0  → <тогтсон IP> 255.255.255.255
+!   • tunnel destination 0.0.0.0 → <тогтсон IP>
+!================================================
+
+!================================================
+! VERIFY (Br1GW-руу IPsec config push хийсний дараа):
+!   show crypto ikev2 sa             ! READY
+!   show crypto ipsec sa | inc encrypt|decrypt
+!   show interface Tunnel100         ! up/up
+!   ping 10.1.8.254 source Loopback2  ! Br1GW LAN gateway
+!================================================

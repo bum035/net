@@ -1,0 +1,15 @@
+! ===== corp-esw01 — 1 task: TFTP-2 (EEM) =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- TFTP-2 (EEM applet) -----
+show running-config | section event manager
+show event manager policy registered
+show event manager environment
+!
+show ip interface brief | exclude unassigned
+!
+! ----- DONE corp-esw01 -----

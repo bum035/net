@@ -1,0 +1,45 @@
+!================================================
+! CorpSW-3 — TFTP placeholder fill (TFTP-1 task — 2 pts)
+!================================================
+! Зорилго: CorpSW-3.txt-ийн <TFTP_IP>-г бодит TFTP server IP-ээр солих
+!================================================
+!
+! ⚠ Бодит TFTP server-н IP-г олох газар:
+!   1. Task UI (http://36.50.7.44:3000/tasks)-д тодорхой бичсэн бол
+!   2. DC subnet 10.1.12.x доторх (Linux node, Guacamole port 32779/32788)
+!   3. Олимпиадын зохион байгуулагч-аас асуу
+!================================================
+!
+! Жишээ: TFTP server = 10.1.12.10 гэж үзвэл
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! TFTP-1: corp-esw03-confg файлыг startup-руу copy
+! ════════════════════════════════════════════════
+end
+copy tftp://10.1.12.10/corp-esw03-confg startup-config
+
+! ⚠ EXEC mode-д шууд гүйцэтгэнэ. confirm prompt-уудад Enter дарна.
+!
+! Хэрэв running-руу шууд хийх гэж бол:
+! copy tftp://10.1.12.10/corp-esw03-confg running-config
+!
+! Reload болон verify:
+reload
+! Y, Enter — switch boot хийсний дараа configure хадгалагдсан байна
+!
+! Boot хийсний дараа:
+!   show startup-config | inc hostname
+!   show running-config | sec interface
+!================================================
+
+!================================================
+! VERIFY:
+!   show file systems              ! TFTP reach шалгах
+!   ping 10.1.12.10                ! TFTP server reachable эсэх
+!   show flash:                    ! файл flash-д татагдсан эсэх (хэрэв copy run flash хийсэн бол)
+!================================================

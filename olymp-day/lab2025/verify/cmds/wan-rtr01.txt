@@ -1,0 +1,47 @@
+! ===== wan-rtr01 (GW-1) — 8 tasks: iBGP, BGP-1/2/3, OSPF-4, NAT, IPsec, TCLSH =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- iBGP / BGP-1/2/3 -----
+show ip ospf interface brief
+show ip ospf neighbor
+show ipv6 ospf neighbor
+show ip route 10.1.18.10
+show ipv6 route 2001:DB8:ABCD:17::10
+show ip bgp summary
+show bgp ipv6 unicast summary
+show ip bgp
+show bgp ipv6 unicast
+show running-config | section router bgp
+show running-config | section route-map
+show running-config | section community
+show running-config | include bgp-community
+!
+! ----- OSPF-4 (default originate always) -----
+show running-config | section router ospfv3
+show ipv6 route ::/0
+show ip route 0.0.0.0
+!
+! ----- NAT -----
+show running-config | section ip nat
+show running-config | section access-list
+show ip nat translations
+show ip nat statistics
+show ip interface brief | exclude unassigned
+!
+! ----- IPsec -----
+show crypto ikev2 sa
+show crypto ipsec sa | include peer|encaps|decaps|local ident|remote ident
+show crypto session
+show interface Tunnel0
+show ip route 10.1.8.0
+show running-config | section crypto
+!
+! ----- TCLSH -----
+dir flash: | include statuscheck
+more flash:statuscheck
+!
+! ----- DONE wan-rtr01 -----

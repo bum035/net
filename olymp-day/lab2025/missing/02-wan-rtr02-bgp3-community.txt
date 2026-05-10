@@ -1,0 +1,44 @@
+!================================================
+! wan-rtr02 (GW-2) — BGP-3 community placeholder fill
+!================================================
+! Зорилго: wan-rtr02.txt:45-н <COMMUNITY_VAL>-ийг бодит community утгаар солих
+!================================================
+!
+! ⚠ Бодит community утгыг **task шалгуурын текстээс** уншиж сонгоно.
+!   Жишээ хэв шинж: 19000:100, 17000:200, 65535:65282 (no-export гэх мэт)
+!================================================
+!
+! Сонголт A — task-д тодорхой community өгсөн бол (жишээ: 19000:100)
+ip community-list standard COMM_ISP_B permit 19000:100
+!
+! Сонголт B — өөрсдөө сонгох (бусад router-уудтай тохирно):
+!   - GW-1 нь ISP-A-аас local-pref 200 авдаг (BGP-2)
+!   - GW-2 нь ISP-B-аас тагдсан community-тэй prefix-ийг local-pref 200 болгох
+ip community-list standard COMM_ISP_B permit 19000:200
+!
+! Сонголт C — well-known: NO_EXPORT
+! ip community-list standard COMM_ISP_B permit no-export
+!
+! ════════════════════════════════════════════════
+! Гүйцэтгэх (нэгийг сонгож paste):
+! ════════════════════════════════════════════════
+terminal length 0
+enable
+conf t
+!
+! Хуучин <COMMUNITY_VAL>-тай community-list-ийг устгах хэрэг бол:
+no ip community-list standard COMM_ISP_B
+!
+! Шинээр (доорх 3 сонголтоос task шалгуурт тохирохыг сонго):
+ip community-list standard COMM_ISP_B permit 19000:100
+!
+end
+wr mem
+
+!================================================
+! VERIFY:
+!   show ip community-list COMM_ISP_B
+!   show ip bgp community 19000:100
+!   show route-map ISP_B_LP
+!   show ip bgp ipv4 unicast | inc 19000:100
+!================================================

@@ -1,0 +1,180 @@
+!================================================
+! Br1GW (Branch Gateway) — FROM-SCRATCH paste sequence
+!================================================
+! Tasks: IPsec (1/2 нь энд — wan-rtr01 талтай хосолж 4 pts)
+!================================================
+! ⚠ Br1GW нь анхдагч хоосон (no hostname, no IP)
+! ⚠ Энэ файлыг console-руу blockoor paste хийнэ.
+!
+! ASSUMPTIONS — paste-аас өмнө шалгана:
+!   Gi0/0 → branch users (LAN). EVE-NG topology-оос batsd.
+!   Gi0/1 → ISP/upstream (WAN — DHCP). EVE link-ээс шалга.
+!   PSK   → "OlympLab2026" — GW-1 талд ижил утга байх ёстой.
+!   Хэрэв interface mapping өөр бол ip nat in/out + tunnel source-г засах.
+!================================================
+
+terminal length 0
+enable
+configure terminal
+
+! --- Identity / management ---
+hostname Br1GW
+ip domain name olympiad.local
+no ip domain lookup
+service timestamps log datetime msec
+service timestamps debug datetime msec
+no ip http server
+no ip http secure-server
+ip cef
+
+enable secret OlympLab2026
+username admin privilege 15 secret OlympLab2026
+
+! --- SSH key (hostname + domain тавьсны дараа л болно) ---
+crypto key generate rsa modulus 2048
+ip ssh version 2
+ip ssh time-out 60
+
+line con 0
+ logging synchronous
+ exec-timeout 0 0
+exit
+line vty 0 4
+ login local
+ transport input ssh
+exit
+
+! --- Loopback (Mgmt — IPv4 plan: 10.1.8.1/32) ---
+interface Loopback1
+ description Management
+ ip address 10.1.8.1 255.255.255.255
+ no shutdown
+exit
+
+! --- LAN: branch users 10.1.8.0/24 (gateway = .254 to avoid Lo1 collision) ---
+interface GigabitEthernet0/0
+ description to_branch_users
+ ip address 10.1.8.254 255.255.255.0
+ ip nat inside
+ no shutdown
+exit
+
+! --- WAN: ISP DHCP ---
+interface GigabitEthernet0/1
+ description to_ISP
+ ip address dhcp
+ ip nat outside
+ no shutdown
+exit
+
+! --- IKEv2 keyring + profile → GW-1 (202.43.65.2) ---
+crypto ikev2 keyring KR_HQ
+ peer GW1
+  address 202.43.65.2
+  pre-shared-key local OlympLab2026
+  pre-shared-key remote OlympLab2026
+ exit
+exit
+
+crypto ikev2 profile PROF_HQ
+ match identity remote address 202.43.65.2 255.255.255.255
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local KR_HQ
+exit
+
+! --- IPsec transform + profile ---
+crypto ipsec transform-set TS_AES esp-aes esp-sha-hmac
+ mode tunnel
+exit
+
+crypto ipsec profile IPSEC_HQ
+ set transform-set TS_AES
+ set ikev2-profile PROF_HQ
+exit
+
+! --- Tunnel interface to HQ ---
+interface Tunnel100
+ description IPsec_to_HQ
+ ip address 192.168.255.2 255.255.255.252
+ tunnel source GigabitEthernet0/1
+ tunnel destination 202.43.65.2
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile IPSEC_HQ
+ no shutdown
+exit
+
+! --- NAT (branch internet, IPsec traffic-аас гадна) ---
+ip access-list extended NAT_OUT
+ deny ip 10.1.8.0 0.0.0.255 10.1.1.0 0.0.0.255
+ deny ip 10.1.8.0 0.0.0.255 10.1.2.0 0.0.0.255
+ permit ip 10.1.8.0 0.0.0.255 any
+exit
+ip nat inside source list NAT_OUT interface GigabitEthernet0/1 overload
+
+! --- Static routes (HQ subnets via tunnel) ---
+ip route 10.1.1.0 255.255.255.0 Tunnel100
+ip route 10.1.2.0 255.255.255.0 Tunnel100
+! Default route нь DHCP-аас auto install болно (option 3).
+! Хэрэв ирэхгүй бол дараах мөрийг нэм:
+!   ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/1
+
+! --- DHCP server for branch users (optional) ---
+ip dhcp excluded-address 10.1.8.1 10.1.8.10
+ip dhcp excluded-address 10.1.8.250 10.1.8.254
+ip dhcp pool BRANCH_POOL
+ network 10.1.8.0 255.255.255.0
+ default-router 10.1.8.254
+ dns-server 8.8.8.8
+exit
+
+end
+write memory
+
+!================================================
+! VERIFY (paste дараа Br1GW дээр):
+!   show ip interface brief                       ! Gi0/1 DHCP-оос IP авсан байх
+!   show ip route                                 ! Default via DHCP, 10.1.1/2 → Tunnel100
+!   show interface Tunnel100                       ! up/up (after GW-1 talsh up болсны дараа)
+!   show crypto ikev2 sa                          ! READY (хоёр тал config дууссны дараа)
+!   show crypto ipsec sa                          ! pkts encaps/decaps өсөж буй
+!   ping 10.1.1.1 source 10.1.8.254               ! HQ FinDep test
+!   ping 10.1.2.1 source 10.1.8.254               ! HQ TechDep test
+!================================================
+
+!================================================
+! ⚠⚠⚠ GW-1 (wan-rtr01) ТАЛД ЗААВАЛ ХИЙХ ӨӨРЧЛӨЛТ:
+!================================================
+! Br1GW нь DHCP-оор public IP-аа авдаг тул GW-1-ийн PROF_BR1 дээр
+! match-identity-г wildcard болгох ХЭРЭГТЭЙ, эс бөгөөс IKE phase-1
+! "remote identity not match" гэж унана.
+!
+! Сонголт A — wildcard (хамгийн уян):
+!   crypto ikev2 keyring KR_BR1
+!    peer BR1GW
+!     address 0.0.0.0 0.0.0.0
+!     pre-shared-key local OlympLab2026
+!     pre-shared-key remote OlympLab2026
+!    exit
+!   crypto ikev2 profile PROF_BR1
+!    match identity remote address 0.0.0.0
+!    authentication remote pre-share
+!    authentication local pre-share
+!    keyring local KR_BR1
+!
+! Сонголт B — Br1GW-ийн DHCP IP-г lock хийх:
+!   1) Br1GW дээр `show ip int brief` → Gi0/1-ийн IP-г бичиж ав.
+!   2) GW-1-ийн KR_BR1.peer.address болон PROF_BR1 match-identity дээр
+!      яг тэр IP-г бичих (Сонголт A-ийн bilan placeholder-уудыг солих).
+!
+! Бас GW-1-ийн Tunnel100-руу `tunnel destination` нь Br1GW-руу очдог
+! бөгөөд Br1GW-руу resp.-side static destination байх ёсгүй —
+! GW-1 талд DVTI хийх бол:
+!   crypto ikev2 profile PROF_BR1
+!    virtual-template 1
+!   interface Virtual-Template1 type tunnel
+!    ip unnumbered Loopback2
+!    tunnel mode ipsec ipv4
+!    tunnel protection ipsec profile IPSEC_BR1
+! Энэ нь Br1GW DHCP IP-аас үл хамаарч tunnel зөв тогтоно.
+!================================================

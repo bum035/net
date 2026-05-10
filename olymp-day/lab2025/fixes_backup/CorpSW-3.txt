@@ -1,0 +1,51 @@
+!========================================
+! CorpSW-3 (corp-esw03 — шинээр суурилсан) — TFTP-1 restore
+!========================================
+! Tasks: TFTP-1 (2 pts)
+!========================================
+! Хэлбэр: TFTP server-аас хуучин config-ыг (corp-esw03-confg) татаж авах
+! Шинэ device-д mgmt IP байхгүй тул эхлээд reachable болгох
+
+terminal length 0
+enable
+conf t
+
+! ── Үндсэн mgmt IP setup (Vlan10 + 10.1.16.6/27 — IP plan-ы дагуу)
+vlan 10
+!
+interface Vlan10
+ ip address 10.1.16.6 255.255.255.224
+ no shutdown
+!
+ip default-gateway 10.1.16.1
+!
+
+! ── Trunk uplink (port-ыг тохируулах нь хуучин config-аас гадна шаардлагатай)
+! Шалгуурын task-аас хамаарч edit хийх:
+interface Ethernet0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ no shutdown
+!
+
+end
+
+! ── TFTP-аас config татаж startup-руу хадгалаад reload
+! ⚠ <TFTP_IP> placeholder-ыг бодит TFTP server IP-ээр солих
+copy tftp://<TFTP_IP>/corp-esw03-confg startup-config
+! confirmation Enter дарж зөвшөөрөх
+
+! Эсвэл шууд running-руу татаад save:
+! copy tftp://<TFTP_IP>/corp-esw03-confg running-config
+! wr mem
+
+reload
+! confirm Enter
+
+!========================================
+! VERIFY (reload дараа):
+!   show running-config | inc hostname     ! corp-esw03 байх ёстой
+!   show ip interface brief
+!   show vlan brief
+!   ping 10.1.16.1                          ! mgmt gateway reachable
+!========================================

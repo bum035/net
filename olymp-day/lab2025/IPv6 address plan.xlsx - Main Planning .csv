@@ -1,0 +1,19 @@
+,,,
+,,,
+,,,
+,,,
+,,Interface,2001:db8::/32
+Corprate users,Financial department,Vlan 20,2001:db8:abcd:0012::/64
+,Technology Department,Vlan 30,2001:db8:abcd:0013::/64
+Brach Network ,Brach-1,,
+Data Center ,Internal Zone,Port-Channel 1.100,2001:db8:abcd:0014::/64
+,External Zone,Port-Channel 1.110,2001:db8:abcd:0015::/64
+,Monitoring and Log network,Port-Channel 1.120,2001:db8:abcd:0016::/64
+Network Devices address,Loopback Interface IPs,,2001:db8:abcd:0017::/64
+,P2P connection,,2001:db8:abcd:0018::/64
+,P2M connection,,
+ISP-1(2001:db9::/32),Interconnection,,2001:db9:0:0010::2/127
+,Interconnection,,2001:db9:0:10::4/127
+,PD,,2001:db9:100::/56 64
+,,,
+ISP-2(2001:d29::/32),Interconnection,,2001:d29:0:0010::2/127

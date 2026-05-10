@@ -1,0 +1,53 @@
+!================================================
+! SNMP / LibreNMS — bonus config (TASKS.md-д БАЙХГҮЙ)
+!================================================
+! Зорилго: lab-summary.md-д "Зурвасын монитор LibreNMS-руу нэмэх" гэж дурдсан.
+!          19-task шалгуурт байхгүй, гэхдээ бэлэн байх нь оноо хариу гарвал плюс.
+!
+! ⚠ LibreNMS server IP-ийг task UI эсвэл DC subnet-аас олно.
+!   Жишээ: 10.1.12.20
+!================================================
+!
+! ════════════════════════════════════════════════
+! Бүх router (wan-rtr01/02, Fusion-rtr01/02, corp-dsw01/02) дээр:
+! ════════════════════════════════════════════════
+
+terminal length 0
+enable
+conf t
+
+! ACL — зөвхөн LibreNMS server-аас query хүлээн авах
+ip access-list standard SNMP_RO
+ permit 10.1.12.20
+ deny any log
+!
+! SNMPv2c (хялбар, олимп-д ихэвчлэн хэрэглэдэг)
+snmp-server community OlympRO RO SNMP_RO
+snmp-server location "Olympiad Lab 2025 / Mongolia"
+snmp-server contact "noc@olymp.mn"
+snmp-server enable traps
+snmp-server host 10.1.12.20 version 2c OlympRO
+!
+! SNMPv3 (илүү аюулгүй — task-д дурдвал энийг ашигла)
+! snmp-server group OLYMP v3 priv read OLYMP_VIEW
+! snmp-server view OLYMP_VIEW iso included
+! snmp-server user librenms OLYMP v3 auth sha OlympAuth26 priv aes 128 OlympPriv26
+!
+end
+wr mem
+
+!================================================
+! Switch (CorpSW-1/2/3) дээр — IOL дотор snmp-server хязгаартай тул:
+! ════════════════════════════════════════════════
+! conf t
+! snmp-server community OlympRO RO
+! snmp-server enable traps
+! snmp-server host 10.1.12.20 version 2c OlympRO
+! end
+! wr mem
+
+!================================================
+! VERIFY (LibreNMS server-аас):
+!   snmpwalk -v2c -c OlympRO 10.1.18.X system
+!   snmpget -v2c -c OlympRO 10.1.18.X .1.3.6.1.2.1.1.5.0   ! sysName
+!================================================

@@ -1,0 +1,89 @@
+!================================================
+! corp-dsw02 (CorpGW-2) — БҮХ ӨӨРЧЛӨЛТҮҮД
+!================================================
+! Tasks: OSPF-3 (2) + OSPF-1 (1/2) + OSPF-5 (1/2) + HSRP (2)
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! 1) OSPF-3 — router ospfv3 1 process-ыг шинээр үүсгэх
+! ════════════════════════════════════════════════
+! Одоогийн corp-dsw02-д ospfv3 process БҮХЭЛДЭЭ алга.
+! corp-dsw01-той ижил структуртэй болгон үүсгэнэ.
+ipv6 unicast-routing
+!
+router ospfv3 1
+ router-id 10.1.18.4
+ address-family ipv6 unicast
+  passive-interface default
+  no passive-interface Vlan1010
+  no passive-interface Vlan1011
+ exit-address-family
+ address-family ipv6 unicast vrf FinDep
+  passive-interface default
+  no passive-interface Vlan1020
+  no passive-interface Vlan1021
+ exit-address-family
+ address-family ipv6 unicast vrf TechDep
+  passive-interface default
+  no passive-interface Vlan1030
+  no passive-interface Vlan1031
+ exit-address-family
+!
+
+! Vlan20/Vlan30 SVI-руу ospfv3 interface command нэмэх (corp-dsw01-той ижил)
+interface Vlan20
+ ospfv3 1 ipv6 area 10
+!
+interface Vlan30
+ ospfv3 1 ipv6 area 10
+!
+
+! ════════════════════════════════════════════════
+! 2) OSPF-1 — VRF FinDep/TechDep-д Vlan20/Vlan30 SVI subnet нэмэх
+! ════════════════════════════════════════════════
+! Vlan20 (10.1.1.0/24) одоо OSPF FinDep-д advertise хийгдэхгүй
+! Vlan30 (10.1.2.0/24) одоо OSPF TechDep-д advertise хийгдэхгүй
+router ospf 2 vrf FinDep
+ network 10.1.1.0 0.0.0.255 area 10
+!
+router ospf 3 vrf TechDep
+ network 10.1.2.0 0.0.0.255 area 10
+!
+
+! ════════════════════════════════════════════════
+! 3) OSPF-5 — VRF-уудад default route originate
+! ════════════════════════════════════════════════
+! `always` — OSPF default-information originate-аас үл хамаарах
+router ospf 2 vrf FinDep
+ default-information originate always
+!
+router ospf 3 vrf TechDep
+ default-information originate always
+!
+
+! ════════════════════════════════════════════════
+! 4) HSRP — Vlan30 active state-ыг CorpGW-2-руу шилжүүлэх
+! ════════════════════════════════════════════════
+! Одоогийн: standby 30 priority 150 + track 1 (Loopback5) decrement 60
+!           Lo5 shutdown тул effective priority = 90 < 100 (corp-dsw01) → corp-dsw01 active
+! Шийдэл: Loopback5-ийг no shutdown → track up → effective 150 → corp-dsw02 active
+interface Loopback5
+ no shutdown
+!
+
+end
+wr mem
+
+!================================================
+! VERIFY:
+!   show ipv6 ospf neighbor                            ! FinDep/TechDep area 10 neighbors UP
+!   show ip route vrf FinDep ospf
+!   show ip route vrf TechDep ospf
+!   show ip route vrf FinDep | inc 0\.0\.0\.0           ! default route advertised
+!   show standby brief                                  ! Vlan30: Active
+!   show track 1                                        ! Lo5 Up
+!================================================

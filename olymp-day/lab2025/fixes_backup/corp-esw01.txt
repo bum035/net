@@ -1,0 +1,41 @@
+!========================================
+! corp-esw01 (CorpSW-1) — TFTP-2 (kron fallback)
+!========================================
+! Tasks: TFTP-2 (1/2 нь энд)
+!
+! ⚠ IOL switch image-д EEM disable. Kron-аар орлуулна.
+! TFTP server: 10.16.15.17 (OSPF route table-аас confirmed: O E2 10.16.15.0/24)
+!========================================
+
+terminal length 0
+enable
+conf t
+
+! ── file prompt quiet — copy command-ийн confirm prompt-ыг disable
+file prompt quiet
+!
+
+! ── Kron policy + recurring occurrence (10 min interval)
+kron policy-list BACKUP_POL
+ cli show clock
+ cli copy running-config tftp://10.16.15.17/corp-esw01-config
+!
+kron occurrence BACKUP_OCC in 0:0:10 recurring
+ policy-list BACKUP_POL
+!
+
+end
+wr mem
+
+!========================================
+! VERIFY:
+!   show kron schedule                    ! occurrence list, next-run time
+!   show running | sec kron               ! config persisted
+!   ! 10 минут хүлээгээд:
+!   show logging | inc TFTP|copy|kron     ! upload амжилттай эсэх
+!========================================
+! ⚠ Kron-д hostname/time substitution ($h, $t) дэмжигдэхгүй тул
+!   filename `corp-esw01-config` гэж hardcode хийсэн (overwrite mode).
+!   Шалгуурын "Hostname-time" формат шаардлага — kron-аас гарах боломжгүй.
+!   EEM-тэй image байдаг бол түүгээр хийнэ.
+!========================================

@@ -1,0 +1,26 @@
+! ===== Fusion-rtr02 — 3 tasks: OSPF-2, OSPF-6, NTP client =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- OSPF-2 -----
+show running-config | section router ospf 1
+show ip ospf interface brief
+show ip ospf neighbor
+!
+! ----- OSPF-6 (md5 key vlan1020) -----
+show running-config interface GigabitEthernet0/0.1020
+show ip ospf interface GigabitEthernet0/0.1020
+show ip ospf neighbor GigabitEthernet0/0.1020
+!
+! ----- NTP client -----
+show ntp status
+show ntp associations
+show running-config | section ntp
+show running-config | include clock timezone
+!
+show ip interface brief | exclude unassigned
+!
+! ----- DONE Fusion-rtr02 -----

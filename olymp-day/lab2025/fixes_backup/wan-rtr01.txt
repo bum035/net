@@ -1,0 +1,169 @@
+!================================================
+! wan-rtr01 (GW-1) — БҮХ ӨӨРЧЛӨЛТҮҮД
+!================================================
+! Tasks: iBGP (3) + BGP-1 (2) + BGP-2 in (3) + NAT (2) + OSPF-4 (1/2) + TCLSH (2) + IPsec (4)
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! 1) iBGP — Loopback2-ыг OSPFv2 + OSPFv3-д advertise
+! ════════════════════════════════════════════════
+! Lo2 = 10.1.18.8 / 2001:DB8:ABCD:17::8 — wan-rtr02 next-hop reachable болгох
+interface Loopback2
+ ospfv3 1 ipv6 area 0
+!
+router ospf 1
+ network 10.1.18.8 0.0.0.0 area 0
+!
+! IPv6 OSPFv3 нь Loopback2 дээр шалгаатайгаар идэвхжих — `no passive` нэмэх
+router ospfv3 1
+ address-family ipv6 unicast
+  no passive-interface Loopback2
+ exit-address-family
+!
+
+! ════════════════════════════════════════════════
+! 2) BGP-1 — public IPv4 /25 х2 + IPv6 /32 announce
+! ════════════════════════════════════════════════
+! Pool: 133.34.12.0/24 → 133.34.12.0/25 + 133.34.12.128/25
+! IPv6: 2001:DB8::/32
+ip route 133.34.12.0 255.255.255.128 Null0 250
+ip route 133.34.12.128 255.255.255.128 Null0 250
+ipv6 route 2001:DB8::/32 Null0 250
+!
+router bgp 17000
+ address-family ipv4
+  network 133.34.12.0 mask 255.255.255.128
+  network 133.34.12.128 mask 255.255.255.128
+ exit-address-family
+ address-family ipv6
+  network 2001:DB8::/32
+ exit-address-family
+!
+
+! ════════════════════════════════════════════════
+! 3) BGP-2 — ISP-A primary (inbound side)
+! ════════════════════════════════════════════════
+! ISP-A-аас ирэх route-уудад local-pref 200 өгч iBGP-ээр wan-rtr02-руу preferred болгох
+ip prefix-list ANY_v4 seq 5 permit 0.0.0.0/0 le 32
+ipv6 prefix-list ANY_v6 seq 5 permit ::/0 le 128
+!
+route-map ISP_A_IN permit 10
+ set local-preference 200
+!
+router bgp 17000
+ address-family ipv4
+  neighbor 202.43.65.1 route-map ISP_A_IN in
+  neighbor 202.43.65.1 send-community
+ exit-address-family
+ address-family ipv6
+  neighbor 2001:DB9:0:10::2 route-map ISP_A_IN in
+  neighbor 2001:DB9:0:10::2 send-community
+ exit-address-family
+!
+
+! ════════════════════════════════════════════════
+! 4) NAT — VRF-aware (FinDep + TechDep)
+! ════════════════════════════════════════════════
+! ACL + interface in/out + nat rule
+! ⚠ Хэрэв lab дээр FinDep/TechDep VRF GW-1-руу route-leak-аар reach хийдэггүй бол
+!   `match-in-vrf` keyword-ийг ашиглахгүйгээр глобал rule-аар л явна.
+ip access-list extended NAT_ACL
+ permit ip 10.1.1.0 0.0.0.255 any
+ permit ip 10.1.2.0 0.0.0.255 any
+!
+ip nat inside source list NAT_ACL pool 1 overload
+!
+interface GigabitEthernet0/0.300
+ ip nat inside
+!
+interface GigabitEthernet0/1.300
+ ip nat inside
+!
+interface GigabitEthernet0/2
+ ip nat outside
+!
+
+! ════════════════════════════════════════════════
+! 5) OSPF-4 — IPv6 default-information originate always
+! ════════════════════════════════════════════════
+router ospfv3 1
+ address-family ipv6 unicast
+  default-information originate always
+ exit-address-family
+!
+
+! ════════════════════════════════════════════════
+! 6) IPsec site-to-site — wan-rtr01 ↔ Br1GW
+! ════════════════════════════════════════════════
+! ⚠ <BR1GW_PUB_IP>, <IPSEC_PSK> placeholder
+crypto ikev2 keyring KR_BR1
+ peer BR1GW
+  address <BR1GW_PUB_IP>
+  pre-shared-key local <IPSEC_PSK>
+  pre-shared-key remote <IPSEC_PSK>
+ exit
+!
+crypto ikev2 profile PROF_BR1
+ match identity remote address <BR1GW_PUB_IP> 255.255.255.255
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local KR_BR1
+!
+crypto ipsec transform-set TS_AES esp-aes esp-sha-hmac
+ mode tunnel
+!
+crypto ipsec profile IPSEC_BR1
+ set transform-set TS_AES
+ set ikev2-profile PROF_BR1
+!
+interface Tunnel100
+ ip address 192.168.255.1 255.255.255.252
+ tunnel source GigabitEthernet0/2
+ tunnel destination <BR1GW_PUB_IP>
+ tunnel mode ipsec ipv4
+ tunnel protection ipsec profile IPSEC_BR1
+!
+ip route 10.1.8.0 255.255.255.0 Tunnel100
+!
+
+end
+wr mem
+
+!================================================
+! 7) TCLSH — flash:statuscheck файл үүсгэх (EXEC mode)
+!================================================
+! Дараах блокыг GLOBAL CONF МӨН биш — exec prompt дээр paste хийнэ:
+!
+!   tclsh
+!   set fd [open "flash:statuscheck" w]
+!   puts $fd {ios_config "" }
+!   puts $fd "puts \[exec \"show ip ospf neighbor\"\]"
+!   puts $fd "puts \[exec \"show ipv6 ospf neighbor\"\]"
+!   puts $fd "puts \[exec \"show ip bgp summary\"\]"
+!   puts $fd "puts \[exec \"show bgp ipv6 unicast summary\"\]"
+!   close $fd
+!   tclquit
+!
+! Дараа нь:
+!   tclsh flash:statuscheck
+!   more flash:statuscheck      ! агуулга шалгах
+!================================================
+
+!================================================
+! VERIFY (paste дараа):
+!   show ip route 10.1.18.8                    ! Lo2 OSPF-аар эсвэл connected
+!   show ipv6 ospf neighbor                    ! Fusion-rtr01/02 + wan-rtr02 (Lo2 IPv6)
+!   show ip bgp summary                         ! 10.1.18.10 Established
+!   show bgp ipv6 unicast summary               ! 2001:DB8:ABCD:17::10 Established
+!   show ip bgp 133.34.12.0/25                  ! origin "i", local network
+!   show bgp ipv6 unicast 2001:DB8::/32         ! announced
+!   show ip nat translations
+!   show ip nat statistics
+!   show crypto ikev2 sa                         ! Br1GW config дараа READY
+!   show crypto ipsec sa
+!   tclsh flash:statuscheck
+!================================================

@@ -1,0 +1,38 @@
+!========================================
+! corp-esw02 (CorpSW-2) — STP + TFTP-2 (kron fallback)
+!========================================
+! Tasks: STP (2 pts) + TFTP-2 (1/2 нь энд)
+!========================================
+
+terminal length 0
+enable
+conf t
+
+! ── STP fix: Eth0/1 (uplink to corp-dsw01 / CorpGW-1) — guard root устгах
+! Шалтгаан: corp-dsw01 (root bridge) илгээж буй superior BPDU → root-inconsistent block
+interface Ethernet0/1
+ no spanning-tree guard root
+!
+
+! ── TFTP-2: Kron-аар 10 минут тутамд auto-backup
+! ⚠ EEM IOL image-д disable, kron-аар орлуулсан
+file prompt quiet
+!
+kron policy-list BACKUP_POL
+ cli show clock
+ cli copy running-config tftp://10.16.15.17/corp-esw02-config
+!
+kron occurrence BACKUP_OCC in 0:0:10 recurring
+ policy-list BACKUP_POL
+!
+
+end
+wr mem
+
+!========================================
+! VERIFY:
+!   show spanning-tree interface Ethernet0/1
+!   show spanning-tree blockedports          ! Eth0/1 байх ёсгүй
+!   show kron schedule
+!   show running | sec kron
+!========================================

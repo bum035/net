@@ -1,0 +1,35 @@
+# Auto-generated 2026-05-09 — lab2025
+# EVE-NG host: 36.50.7.52  web-ui-port: 40117  user: admin
+#
+# CONSOLE PORTS ARE FIREWALLED from cloud VM. Two paths:
+#   (a) HTML5 console via web UI (browser, no setup)
+#   (b) SSH reverse tunnel from olympiad station to cloud VM:
+#       ssh -N -R <port>:36.50.7.52:<port> ubuntu@code.egulcloud.com
+#       then below host=127.0.0.1 instead of 36.50.7.52
+#
+# Per-device username/password — fill after first console login (cisco/cisco fallback exists in netmiko_backup.py)
+
+defaults: {username: cisco, password: cisco}
+
+devices:
+  # IOL switches (no telnet console banner — may need extra wait)
+  - {name: CorpSW-1,         host: 36.50.7.52, port: 32769, type: iol}
+  - {name: CorpSW-2,         host: 36.50.7.52, port: 32770, type: iol}
+  - {name: CorpSW-3,         host: 36.50.7.52, port: 32786, type: iol}
+
+  # QEMU routers / gateways
+  - {name: CorpGW-1,         host: 36.50.7.52, port: 32771}
+  - {name: CorpGW-2,         host: 36.50.7.52, port: 32772}
+  - {name: Fusion_Router-1,  host: 36.50.7.52, port: 32773}
+  - {name: Fusion_Router-2,  host: 36.50.7.52, port: 32774}
+  - {name: DC-Switch,        host: 36.50.7.52, port: 32775}
+  - {name: GW-1,             host: 36.50.7.52, port: 32776}
+  - {name: GW-2,             host: 36.50.7.52, port: 32777}
+  - {name: CSR,              host: 36.50.7.52, port: 32778}
+  - {name: ISP-A,            host: 36.50.7.52, port: 32781}
+  - {name: ISP-B,            host: 36.50.7.52, port: 32782}
+  - {name: Br1GW,            host: 36.50.7.52, port: 32783}
+
+  # Linux nodes (VNC — skip in netmiko)
+  # - Linux  vnc://36.50.7.52:32779  (node 11)
+  # - Linux  vnc://36.50.7.52:32788  (node 20)

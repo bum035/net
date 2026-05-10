@@ -1,0 +1,71 @@
+!================================================
+! wan-rtr02 (GW-2) — OSPF-4 + BGP-2 prepend + BGP-3
+!================================================
+! Tasks: OSPF-4 (1/2) + BGP-2 (out prepend) + BGP-3 (4 pts)
+!================================================
+
+terminal length 0
+enable
+conf t
+
+! ════════════════════════════════════════════════
+! 1) OSPF-4 — IPv6 default-information originate always
+! ════════════════════════════════════════════════
+router ospfv3 1
+ address-family ipv6 unicast
+  default-information originate always
+ exit-address-family
+!
+
+! ════════════════════════════════════════════════
+! 2) BGP-2 — ISP-B outbound AS-PATH prepend (GW-1-руу гарч буй замыг preferred болгох)
+! ════════════════════════════════════════════════
+! ISP-B-руу зарлах prefix-уудад AS-path-аа prepend → ISP-B зам урт болж ISP-A primary болно
+route-map ISP_B_OUT_PREPEND permit 10
+ set as-path prepend 17000 17000
+!
+router bgp 17000
+ address-family ipv4
+  neighbor 103.88.34.1 route-map ISP_B_OUT_PREPEND out
+ exit-address-family
+ address-family ipv6
+  neighbor 2001:D29:0:10::2 route-map ISP_B_OUT_PREPEND out
+ exit-address-family
+!
+
+! ════════════════════════════════════════════════
+! 3) BGP-3 — Community-tagged IPv6 routes-ыг GW-2-аар хүлээн авах
+! ════════════════════════════════════════════════
+! ip bgp-community new-format → community-г "AS:value" form-аар харуулах
+! ipv6 community-list-аар match хийгээд local-pref 200 → wan-rtr01-аас илүү ашиглагдана
+! Бусад route-уудад local-pref default (100) → wan-rtr01-ийн ISP_A_IN (200)-аас бага → bypass
+
+ip bgp-community new-format
+!
+ip community-list standard COMM_ISP_B permit <COMMUNITY_VAL>
+!
+route-map ISP_B_v6_IN permit 10
+ match community COMM_ISP_B
+ set local-preference 200
+!
+route-map ISP_B_v6_IN permit 99
+ ! бусад route-уудад өөрчлөлт хийхгүй (default LP 100)
+!
+router bgp 17000
+ address-family ipv6
+  neighbor 2001:D29:0:10::2 route-map ISP_B_v6_IN in
+  neighbor 2001:D29:0:10::2 send-community both
+ exit-address-family
+!
+
+end
+wr mem
+
+!================================================
+! VERIFY:
+!   show ipv6 ospf database | inc Type-7|External      ! ::/0 advertise
+!   show bgp ipv6 unicast neighbors 2001:D29:0:10::2 received-routes | inc community
+!   show bgp ipv6 unicast 2001:DB8:ABCD::/48            ! local-pref 200 community-тай ipv6 prefix-д
+!   show ip bgp neighbors 103.88.34.1 advertised-routes ! AS-path 17000 17000 17000 (prepend)
+!   show ip bgp community
+!================================================

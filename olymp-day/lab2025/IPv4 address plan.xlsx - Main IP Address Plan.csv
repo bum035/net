@@ -1,0 +1,21 @@
+Network Name,Subnet Name,Subnet,Device,VRF,VLAN,Status,Notes
+Corprate users,Financial department,10.1.1.0/24,Corprate Gateway,FinDep,20,Used,GW: 10.1.1.254
+,Technology Department,10.1.2.0/24,Corprate Gateway,TechDep,30,Used,GW: 10.1.2.254
+,,10.1.3.0/24,Available ,,,Available,
+,,10.1.4.0/22,Available ,,,Available,
+Brach Network ,Brach-1,10.1.8.0/24,Branchs,Globally,40,Used,10.1.8.254
+,,10.1.9.0/24,Available ,,,Available,
+,,10.1.10.0/23,Available ,,,Available,
+Data Center (10.1.12.0/22),Internal Zone,10.1.12.0/24,Zone Firewall,Globally,100,Used,
+,External Zone,10.1.13.0/24,Zone Firewall,Globally,110,Used,
+,Monitoring and Log network,10.1.14.0/24,Zone Firewall,Globally,120,Used,
+,,10.1.15.0/24,Available ,Globally,,Available,
+Network Management (10.1.16.0/24),Corprate Network Management,10.1.16.0/27,Corprate Gateway,Globally,10,Used,
+,Data Center Network Management ,10.1.16.32/27,Zone Firewall,Globally,10,Used,
+,Interconnection network Management,10.1.16.64/27,Zone Firewall,Globally,,Used,
+,Interconnection network Management,10.1.16.96/27,Zone Firewall,Globally,,Used,
+,Corprate Network Management,10.1.16.128/27,Available ,,,Available,
+,,10.1.17.0/24,Management IP,Globally,,Used,Please see Sheet2
+Loopback Interface IPs,,10.1.18.0/24,Interconnection,,,Used,
+Interconnection address,P2P connection,10.1.19.0/25,Interconnection,,,Used,
+,P2M connection,10.1.19.128/25,Interconnection,,,Used,

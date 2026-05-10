@@ -1,0 +1,21 @@
+! ===== corp-esw02 — 2 tasks: STP, TFTP-2 =====
+! Console-руу бүхэлд нь paste
+
+terminal length 0
+show running-config | include hostname
+show clock
+!
+! ----- STP (Eth0/1 root-inconsistent fix) -----
+show spanning-tree interface Ethernet0/1
+show spanning-tree summary
+show interfaces Ethernet0/1 status
+show running-config interface Ethernet0/1
+!
+! ----- TFTP-2 (EEM applet) -----
+show running-config | section event manager
+show event manager policy registered
+show event manager environment
+!
+show ip interface brief | exclude unassigned
+!
+! ----- DONE corp-esw02 -----
